@@ -5,12 +5,10 @@ const cors = require("cors");
 
 const migrate = require("./database/migrate");
 const usersRouter = require("./routes/users");
-const postsRouter = require("./routes/posts");
 const logsRouter = require("./routes/logs");
 const log = require("./models/log");
 const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
-
 
 const app = express();
 app.use(cors());
@@ -38,7 +36,6 @@ app.use(express.json());
 app.use(infoHandler);
 
 app.use("/users", usersRouter);
-app.use("/posts", postsRouter);
 app.use("/logs", logsRouter);
 
 app.use("*", (req, res) => {

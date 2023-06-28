@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   app:
-    image: users-api
+    image: workflow-api
     deploy:
       replicas: 3
       resources:
@@ -15,7 +15,7 @@ services:
       - JWT_EXPIRATION=2h
       - PORT=3000
       - DATABASE_IP=192.168.0.18
-      - DATABASE_SCHEMA=UsersAPI
+      - DATABASE_SCHEMA=WorkFlowAPI
       - DATABASE_USER=postgres
       - DATABASE_PASSWORD=SenhaBraba123
       - DATABASE_TYPE=postgres
