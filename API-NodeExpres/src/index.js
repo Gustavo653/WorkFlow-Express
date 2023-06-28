@@ -6,6 +6,7 @@ const cors = require("cors");
 const migrate = require("./database/migrate");
 const usersRouter = require("./routes/users");
 const logsRouter = require("./routes/logs");
+const supportGroupsRouter = require("./routes/supportGroups");
 const log = require("./models/log");
 const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
@@ -37,6 +38,7 @@ app.use(infoHandler);
 
 app.use("/users", usersRouter);
 app.use("/logs", logsRouter);
+app.use("/support-groups", supportGroupsRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({

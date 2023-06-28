@@ -2,7 +2,7 @@ const { DataTypes } = require("sequelize");
 const sequelize = require("../database/database");
 const { generatePassword } = require("../utils/jwtUtils");
 
-const User = sequelize.define("user", {
+const User = sequelize.define("User", {
   firstName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -17,12 +17,12 @@ const User = sequelize.define("user", {
     allowNull: false,
     validate: {
       notEmpty: {
-        msg: 'O campo "role" não pode estar vazio.',
+        msg: 'O campo "password" não pode estar vazio.',
       },
     },
   },
   role: {
-    type: DataTypes.STRING,
+    type: DataTypes.ENUM("admin", "user"),
     allowNull: false,
     validate: {
       notEmpty: {

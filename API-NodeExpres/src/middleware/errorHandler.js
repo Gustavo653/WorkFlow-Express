@@ -13,6 +13,7 @@ const errorHandler = async (err, req, res, next) => {
       success: false,
       message,
       statusCode,
+      detail: err,
       errorId,
     });
   } catch (error) {
@@ -21,6 +22,7 @@ const errorHandler = async (err, req, res, next) => {
       success: false,
       message,
       statusCode,
+      detail: err,
       errorId: null,
     });
   }

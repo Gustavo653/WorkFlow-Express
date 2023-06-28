@@ -1,20 +1,15 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/database");
 
-const log = sequelize.define("log", {
+const Log = sequelize.define("Log", {
   message: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
   type: {
-    type: DataTypes.TEXT,
+    type: DataTypes.ENUM("network", "error", "info"),
     allowNull: false,
-    validate: {
-      isIn: {
-        args: [["network", "error", "info"]],
-      },
-    },
   },
 });
 
-module.exports = log;
+module.exports = Log;

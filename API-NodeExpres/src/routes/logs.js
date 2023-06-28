@@ -4,7 +4,7 @@ const log = require("../models/log");
 const authMiddleware = require("../middleware/authMiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
 
-router.get("/", authMiddleware, adminMiddleware, async (req, res) => {
+router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     let logs = await log.findAll({
       order: [["id", "DESC"]],
