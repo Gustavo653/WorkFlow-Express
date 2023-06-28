@@ -1,0 +1,18 @@
+<div [formGroup]="form" [class]="style.formCard">
+    <div [class]="style.formItem" *ngFor="let field of fields">
+        <div *ngIf="field.type === 'text'">
+            <span class="p-float-label">
+                <input [id]="field.id" [formControlName]="field.name" [(ngModel)]="data[field.name]" pInputText />
+                <label [for]="field.id">{{ field.label }}</label>
+            </span>
+        </div>
+        <div *ngIf="field.type === 'textArea'">
+            <span class="p-float-label">
+                <textarea [id]="field.id" [formControlName]="field.name" rows="5" cols="30" pInputTextarea [(ngModel)]="data[field.name]"></textarea>
+                <label [for]="field.id">{{ field.label }}</label>
+            </span>
+        </div>
+        <small *ngIf="isFieldInvalid(field.name)" id="email-help" class="p-error">{{ getErrorMessage(field.name) }}</small>
+    </div>
+    <p-button [label]="buttonLabel" (click)="save()" [disabled]="!form.valid"></p-button>
+</div>

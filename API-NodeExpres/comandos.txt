@@ -1,0 +1,21 @@
+Preparação MsSQLServer
+sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=SenhaBraba123" -p 1433:1433 --name MsSQL -d mcr.microsoft.com/mssql/server:2022-latest
+
+Preparação PostgreSQL
+sudo docker run --name PostgreSQL -e POSTGRES_PASSWORD=SenhaBraba123 -d -p 5432:5432 postgres
+
+Build imagem docker
+sudo docker build -t users-api .
+sudo docker run -p -d --name Users-API 4000:3000 users-api
+
+Executar no docker swarm
+sudo docker swarm init
+sudo docker swarm init --advertise-addr 2804:14c:5f81:9b58::1003
+sudo docker stack deploy -c docker-compose.yml users-api-stack
+
+Parar docker swarm
+sudo docker swarm leave --force
+
+
+Parte WEB
+sudo docker run -d -p 4200:80 -e API_URL=http://192.168.0.18:3000 --name users-web users-web

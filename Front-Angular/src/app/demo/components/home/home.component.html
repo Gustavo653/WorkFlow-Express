@@ -1,0 +1,39 @@
+<div class="card">
+    <h1>Seja bem-vindo(a) à página da Blog-Express!</h1>
+</div>
+<p-progressBar [hidden]="!loading" mode="indeterminate" [style]="{ height: '3px' }"></p-progressBar>
+<div class="card">
+    <div class="grid">
+        <p-card class="col-12 md:col-6 lg:col-3" [header]="item.title" *ngFor="let item of data">
+            <p>
+                {{ item.content }}
+            </p>
+            <ng-template pTemplate="footer">
+                <div class="mb-2">
+                    <p-button [badge]="item.likeCount" label="Curtir" icon="pi pi-thumbs-up" styleClass="p-button-rounded" (onClick)="addReaction(item.id, 'like')"></p-button>
+                    <p-button
+                        [badge]="item.dislikeCount"
+                        label="Não Curtir"
+                        icon="pi pi-thumbs-down"
+                        styleClass="p-button-rounded p-button-danger"
+                        [style]="{ 'margin-left': '.5em' }"
+                        (onClick)="addReaction(item.id, 'dislike')"
+                    ></p-button>
+                </div>
+                <p-scroller [items]="item.comments" [itemSize]="50" scrollHeight="200px" styleClass="border-1 surface-border mb-2">
+                    <ng-template pTemplate="item" let-comment let-options="options">
+                        <div class="flex align-items-center p-1 m-2" [ngClass]="{ 'surface-ground': options.odd }" style="height: 50px">
+                            Comentário: {{ comment.content }} <br />
+                            Criado em: {{ comment.createdAt | date : "dd/MM/yy HH:mm:ss" }} <br />
+                            Criado por: {{ comment.author.firstName }}
+                        </div>
+                    </ng-template>
+                </p-scroller>
+                <form (ngSubmit)="addComment(item.id, commentInput.value)">
+                    <input type="text" #commentInput pInputText placeholder="Adicionar comentário" />
+                    <button pButton type="submit" [disabled]="commentInput.value == ''" [style]="{ 'margin-left': '.5em' }">Enviar</button>
+                </form>
+            </ng-template>
+        </p-card>
+    </div>
+</div>
