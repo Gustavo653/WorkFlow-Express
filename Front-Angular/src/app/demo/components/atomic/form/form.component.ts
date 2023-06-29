@@ -20,6 +20,8 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.inputData);
+        console.log(this.data);
         if (this.inputData) this.data = this.inputData;
     }
 
@@ -52,7 +54,7 @@ export class FormComponent implements OnInit, OnChanges {
                 return 'Este campo é obrigatório.';
             }
             if (field.errors['email']) {
-                return 'Este campo édeve ter um email válido.';
+                return 'Este campo deve ter um email válido.';
             }
         }
         return '';

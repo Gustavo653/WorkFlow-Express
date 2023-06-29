@@ -109,7 +109,13 @@ export class UserComponent implements OnInit {
     }
 
     createUser() {
-        this.selectedRegistry = null;
+        this.selectedRegistry = {
+            email: undefined,
+            firstName: undefined,
+            lastName: undefined,
+            password: undefined,
+            role: undefined,
+        };
         this.modalDialog = true;
     }
 

@@ -14,7 +14,6 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { ToastModule } from 'primeng/toast';
 import { LogService } from './demo/service/log.service';
-import { PostService } from './demo/service/post.service';
 import { UserService } from './demo/service/user.service';
 
 @NgModule({
@@ -38,9 +37,8 @@ import { UserService } from './demo/service/user.service';
         ConfirmationService,
         MessageService,
         LogService,
-        PostService,
         StorageService,
-        UserService
+        UserService,
     ],
     bootstrap: [AppComponent],
     exports: [],

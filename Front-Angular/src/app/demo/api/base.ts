@@ -56,19 +56,9 @@ export const MenuRoutes = [
         role: ['admin', 'user'],
         items: [
             {
-                label: 'Feed',
+                label: 'Home',
                 icon: 'pi pi-fw pi-chart-line',
                 routerLink: [''],
-            },
-            {
-                label: 'Criar Post',
-                icon: 'pi pi-fw pi-plus',
-                routerLink: ['/post/create'],
-            },
-            {
-                label: 'Meus Posts',
-                icon: 'pi pi-fw pi-at',
-                routerLink: ['/post/mine'],
             },
         ],
     },
@@ -80,11 +70,6 @@ export const MenuRoutes = [
                 label: 'Gerenciar Usuários',
                 icon: 'pi pi-fw pi-user-edit',
                 routerLink: ['/users'],
-            },
-            {
-                label: 'Gerenciar Posts',
-                icon: 'pi pi-fw pi-file-o',
-                routerLink: ['/post/manage'],
             },
             {
                 label: 'Logs',

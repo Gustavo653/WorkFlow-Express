@@ -22,15 +22,15 @@ const User = sequelize.define("User", {
     },
   },
   role: {
-    type: DataTypes.ENUM("admin", "user"),
+    type: DataTypes.ENUM("admin", "requester", "agent"),
     allowNull: false,
     validate: {
       notEmpty: {
         msg: 'O campo "role" não pode estar vazio.',
       },
       isIn: {
-        args: [["admin", "user"]],
-        msg: 'O campo "role" deve ter um valor válido (admin ou user).',
+        args: [["admin", "requester", "agent"]],
+        msg: 'O campo "role" deve ter um valor válido (admin, requester, agent).',
       },
     },
   },
@@ -58,8 +58,7 @@ const User = sequelize.define("User", {
   },
 });
 
-User
-  .sync()
+User.sync()
   .then(async () => {
     const admin = await User.findOne({ where: { email: "admin@example.com" } });
     if (admin) {
