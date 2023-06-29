@@ -35,6 +35,10 @@ export class CreateComponent implements OnInit {
         this.fetchData();
     }
 
+    createOrder() {
+        console.log(JSON.stringify(this.data));
+    }
+
     fetchData() {
         this.loading = true;
         this.userService.getUsers().subscribe((x) => {
