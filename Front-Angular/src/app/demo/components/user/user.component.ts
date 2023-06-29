@@ -40,7 +40,7 @@ export class UserComponent implements OnInit {
             id: 'role',
             type: 'select',
             name: 'role',
-            label: 'Role',
+            label: 'Tipo de Usuário',
             required: true,
             options: [
                 {
@@ -83,7 +83,7 @@ export class UserComponent implements OnInit {
             },
             {
                 field: 'role',
-                header: 'Role',
+                header: 'Tipo de Usuário',
                 type: 'role',
             },
             {
