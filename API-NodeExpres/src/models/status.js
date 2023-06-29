@@ -9,8 +9,8 @@ const Status = sequelize.define("Status", {
   },
 });
 
-Status.beforeSync(async () => {
-  try {
+Status.sync()
+  .then(async () => {
     const priorities = ["Aberto", "Em Progresso", "Encerrado"];
     for (const priorityName of priorities) {
       const existingStatus = await Status.findOne({
@@ -21,9 +21,9 @@ Status.beforeSync(async () => {
       }
     }
     console.log("Valores de status inseridos com sucesso.");
-  } catch (error) {
+  })
+  .catch((error) => {
     console.error("Erro ao inserir valores de status:", error);
-  }
-});
+  });
 
 module.exports = Status;

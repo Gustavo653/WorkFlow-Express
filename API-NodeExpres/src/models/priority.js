@@ -9,8 +9,8 @@ const Priority = sequelize.define("Priority", {
   },
 });
 
-Priority.beforeSync(async () => {
-  try {
+Priority.sync()
+  .then(async () => {
     const priorities = ["Baixa", "Média", "Alta", "Urgente"];
     for (const priorityName of priorities) {
       const existingPriority = await Priority.findOne({
@@ -21,9 +21,9 @@ Priority.beforeSync(async () => {
       }
     }
     console.log("Valores de prioridade inseridos com sucesso.");
-  } catch (error) {
+  })
+  .catch((error) => {
     console.error("Erro ao inserir valores de prioridade:", error);
-  }
-});
+  });
 
 module.exports = Priority;

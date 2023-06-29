@@ -1,6 +1,9 @@
 const { DataTypes } = require("sequelize");
 const sequelize = require("../database/database");
 const Priority = require("./priority");
+const Status = require("./status");
+const User = require("./user");
+const SupportGroup = require("./supportGroup");
 
 const Order = sequelize.define("Order", {
   title: {
@@ -21,5 +24,9 @@ const Order = sequelize.define("Order", {
 });
 
 Order.belongsTo(Priority, { foreignKey: "priorityId" });
+Order.belongsTo(Status, { foreignKey: "statusId" });
+Order.belongsTo(User, { foreignKey: "requesterId" });
+Order.belongsTo(User, { foreignKey: "agentId" });
+Order.belongsTo(SupportGroup, { foreignKey: "supportGroupId" });
 
 module.exports = Order;
