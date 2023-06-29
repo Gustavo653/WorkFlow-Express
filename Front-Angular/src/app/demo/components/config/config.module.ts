@@ -12,9 +12,11 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfigRoutingModule } from './config-routing.module';
 import { PrioritiesComponent } from './priorities/priorities.component';
 import { CategoriesComponent } from './categories/categories.component';
+import { SupportGroupsComponent } from './supportGroups/supportGroups.component';
+import { StatusesComponent } from './statuses/statuses.component';
 
 @NgModule({
-    declarations: [PrioritiesComponent, CategoriesComponent],
+    declarations: [PrioritiesComponent, CategoriesComponent, SupportGroupsComponent, StatusesComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,

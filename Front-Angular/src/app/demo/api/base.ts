@@ -61,6 +61,11 @@ export const MenuRoutes = [
                 icon: 'pi pi-fw pi-chart-line',
                 routerLink: [''],
             },
+            {
+                label: 'Criar Chamado',
+                icon: 'pi pi-fw pi-plus',
+                routerLink: ['/order/create'],
+            },
         ],
     },
     {
@@ -85,6 +90,16 @@ export const MenuRoutes = [
                         label: 'Gerenciar Prioridades',
                         icon: 'pi pi-fw pi-sliders-h',
                         routerLink: ['/config/priorities'],
+                    },
+                    {
+                        label: 'Gerenciar Grupos de Atendimento',
+                        icon: 'pi pi-fw pi-sliders-h',
+                        routerLink: ['/config/support-groups'],
+                    },
+                    {
+                        label: 'Gerenciar Status',
+                        icon: 'pi pi-fw pi-sliders-h',
+                        routerLink: ['/config/statuses'],
                     },
                 ],
             },
