@@ -1,4 +1,4 @@
-<p-dialog [(visible)]="modalDialog" header="Detalhes do Registro" [transitionOptions]="'100ms'" [modal]="true" styleClass="p-fluid">
+<p-dialog [(visible)]="modalDialog" header="Detalhes do Registro" (onHide)="hideDialog()" [transitionOptions]="'100ms'" [modal]="true" styleClass="p-fluid">
     <ng-template pTemplate="content">
         <div [formGroup]="form" class="field">
             <div [class]="style.formItem" *ngFor="let field of fields">
@@ -11,6 +11,19 @@
                 <div *ngIf="field.type === 'textArea'">
                     <span class="p-float-label">
                         <textarea [id]="field.id" [formControlName]="field.name" rows="5" cols="30" pInputTextarea [(ngModel)]="data[field.name]"></textarea>
+                    </span>
+                </div>
+                <div *ngIf="field.type === 'select'">
+                    <span class="p-float-label">
+                        <p-listbox
+                            [id]="field.id"
+                            [formControlName]="field.name"
+                            [options]="field.options!"
+                            [(ngModel)]="data[field.name]"
+                            optionValue="code"
+                            optionLabel="name"
+                            [style]="{ width: '17rem' }"
+                        ></p-listbox>
                     </span>
                 </div>
                 <small *ngIf="isFieldInvalid(field.name)" id="email-help" class="p-error">{{ getErrorMessage(field.name) }}</small>

@@ -36,7 +36,27 @@ export class UserComponent implements OnInit {
     fields: FormField[] = [
         { id: 'firstName', type: 'text', name: 'firstName', label: 'Nome', required: true },
         { id: 'lastName', type: 'text', name: 'lastName', label: 'Sobrenome', required: true },
-        { id: 'role', type: 'text', name: 'role', label: 'Role', required: true },
+        {
+            id: 'role',
+            type: 'select',
+            name: 'role',
+            label: 'Role',
+            required: true,
+            options: [
+                {
+                    code: 'admin',
+                    name: 'Administrador',
+                },
+                {
+                    code: 'requester',
+                    name: 'Solicitante',
+                },
+                {
+                    code: 'agent',
+                    name: 'Atendente',
+                },
+            ],
+        },
         { id: 'email', type: 'text', name: 'email', label: 'E-mail', required: true, email: true },
         { id: 'password', type: 'text', name: 'password', label: 'Senha', required: false },
     ];
@@ -64,7 +84,7 @@ export class UserComponent implements OnInit {
             {
                 field: 'role',
                 header: 'Role',
-                type: 'text',
+                type: 'role',
             },
             {
                 field: 'email',

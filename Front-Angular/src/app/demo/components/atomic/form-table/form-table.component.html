@@ -58,6 +58,9 @@
                 <ng-container *ngIf="col.type == 'currency'">
                     {{ _(rowData, col.field) | currency : "BRL" }}
                 </ng-container>
+                <ng-container *ngIf="col.type == 'role'">
+                    {{ _(rowData, col.field) | role }}
+                </ng-container>
                 <ng-container *ngIf="col.type == 'number'">
                     {{ _(rowData, col.field) | number }}
                 </ng-container>

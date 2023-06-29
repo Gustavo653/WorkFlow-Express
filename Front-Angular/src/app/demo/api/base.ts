@@ -24,6 +24,7 @@ export interface FormField {
     type: string;
     name: string;
     label: string;
+    options?: dictionary[];
     required: boolean;
     email?: boolean;
 }
@@ -52,8 +53,8 @@ export interface RuntimeConfig {
 
 export const MenuRoutes = [
     {
-        label: 'Usuário',
-        role: ['admin', 'user'],
+        label: 'Geral',
+        role: ['admin', 'requester', 'agent'],
         items: [
             {
                 label: 'Home',

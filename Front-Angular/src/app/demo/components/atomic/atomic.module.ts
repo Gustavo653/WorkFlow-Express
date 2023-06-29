@@ -22,6 +22,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormComponent } from './form/form.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DialogModule } from 'primeng/dialog';
+import { ListboxModule } from 'primeng/listbox';
 
 @NgModule({
     declarations: [FormTableComponent, FormComponent],
@@ -40,6 +41,7 @@ import { DialogModule } from 'primeng/dialog';
         ToggleButtonModule,
         RippleModule,
         MultiSelectModule,
+        ListboxModule,
         RadioButtonModule,
         DropdownModule,
         ProgressBarModule,

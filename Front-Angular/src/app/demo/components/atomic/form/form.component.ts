@@ -20,6 +20,8 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(this.inputData);
+        console.log(this.fields);
         if (this.inputData) this.data = this.inputData;
     }
 
