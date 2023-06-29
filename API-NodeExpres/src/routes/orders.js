@@ -11,6 +11,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
       openingDate,
       priorityId,
       agentId,
+      categoryId,
       supportGroupId,
       requesterId = verifyToken(req.headers.authorization).id,
     } = req.body;
@@ -20,6 +21,7 @@ router.post("/", authMiddleware, async (req, res, next) => {
       openingDate,
       priorityId,
       agentId,
+      categoryId,
       supportGroupId,
       requesterId,
     });
@@ -73,6 +75,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
       openingDate,
       priorityId,
       agentId,
+      categoryId,
       supportGroupId,
     } = req.body;
 
@@ -83,6 +86,7 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
         openingDate,
         priorityId,
         agentId,
+        categoryId,
         supportGroupId,
       },
       { where: { id: id } }
