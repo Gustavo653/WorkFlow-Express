@@ -11,8 +11,8 @@ export class FormComponent implements OnInit, OnChanges {
     style = new PrimeFlexStyle();
     data: any = {};
     @Input() inputData: any = {};
+    @Input() modalDialog: boolean = false;
     @Input() fields!: FormField[];
-    @Input() buttonLabel: string = '';
     @Output() formData: EventEmitter<any> = new EventEmitter<any>();
 
     ngOnInit(): void {
@@ -20,8 +20,6 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(this.inputData);
-        console.log(this.data);
         if (this.inputData) this.data = this.inputData;
     }
 
@@ -40,6 +38,10 @@ export class FormComponent implements OnInit, OnChanges {
 
     save() {
         if (this.form?.valid) this.formData.emit(this.data);
+    }
+
+    hideDialog() {
+        this.formData.emit(undefined);
     }
 
     isFieldInvalid(fieldName: string): boolean {

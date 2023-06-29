@@ -21,6 +21,7 @@ import { SharedModule } from 'src/app/shared.module';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormComponent } from './form/form.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
     declarations: [FormTableComponent, FormComponent],
@@ -48,6 +49,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
         SharedModule,
         CheckboxModule,
         InputTextareaModule,
+        DialogModule,
     ],
 })
 export class AtomicModule {}

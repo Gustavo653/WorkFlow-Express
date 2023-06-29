@@ -141,16 +141,20 @@ export class UserComponent implements OnInit {
     }
 
     getFormData(registry: any) {
-        if (registry.id) {
-            this.userService.updateUser(registry.id, registry.firstName, registry.lastName, registry.email, registry.role, registry.password).subscribe((x) => {
-                this.fetchData();
-                this.modalDialog = false;
-            });
+        if (!registry) {
+            this.modalDialog = false;
         } else {
-            this.userService.createUser(registry.firstName, registry.lastName, registry.email, registry.role, registry.password).subscribe((x) => {
-                this.fetchData();
-                this.modalDialog = false;
-            });
+            if (registry.id) {
+                this.userService.updateUser(registry.id, registry.firstName, registry.lastName, registry.email, registry.role, registry.password).subscribe((x) => {
+                    this.fetchData();
+                    this.modalDialog = false;
+                });
+            } else {
+                this.userService.createUser(registry.firstName, registry.lastName, registry.email, registry.role, registry.password).subscribe((x) => {
+                    this.fetchData();
+                    this.modalDialog = false;
+                });
+            }
         }
     }
 

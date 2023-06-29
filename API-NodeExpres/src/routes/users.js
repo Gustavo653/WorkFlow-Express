@@ -91,10 +91,10 @@ router.post("/", authMiddleware, adminMiddleware, async (req, res, next) => {
     let password = req.body.password ?? "admin123";
     password = await generatePassword(password);
 
-    if (role !== "admin" && role !== "user") {
+    if (role !== "admin" && role !== "requester" && role !== "agent") {
       return res
         .status(400)
-        .json({ message: "O role deve ser admin ou user." });
+        .json({ message: "O role deve ser admin, requester ou agent." });
     }
 
     const existingUser = await User.findOne({ where: { email } });

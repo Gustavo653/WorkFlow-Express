@@ -1,18 +1,24 @@
-<div [formGroup]="form" [class]="style.formCard">
-    <div [class]="style.formItem" *ngFor="let field of fields">
-        <div *ngIf="field.type === 'text'">
-            <span class="p-float-label">
-                <input [id]="field.id" [formControlName]="field.name" [(ngModel)]="data[field.name]" pInputText />
+<p-dialog [(visible)]="modalDialog" header="Detalhes do Registro" [transitionOptions]="'100ms'" [modal]="true" styleClass="p-fluid">
+    <ng-template pTemplate="content">
+        <div [formGroup]="form" class="field">
+            <div [class]="style.formItem" *ngFor="let field of fields">
                 <label [for]="field.id">{{ field.label }}</label>
-            </span>
+                <div *ngIf="field.type === 'text'">
+                    <span class="p-float-label">
+                        <input [id]="field.id" [formControlName]="field.name" [(ngModel)]="data[field.name]" pInputText />
+                    </span>
+                </div>
+                <div *ngIf="field.type === 'textArea'">
+                    <span class="p-float-label">
+                        <textarea [id]="field.id" [formControlName]="field.name" rows="5" cols="30" pInputTextarea [(ngModel)]="data[field.name]"></textarea>
+                    </span>
+                </div>
+                <small *ngIf="isFieldInvalid(field.name)" id="email-help" class="p-error">{{ getErrorMessage(field.name) }}</small>
+            </div>
         </div>
-        <div *ngIf="field.type === 'textArea'">
-            <span class="p-float-label">
-                <textarea [id]="field.id" [formControlName]="field.name" rows="5" cols="30" pInputTextarea [(ngModel)]="data[field.name]"></textarea>
-                <label [for]="field.id">{{ field.label }}</label>
-            </span>
-        </div>
-        <small *ngIf="isFieldInvalid(field.name)" id="email-help" class="p-error">{{ getErrorMessage(field.name) }}</small>
-    </div>
-    <p-button [label]="buttonLabel" (click)="save()" [disabled]="!form.valid"></p-button>
-</div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+        <button pButton pRipple label="Salvar" icon="pi pi-check" class="p-button-text" [disabled]="!form.valid" (click)="save()"></button>
+    </ng-template>
+</p-dialog>
