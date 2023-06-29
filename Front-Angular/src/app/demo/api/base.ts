@@ -73,6 +73,22 @@ export const MenuRoutes = [
                 routerLink: ['/users'],
             },
             {
+                label: 'Configurações',
+                icon: 'pi pi-fw pi-cog',
+                items: [
+                    {
+                        label: 'Gerenciar Categorias',
+                        icon: 'pi pi-fw pi-sliders-h',
+                        routerLink: ['/config/categories'],
+                    },
+                    {
+                        label: 'Gerenciar Prioridades',
+                        icon: 'pi pi-fw pi-sliders-h',
+                        routerLink: ['/config/priorities'],
+                    },
+                ],
+            },
+            {
                 label: 'Logs',
                 icon: 'pi pi-fw pi-book',
                 routerLink: ['/logs'],

@@ -7,46 +7,46 @@ import { StorageService } from './storage.service';
 @Injectable({
     providedIn: 'root',
 })
-export class UserService {
+export class PriorityService {
     constructor(private http: HttpClient, private storageService: StorageService) {}
 
     private getAPIURL(): Observable<string> {
         return this.storageService.getAPIURL();
     }
 
-    getUsers(): Observable<any> {
+    getPriorities(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users`;
+                const apiUrl = `${url}/priorities`;
                 return this.http.get(apiUrl);
             })
         );
     }
 
-    createUser(firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
+    createPriority(name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users`;
-                const body = { firstName, lastName, email, role, password };
+                const apiUrl = `${url}/priorities`;
+                const body = { name };
                 return this.http.post(apiUrl, body);
             })
         );
     }
 
-    updateUser(id: string, firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
+    updatePriority(id: string, name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users/${id}`;
-                const body = { firstName, lastName, email, role, password };
+                const apiUrl = `${url}/priorities/${id}`;
+                const body = { name };
                 return this.http.put(apiUrl, body);
             })
         );
     }
 
-    deleteUser(id: string): Observable<any> {
+    deletePriority(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users/${id}`;
+                const apiUrl = `${url}/priorities/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

@@ -7,46 +7,46 @@ import { StorageService } from './storage.service';
 @Injectable({
     providedIn: 'root',
 })
-export class UserService {
+export class CategoryService {
     constructor(private http: HttpClient, private storageService: StorageService) {}
 
     private getAPIURL(): Observable<string> {
         return this.storageService.getAPIURL();
     }
 
-    getUsers(): Observable<any> {
+    getCategories(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users`;
+                const apiUrl = `${url}/categories`;
                 return this.http.get(apiUrl);
             })
         );
     }
 
-    createUser(firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
+    createCategory(name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users`;
-                const body = { firstName, lastName, email, role, password };
+                const apiUrl = `${url}/categories`;
+                const body = { name };
                 return this.http.post(apiUrl, body);
             })
         );
     }
 
-    updateUser(id: string, firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
+    updateCategory(id: string, name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users/${id}`;
-                const body = { firstName, lastName, email, role, password };
+                const apiUrl = `${url}/categories/${id}`;
+                const body = { name };
                 return this.http.put(apiUrl, body);
             })
         );
     }
 
-    deleteUser(id: string): Observable<any> {
+    deleteCategory(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users/${id}`;
+                const apiUrl = `${url}/categories/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

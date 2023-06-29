@@ -35,6 +35,11 @@ import { AuthGuard } from './demo/components/auth/auth.guard';
                             canActivate: [AuthGuard],
                             loadChildren: () => import('./demo/components/log/log.module').then((m) => m.LogModule),
                         },
+                        {
+                            path: 'config',
+                            canActivate: [AuthGuard],
+                            loadChildren: () => import('./demo/components/config/config.module').then((m) => m.ConfigModule),
+                        },
                     ],
                 },
                 { path: 'pages/notfound', component: NotfoundComponent },

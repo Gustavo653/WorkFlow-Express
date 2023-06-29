@@ -15,6 +15,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { ToastModule } from 'primeng/toast';
 import { LogService } from './demo/service/log.service';
 import { UserService } from './demo/service/user.service';
+import { PriorityService } from './demo/service/priority.service';
+import { CategoryService } from './demo/service/category.service.ts';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -37,6 +39,8 @@ import { UserService } from './demo/service/user.service';
         ConfirmationService,
         MessageService,
         LogService,
+        PriorityService,
+        CategoryService,
         StorageService,
         UserService,
     ],
