@@ -10,6 +10,8 @@ const supportGroupsRouter = require("./routes/supportGroups");
 const categoriesRouter = require("./routes/categories");
 const prioritiesRouter = require("./routes/priorities");
 const statusesRouter = require("./routes/statuses");
+const ordersRouter = require("./routes/orders");
+const timeEntriesRouter = require("./routes/timeEntries");
 const log = require("./models/log");
 const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
@@ -45,6 +47,8 @@ app.use("/support-groups", supportGroupsRouter);
 app.use("/categories", categoriesRouter);
 app.use("/priorities", prioritiesRouter);
 app.use("/statuses", statusesRouter);
+app.use("/orders", ordersRouter);
+app.use("/time-entries", timeEntriesRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({

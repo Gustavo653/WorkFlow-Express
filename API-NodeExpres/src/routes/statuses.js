@@ -8,8 +8,6 @@ router.post(
   "/",
   authMiddleware,
   adminMiddleware,
-  authMiddleware,
-  adminMiddleware,
   async (req, res, next) => {
     try {
       const { name } = req.body;

@@ -1,36 +1,43 @@
 const express = require("express");
 const router = express.Router();
-const Priority = require("../models/priority");
 const authMiddleware = require("../middleware/authMiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
+const TimeEntry = require("../models/timeEntry");
 
-router.post(
-  "/",
-  authMiddleware,
-  adminMiddleware,
-  async (req, res, next) => {
-    try {
-      const { name } = req.body;
-      const group = await Priority.create({ name });
-      res.status(201).json(group);
-    } catch (error) {
-      next({
-        statusCode: 500,
-        message: "Erro ao criar a prioridade.",
-        detail: error,
-      });
-    }
+router.post("/", authMiddleware, adminMiddleware, async (req, res, next) => {
+  try {
+    const {
+      description,
+      initialDate,
+      finishDate,
+      orderId,
+      userId = verifyToken(req.headers.authorization).id,
+    } = req.body;
+    const group = await TimeEntry.create({
+      description,
+      initialDate,
+      finishDate,
+      orderId,
+      userId,
+    });
+    res.status(201).json(group);
+  } catch (error) {
+    next({
+      statusCode: 500,
+      message: "Erro ao criar o apontamento.",
+      detail: error,
+    });
   }
-);
+});
 
 router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
-    const groups = await Priority.findAll();
+    const groups = await TimeEntry.findAll();
     res.status(200).json(groups);
   } catch (error) {
     next({
       statusCode: 500,
-      message: "Erro ao obter as prioridades.",
+      message: "Erro ao obter os apontamentos.",
       detail: error,
     });
   }
@@ -39,16 +46,16 @@ router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
 router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const group = await Priority.findByPk(id);
+    const group = await TimeEntry.findByPk(id);
     if (group) {
       res.status(200).json(group);
     } else {
-      res.status(404).json({ error: "Prioridade não encontrada." });
+      res.status(404).json({ error: "Apontamento não encontrado." });
     }
   } catch (error) {
     next({
       statusCode: 500,
-      message: "Erro ao obter a prioridade.",
+      message: "Erro ao obter o apontamento.",
       detail: error,
     });
   }
@@ -58,18 +65,18 @@ router.put("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
-    const group = await Priority.findByPk(id);
+    const group = await TimeEntry.findByPk(id);
     if (group) {
       group.name = name;
       await group.save();
       res.status(200).json(group);
     } else {
-      res.status(404).json({ error: "Prioridade não encontrada." });
+      res.status(404).json({ error: "Apontamento não encontrado." });
     }
   } catch (error) {
     next({
       statusCode: 500,
-      message: "Erro ao atualizar a prioridade.",
+      message: "Erro ao atualizar o apontamento.",
       detail: error,
     });
   }
@@ -82,17 +89,17 @@ router.delete(
   async (req, res, next) => {
     try {
       const { id } = req.params;
-      const group = await Priority.findByPk(id);
+      const group = await TimeEntry.findByPk(id);
       if (group) {
         await group.destroy();
         res.status(204).end();
       } else {
-        res.status(404).json({ error: "Prioridade não encontrada." });
+        res.status(404).json({ error: "Apontamento não encontrado." });
       }
     } catch (error) {
       next({
         statusCode: 500,
-        message: "Erro ao excluir a prioridade.",
+        message: "Erro ao excluir o apontamento.",
         detail: error,
       });
     }
