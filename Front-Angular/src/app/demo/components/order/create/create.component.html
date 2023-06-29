@@ -3,6 +3,10 @@
     <div class="col-12 md:col-6 lg:col-3">
         <h4>Parâmetros</h4>
         <div [class]="style.formCard">
+            <span [class]="style.formItem" class="p-float-label">
+                <input pInputText [(ngModel)]="data.title" />
+                <label>Título</label>
+            </span>
             <p-dropdown
                 [class]="style.formItem"
                 [filter]="true"
@@ -59,7 +63,7 @@
         </div>
     </div>
     <div class="col-12 md:col-6 lg:col-9">
-        <h4>Quill</h4>
-        <p-editor [(ngModel)]="data.description" [style]="{ height: '320px' }"></p-editor>
+        <h4>Descrição</h4>
+        <p-editor [(ngModel)]="data.description" [style]="{ height: '21.5rem' }"></p-editor>
     </div>
 </div>
