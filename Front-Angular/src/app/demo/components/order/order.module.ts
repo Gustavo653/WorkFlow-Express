@@ -13,6 +13,7 @@ import { OrderRoutingModule } from './order-routing.module';
 import { CreateComponent } from './create/create.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import { EditorModule } from 'primeng/editor';
 
 @NgModule({
     declarations: [CreateComponent],
@@ -31,6 +32,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
         OrderRoutingModule,
         DropdownModule,
         SelectButtonModule,
+        EditorModule,
     ],
 })
 export class OrderModule {}
