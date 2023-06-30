@@ -3,7 +3,7 @@ import http from "k6/http";
 export const options = {
   stages: [
     { duration: "1m", target: 200 },
-    { duration: "2m", target: 200 },
+    { duration: "3m", target: 500 },
     { duration: "1m", target: 0 },
   ],
 };
@@ -34,7 +34,7 @@ export default function () {
       lastName: "Doe",
       email: `user_${Math.floor(Math.random() * 100000)}@example.com`,
       password: "123",
-      role: "user",
+      role: "agent",
     });
 
     const createUserParams = {

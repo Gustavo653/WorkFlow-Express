@@ -10,7 +10,7 @@ sudo docker run -p -d --name WorkFlow-API 4000:3000 workflow-api
 
 Executar no docker swarm
 sudo docker swarm init
-sudo docker swarm init --advertise-addr 2804:14c:5f81:9b58::1003
+sudo docker swarm init --advertise-addr 2804:14c:5f81:9b58::1001
 sudo docker stack deploy -c docker-compose.yml workflow-api-stack
 
 Parar docker swarm
