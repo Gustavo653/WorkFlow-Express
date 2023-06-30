@@ -57,7 +57,7 @@ export const MenuRoutes = [
         role: ['admin', 'requester', 'agent'],
         items: [
             {
-                label: 'Home',
+                label: 'Dashboard',
                 icon: 'pi pi-fw pi-chart-line',
                 routerLink: [''],
             },
@@ -65,6 +65,22 @@ export const MenuRoutes = [
                 label: 'Criar Chamado',
                 icon: 'pi pi-fw pi-plus',
                 routerLink: ['/order/create'],
+            },
+            {
+                label: 'Meus Chamados',
+                icon: 'pi pi-fw pi-tag',
+                routerLink: ['/order/mine/0'],
+            },
+        ],
+    },
+    {
+        label: 'Atendente',
+        role: ['admin', 'agent'],
+        items: [
+            {
+                label: 'Meus Atendimentos',
+                icon: 'pi pi-fw pi-comments',
+                routerLink: ['/order/mine/1'],
             },
         ],
     },
