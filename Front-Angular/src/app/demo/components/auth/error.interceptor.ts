@@ -38,7 +38,6 @@ export class ErrorInterceptor implements HttpInterceptor {
                         severity: 'error',
                         summary: 'Houve um erro ao processar sua solicitação!',
                     });
-                    console.log(error);
                     this.router.navigate(['/error'], {
                         queryParams: {
                             code: error.status,

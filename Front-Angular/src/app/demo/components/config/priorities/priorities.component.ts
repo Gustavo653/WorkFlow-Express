@@ -88,20 +88,12 @@ export class PrioritiesComponent implements OnInit {
         }
     }
 
-    createUser() {
-        this.selectedRegistry = {
-            email: undefined,
-            firstName: undefined,
-            lastName: undefined,
-            password: undefined,
-            role: undefined,
-        };
+    create() {
         this.modalDialog = true;
     }
 
     editRegistry(registry: any) {
         this.selectedRegistry = { ...registry };
-        this.selectedRegistry.password = null;
         this.modalDialog = true;
     }
 
