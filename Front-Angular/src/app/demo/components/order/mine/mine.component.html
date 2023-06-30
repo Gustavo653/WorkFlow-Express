@@ -2,6 +2,6 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="card" *ngIf="loading == false">
     <h3>Meus Chamados</h3>
-    <button pButton icon="pi pi-plus" label="Criar Chamado" class="p-button-success mb-3" routerLink="/order/create"></button>
+    <button pButton icon="pi pi-external-link" label="Novo Chamado" class="p-button-success mb-3" routerLink="/order/create"></button>
     <app-form-table [loading]="loading" [cols]="cols" [data]="data"></app-form-table>
 </div>
