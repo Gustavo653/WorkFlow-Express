@@ -38,7 +38,7 @@ export class LoginComponent {
     onSubmit(form: any) {
         this.hidden = false;
         if (form.valid) {
-            this.authService.login(form.value.usuario, form.value.senha).subscribe(
+            this.authService.login(form.value.email, form.value.senha).subscribe(
                 async (res) => {
                     this.messageService.add({
                         severity: 'success',
