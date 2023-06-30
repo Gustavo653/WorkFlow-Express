@@ -14,10 +14,10 @@ export class OrderService {
         return this.storageService.getAPIURL();
     }
 
-    getOrders(): Observable<any> {
+    getOrders(type: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/orders`;
+                const apiUrl = type == 0 ? `${url}/orders/requester` : `${url}/orders/agent`;
                 return this.http.get(apiUrl);
             })
         );

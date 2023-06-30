@@ -1,0 +1,7 @@
+<p-progressBar [hidden]="!loading" mode="indeterminate" [style]="{ height: '3px' }"></p-progressBar>
+<p-confirmDialog></p-confirmDialog>
+<div class="card" *ngIf="loading == false">
+    <h3>Meus Chamados</h3>
+    <button pButton icon="pi pi-plus" label="Criar Chamado" class="p-button-success mb-3" routerLink="/order/create"></button>
+    <app-form-table [loading]="loading" [cols]="cols" [data]="data"></app-form-table>
+</div>

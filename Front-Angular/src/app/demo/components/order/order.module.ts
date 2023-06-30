@@ -14,9 +14,11 @@ import { CreateComponent } from './create/create.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { EditorModule } from 'primeng/editor';
+import { MineComponent } from './mine/mine.component';
+import { AgentComponent } from './agent/agent.component';
 
 @NgModule({
-    declarations: [CreateComponent],
+    declarations: [CreateComponent, MineComponent, AgentComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,

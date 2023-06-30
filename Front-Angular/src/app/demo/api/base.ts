@@ -69,7 +69,7 @@ export const MenuRoutes = [
             {
                 label: 'Meus Chamados',
                 icon: 'pi pi-fw pi-tag',
-                routerLink: ['/order/mine/0'],
+                routerLink: ['/order/mine'],
             },
         ],
     },
@@ -80,7 +80,7 @@ export const MenuRoutes = [
             {
                 label: 'Meus Atendimentos',
                 icon: 'pi pi-fw pi-comments',
-                routerLink: ['/order/mine/1'],
+                routerLink: ['/order/agent'],
             },
         ],
     },

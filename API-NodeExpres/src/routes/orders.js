@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
+const adminMiddleware = require("../middleware/adminMiddleware");
+const agentMiddleware = require("../middleware/agentMiddleware");
 const Order = require("../models/order");
 const { verifyToken } = require("../utils/jwtUtils");
 const Status = require("../models/status");
@@ -39,7 +41,53 @@ router.post("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.get("/", authMiddleware, async (req, res, next) => {
+router.get("/requester", authMiddleware, async (req, res, next) => {
+  try {
+    const orders = await Order.findAll({
+      where: { requesterId: verifyToken(req.headers.authorization).id },
+    });
+    const ordersWithDescription = orders.map((order) => {
+      const description = order.description.toString("utf8");
+      return { ...order.toJSON(), description };
+    });
+
+    res.status(200).json(ordersWithDescription);
+  } catch (error) {
+    next({
+      statusCode: 500,
+      message: "Erro ao obter os chamados.",
+      detail: error,
+    });
+  }
+});
+
+router.get(
+  "/agent",
+  authMiddleware,
+  agentMiddleware,
+  async (req, res, next) => {
+    try {
+      const orders = await Order.findAll({
+        where: { agentId: verifyToken(req.headers.authorization).id },
+      });
+
+      const ordersWithDescription = orders.map((order) => {
+        const description = order.description.toString("utf8");
+        return { ...order.toJSON(), description };
+      });
+
+      res.status(200).json(ordersWithDescription);
+    } catch (error) {
+      next({
+        statusCode: 500,
+        message: "Erro ao obter os chamados.",
+        detail: error,
+      });
+    }
+  }
+);
+
+router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const orders = await Order.findAll();
 
@@ -58,7 +106,7 @@ router.get("/", authMiddleware, async (req, res, next) => {
   }
 });
 
-router.get("/:id", authMiddleware, async (req, res, next) => {
+router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const order = await Order.findByPk(id);

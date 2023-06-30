@@ -24,7 +24,7 @@ router.post(
   }
 );
 
-router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const groups = await SupportGroup.findAll();
     res.status(200).json(groups);
