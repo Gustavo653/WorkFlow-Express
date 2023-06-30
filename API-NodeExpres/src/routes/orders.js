@@ -2,27 +2,31 @@ const express = require("express");
 const router = express.Router();
 const authMiddleware = require("../middleware/authMiddleware");
 const Order = require("../models/order");
+const { verifyToken } = require("../utils/jwtUtils");
+const Status = require("../models/status");
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
     const {
       title,
       description,
-      openingDate,
       priorityId,
       agentId,
       categoryId,
       supportGroupId,
-      requesterId = verifyToken(req.headers.authorization).id,
     } = req.body;
+    const status = await Status.findOne({ where: { name: "Aberto" } });
+    const statusId = status.dataValues.id;
+    const requesterId = verifyToken(req.headers.authorization).id;
+
     const order = await Order.create({
       title,
       description,
-      openingDate,
       priorityId,
       agentId,
       categoryId,
       supportGroupId,
+      statusId,
       requesterId,
     });
     res.status(201).json(order);
@@ -72,7 +76,6 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
     const {
       title,
       description,
-      openingDate,
       priorityId,
       agentId,
       categoryId,
@@ -83,7 +86,6 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
       {
         title,
         description,
-        openingDate,
         priorityId,
         agentId,
         categoryId,

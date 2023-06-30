@@ -46,6 +46,7 @@ describe("Testes para o manipulador de erros", () => {
       message: err.message,
       statusCode: err.statusCode,
       errorId: createdLog.id,
+      detail: err,
     });
   });
 
@@ -68,6 +69,7 @@ describe("Testes para o manipulador de erros", () => {
       message: err.message,
       statusCode: err.statusCode,
       errorId: null,
+      detail: err,
     });
   });
 });

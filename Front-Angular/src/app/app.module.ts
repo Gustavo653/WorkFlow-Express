@@ -19,6 +19,7 @@ import { PriorityService } from './demo/service/priority.service';
 import { CategoryService } from './demo/service/category.service.ts';
 import { SupportGroupService } from './demo/service/supportGroup.service';
 import { StatusService } from './demo/service/status.service';
+import { OrderService } from './demo/service/order.service';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -46,6 +47,7 @@ import { StatusService } from './demo/service/status.service';
         SupportGroupService,
         StatusService,
         StorageService,
+        OrderService,
         UserService,
     ],
     bootstrap: [AppComponent],

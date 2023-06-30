@@ -14,16 +14,6 @@
                     [class]="style.formItem"
                     [filter]="true"
                     filterBy="name"
-                    placeholder="Selecione um status"
-                    optionValue="id"
-                    optionLabel="name"
-                    [options]="statuses"
-                    [(ngModel)]="data.statusId"
-                ></p-dropdown>
-                <p-dropdown
-                    [class]="style.formItem"
-                    [filter]="true"
-                    filterBy="name"
                     placeholder="Selecione uma prioridade"
                     optionValue="id"
                     optionLabel="name"
@@ -51,6 +41,7 @@
                     [options]="users"
                     [(ngModel)]="data.agentId"
                     *ngIf="agentValue == 'agent'"
+                    (onChange)="clearAgentSelection()"
                 ></p-dropdown>
                 <p-dropdown
                     [class]="style.formItem"
@@ -62,6 +53,7 @@
                     [options]="supportGroups"
                     [(ngModel)]="data.supportGroupId"
                     *ngIf="agentValue == 'supportGroup'"
+                    (onChange)="clearAgentSelection()"
                 ></p-dropdown>
             </div>
         </div>
