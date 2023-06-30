@@ -27,6 +27,7 @@
     "tedious": "^16.1.0"
   },
   "devDependencies": {
-    "jest": "^29.5.0"
+    "jest": "^29.5.0",
+    "nodemon": "^2.0.22"
   }
 }
