@@ -42,7 +42,13 @@ router.post("/", authMiddleware, async (req, res, next) => {
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
     const orders = await Order.findAll();
-    res.status(200).json(orders);
+
+    const ordersWithDescription = orders.map((order) => {
+      const description = order.description.toString("utf8");
+      return { ...order.toJSON(), description };
+    });
+
+    res.status(200).json(ordersWithDescription);
   } catch (error) {
     next({
       statusCode: 500,
