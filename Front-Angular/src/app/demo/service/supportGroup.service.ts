@@ -23,21 +23,21 @@ export class SupportGroupService {
         );
     }
 
-    createSupportGroup(name: string): Observable<any> {
+    createSupportGroup(name: string, users: any[]): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
                 const apiUrl = `${url}/support-groups`;
-                const body = { name };
+                const body = { name, users };
                 return this.http.post(apiUrl, body);
             })
         );
     }
 
-    updateSupportGroup(id: string, name: string): Observable<any> {
+    updateSupportGroup(id: string, name: string, users: any[]): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
                 const apiUrl = `${url}/support-groups/${id}`;
-                const body = { name };
+                const body = { name, users };
                 return this.http.put(apiUrl, body);
             })
         );

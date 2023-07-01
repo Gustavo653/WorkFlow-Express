@@ -26,6 +26,28 @@
                         ></p-listbox>
                     </span>
                 </div>
+                <div *ngIf="field.type === 'picklist-user'">
+                    <span class="p-float-label">
+                        <p-pickList
+                            [source]="field.options!"
+                            [target]="data[field.name]"
+                            sourceHeader="Disponível"
+                            targetHeader="Selecionado"
+                            [dragdrop]="true"
+                            [responsive]="true"
+                            [sourceStyle]="{ height: '30rem' }"
+                            [targetStyle]="{ height: '30rem' }"
+                            filterBy="name"
+                            sourceFilterPlaceholder="Buscar por nome"
+                            targetFilterPlaceholder="Buscar por nome"
+                            breakpoint="1400px"
+                        >
+                            <ng-template let-user pTemplate="item">
+                                <span>{{ user.firstName }}</span>
+                            </ng-template>
+                        </p-pickList>
+                    </span>
+                </div>
                 <small *ngIf="isFieldInvalid(field.name)" id="email-help" class="p-error">{{ getErrorMessage(field.name) }}</small>
             </div>
         </div>

@@ -4,29 +4,45 @@ const SupportGroup = require("../models/supportGroup");
 const User = require("../models/user");
 const authMiddleware = require("../middleware/authMiddleware");
 const adminMiddleware = require("../middleware/adminMiddleware");
+const { Sequelize, literal } = require("sequelize");
 
-router.post(
-  "/",
-  authMiddleware,
-  adminMiddleware,
-  async (req, res, next) => {
-    try {
-      const { name } = req.body;
-      const group = await SupportGroup.create({ name });
-      res.status(201).json(group);
-    } catch (error) {
-      next({
-        statusCode: 500,
-        message: "Erro ao criar o grupo de atendimento.",
-        detail: error,
-      });
+router.post("/", authMiddleware, adminMiddleware, async (req, res, next) => {
+  try {
+    const { name, users } = req.body;
+    const group = await SupportGroup.create({ name });
+    for (const user of users) {
+      const databaseUser = await User.findByPk(user.id);
+      if (databaseUser) {
+        await group.addUser(databaseUser);
+      }
     }
+    res.status(201).json(group);
+  } catch (error) {
+    next({
+      statusCode: 500,
+      message: "Erro ao criar o grupo de atendimento.",
+      detail: error,
+    });
   }
-);
+});
 
 router.get("/", authMiddleware, async (req, res, next) => {
   try {
-    const groups = await SupportGroup.findAll();
+    const groups = await SupportGroup.findAll({
+      include: { model: User },
+      attributes: [
+        "id",
+        "name",
+        "createdAt",
+        "updatedAt",
+        [
+          literal(
+            "(SELECT COUNT(*) FROM GroupUser WHERE GroupUser.SupportGroupId = SupportGroup.id)"
+          ),
+          "userCount",
+        ],
+      ],
+    });
     res.status(200).json(groups);
   } catch (error) {
     next({
@@ -58,11 +74,20 @@ router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
 router.put("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
+    const { name, users } = req.body;
+
     const group = await SupportGroup.findByPk(id);
     if (group) {
       group.name = name;
       await group.save();
+      await group.removeUsers();
+      for (const user of users) {
+        const databaseUser = await User.findByPk(user.id);
+        if (databaseUser) {
+          await group.addUser(databaseUser);
+        }
+      }
+
       res.status(200).json(group);
     } else {
       res.status(404).json({ error: "Grupo de atendimento não encontrado." });
