@@ -59,6 +59,10 @@ export class FormTableLazyComponent implements OnInit {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
 
+    checkRelatedProperty(field: string) {
+        return field.split('.').length == 1;
+    }
+
     clear(table: Table) {
         table.clear();
         this.filter.nativeElement.value = '';

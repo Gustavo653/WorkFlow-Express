@@ -35,7 +35,7 @@
         </tr>
         <tr>
             <th [pSortableColumn]="col.field" *ngFor="let col of cols">
-                <p-sortIcon [field]="col.field" *ngIf="getSort(col.type)"></p-sortIcon>
+                <p-sortIcon [field]="col.field" *ngIf="getSort(col.type) && checkRelatedProperty(col.field)"></p-sortIcon>
                 <ng-container *ngIf="col.type == 'checkbox-selection'">
                     <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
                 </ng-container>
