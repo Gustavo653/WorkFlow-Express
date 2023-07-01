@@ -1,5 +1,5 @@
 <p-progressBar [hidden]="!loading" mode="indeterminate" [style]="{ height: '3px' }"></p-progressBar>
-<div class="card">
+<div class="card" *ngIf="!loading">
     <h3>Criar Chamado</h3>
     <button pButton icon="pi pi-plus" label="Criar Chamado" class="p-button-success mb-3" (click)="createOrder()"></button>
     <div class="grid">

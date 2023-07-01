@@ -104,6 +104,7 @@ export class CategoriesComponent implements OnInit {
             acceptLabel: 'Aceitar',
             rejectLabel: 'Rejeitar',
             accept: () => {
+                this.loading = true;
                 this.categoryService.deleteCategory(registry.id).subscribe((x) => {
                     this.messageService.add(MessageServiceSuccess);
                     this.fetchData();
@@ -113,7 +114,9 @@ export class CategoriesComponent implements OnInit {
     }
 
     getFormData(registry: any) {
+        this.loading = true;
         if (!registry) {
+            this.loading = false;
             this.modalDialog = false;
         } else {
             if (registry.id) {
