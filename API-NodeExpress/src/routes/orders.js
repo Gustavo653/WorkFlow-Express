@@ -6,6 +6,11 @@ const agentMiddleware = require("../middleware/agentMiddleware");
 const Order = require("../models/order");
 const { verifyToken } = require("../utils/jwtUtils");
 const Status = require("../models/status");
+const Priority = require("../models/priority");
+const Category = require("../models/category");
+const User = require("../models/user");
+const SupportGroup = require("../models/supportGroup");
+const { Op } = require("sequelize");
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
@@ -43,15 +48,84 @@ router.post("/", authMiddleware, async (req, res, next) => {
 
 router.get("/requester", authMiddleware, async (req, res, next) => {
   try {
-    const orders = await Order.findAll({
-      where: { requesterId: verifyToken(req.headers.authorization).id },
-    });
-    const ordersWithDescription = orders.map((order) => {
-      const description = order.description.toString("utf8");
-      return { ...order.toJSON(), description };
-    });
+    const {
+      first,
+      rows,
+      sortOrder,
+      sortField,
+      filters,
+      priorityId,
+      categoryId,
+      statusId,
+      agentId,
+      supportGroupId,
+      search,
+    } = req.query;
 
-    res.status(200).json(ordersWithDescription);
+    const limit = rows ? parseInt(rows) : 10;
+    const offset = first ? parseInt(first) : 0;
+    const order = [];
+
+    if (sortField) {
+      const field = sortField.split(".");
+      if (field.length === 2) {
+        //const model = field[0];
+        //const attribute = field[1];
+        //order.push([
+        //  { model: sequelize.models[model], attributes: [] },
+        //  attribute,
+        //  sortOrder == 1 ? "ASC" : "DESC",
+        //]);
+      } else {
+        order.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
+      }
+    }
+    console.log(order);
+    const options = {
+      where: {
+        requesterId: verifyToken(req.headers.authorization).id,
+        title: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+      attributes: ["id", "title", "createdAt", "updatedAt", "closingDate"],
+      include: [
+        { model: Priority, where: priorityId ? { id: priorityId } : {} },
+        { model: Category, where: categoryId ? { id: categoryId } : {} },
+        { model: Status, where: statusId ? { id: statusId } : {} },
+        {
+          model: User,
+          as: "requester",
+        },
+        {
+          model: User,
+          as: "agent",
+          where: agentId ? { id: agentId } : {},
+          required: false,
+        },
+        {
+          model: SupportGroup,
+          where: supportGroupId ? { id: supportGroupId } : {},
+          required: false,
+        },
+      ],
+      order,
+      limit,
+      offset,
+    };
+    console.log(options);
+    const orders = await Order.findAndCountAll(options);
+
+    res.status(200).json({
+      first: offset,
+      rows: limit,
+      sortOrder: sortOrder == 1 ? "ASC" : "DESC",
+      sortField: sortField || "",
+      filters: filters ? JSON.parse(filters) : {},
+      totalPages: Math.ceil(orders.count / limit),
+      totalCount: orders.count,
+      orders: orders.rows,
+    });
   } catch (error) {
     next({
       statusCode: 500,

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { StorageService } from './storage.service';
@@ -14,11 +14,12 @@ export class OrderService {
         return this.storageService.getAPIURL();
     }
 
-    getOrders(type: number): Observable<any> {
+    getOrders(type: number, queryParams?: any): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = type == 0 ? `${url}/orders/requester` : `${url}/orders/agent`;
-                return this.http.get(apiUrl);
+                const apiUrl = type === 0 ? `${url}/orders/requester` : `${url}/orders/agent`;
+                const params = new HttpParams({ fromObject: queryParams });
+                return this.http.get(apiUrl, { params });
             })
         );
     }

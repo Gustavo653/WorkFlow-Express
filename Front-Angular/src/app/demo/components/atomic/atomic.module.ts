@@ -23,10 +23,11 @@ import { FormComponent } from './form/form.component';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
+import { FormTableLazyComponent } from './form-table-lazy/form-table-lazy.component';
 
 @NgModule({
-    declarations: [FormTableComponent, FormComponent],
-    exports: [FormTableComponent, FormComponent],
+    declarations: [FormTableComponent, FormComponent, FormTableLazyComponent],
+    exports: [FormTableComponent, FormComponent, FormTableLazyComponent],
     imports: [
         RouterModule,
         CommonModule,

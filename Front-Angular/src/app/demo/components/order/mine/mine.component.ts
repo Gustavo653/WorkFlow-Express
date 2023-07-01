@@ -1,4 +1,4 @@
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { OrderService } from 'src/app/demo/service/order.service';
@@ -31,7 +31,12 @@ import { OrderService } from 'src/app/demo/service/order.service';
 export class MineComponent implements OnInit {
     loading: boolean = true;
     cols: any[] = [];
-    data: any[] = [];
+    data: any;
+    queryParams: any = {
+        first: 1,
+        rows: 10,
+        search: '',
+    };
     constructor(private orderService: OrderService, private activatedRoute: ActivatedRoute) {}
 
     ngOnInit() {
@@ -48,8 +53,38 @@ export class MineComponent implements OnInit {
                 type: 'number',
             },
             {
-                field: 'name',
-                header: 'Nome',
+                field: 'title',
+                header: 'Título',
+                type: 'text',
+            },
+            {
+                field: 'Priority.name',
+                header: 'Prioridade',
+                type: 'text',
+            },
+            {
+                field: 'Category.name',
+                header: 'Categoria',
+                type: 'text',
+            },
+            {
+                field: 'Status.name',
+                header: 'Status',
+                type: 'text',
+            },
+            {
+                field: 'requester.firstName',
+                header: 'Solicitante',
+                type: 'text',
+            },
+            {
+                field: 'agent.firstName',
+                header: 'Atendente',
+                type: 'text',
+            },
+            {
+                field: 'SupportGroup.name',
+                header: 'Grupo',
                 type: 'text',
             },
             {
@@ -64,14 +99,30 @@ export class MineComponent implements OnInit {
                 type: 'date',
                 format: 'dd/MM/yy HH:mm:ss',
             },
+            {
+                field: 'closingDate',
+                header: 'Encerrado em',
+                type: 'date',
+                format: 'dd/MM/yy HH:mm:ss',
+            },
         ];
         this.fetchData();
     }
 
     fetchData() {
-        this.orderService.getOrders(0).subscribe((x) => {
+        this.orderService.getOrders(0, this.queryParams).subscribe((x) => {
             this.data = x;
             this.loading = false;
         });
+    }
+
+    event(event: any) {
+        this.queryParams.search = event.data.filters.global?.value ?? '';
+        this.queryParams.first = event.data.first;
+        this.queryParams.rows = event.data.rows;
+        this.queryParams.sortField = event.data.sortField ?? 'id';
+        this.queryParams.sortOrder = event.data.sortOrder ?? 1;
+        this.fetchData();
+        console.log(JSON.stringify(event));
     }
 }

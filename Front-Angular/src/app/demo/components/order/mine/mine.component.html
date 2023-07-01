@@ -3,5 +3,5 @@
 <div class="card" *ngIf="loading == false">
     <h3>Meus Chamados</h3>
     <button pButton icon="pi pi-external-link" label="Novo Chamado" class="p-button-success mb-3" routerLink="/order/create"></button>
-    <app-form-table [loading]="loading" [cols]="cols" [data]="data"></app-form-table>
+    <app-form-table-lazy (event)="event($event)" [totalRecords]="data.totalCount" [lazy]="true" [loading]="loading" [cols]="cols" [data]="data.orders"></app-form-table-lazy>
 </div>

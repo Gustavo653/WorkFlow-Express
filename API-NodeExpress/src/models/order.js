@@ -27,8 +27,8 @@ const Order = sequelize.define("Order", {
 Order.belongsTo(Priority, { foreignKey: "priorityId" });
 Order.belongsTo(Category, { foreignKey: "categoryId" });
 Order.belongsTo(Status, { foreignKey: "statusId" });
-Order.belongsTo(User, { foreignKey: "requesterId" });
-Order.belongsTo(User, { foreignKey: "agentId" });
+Order.belongsTo(User, { foreignKey: "requesterId", as: "requester" });
+Order.belongsTo(User, { foreignKey: "agentId", as: "agent" });
 Order.belongsTo(SupportGroup, { foreignKey: "supportGroupId" });
 
 module.exports = Order;
