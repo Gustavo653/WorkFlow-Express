@@ -52,7 +52,7 @@ export class CreateComponent implements OnInit {
     }
 
     createOrder() {
-        console.log(JSON.stringify(this.data));
+        this.loading = true;
         if (this.validateData()) {
             this.orderService.createOrder(this.data.title, this.data.description, this.data.priorityId, this.data.agentId, this.data.categoryId, this.data.supportGroupId).subscribe((x) => {
                 this.messageService.add(MessageServiceSuccess);
@@ -63,6 +63,7 @@ export class CreateComponent implements OnInit {
                 severity: 'warn',
                 summary: 'Certifique-se de preencher todos os campos!',
             });
+            this.loading = false;
         }
     }
 
