@@ -18,7 +18,7 @@ const infoHandler = require("./middleware/infoHandler");
 
 const app = express();
 app.use(cors());
-const port = process.env.PORT;
+const port = process.env.PORT | 8080;
 
 async function startServer() {
   await migrate();
