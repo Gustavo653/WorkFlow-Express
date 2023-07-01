@@ -3,5 +3,65 @@
 <div class="card" *ngIf="loading == false">
     <h3>Meus Atendimentos</h3>
     <button pButton icon="pi pi-external-link" label="Novo Chamado" class="p-button-success mb-3" routerLink="/order/create"></button>
-    <app-form-table [loading]="loading" [cols]="cols" [data]="data"></app-form-table>
+    <p-fieldset legend="Filtros" [collapsed]="false" [toggleable]="true">
+        <div [class]="style.formCard">
+            <p-dropdown
+                [filter]="true"
+                filterBy="name"
+                placeholder="Selecione uma prioridade"
+                optionValue="id"
+                optionLabel="name"
+                [showClear]="true"
+                [options]="priorities"
+                [(ngModel)]="queryParams.priorityId"
+                (onChange)="fetchData()"
+            ></p-dropdown>
+            <p-dropdown
+                [filter]="true"
+                filterBy="name"
+                placeholder="Selecione uma categoria"
+                optionValue="id"
+                optionLabel="name"
+                [showClear]="true"
+                [options]="categories"
+                [(ngModel)]="queryParams.categoryId"
+                (onChange)="fetchData()"
+            ></p-dropdown
+            ><p-dropdown
+                [filter]="true"
+                filterBy="name"
+                placeholder="Selecione um status"
+                optionValue="id"
+                optionLabel="name"
+                [showClear]="true"
+                [options]="statuses"
+                [(ngModel)]="queryParams.statusId"
+                (onChange)="fetchData()"
+            ></p-dropdown>
+            <p-dropdown
+                [filter]="true"
+                filterBy="firstName"
+                placeholder="Selecione um atendente"
+                optionValue="id"
+                optionLabel="firstName"
+                [showClear]="true"
+                [options]="users"
+                [(ngModel)]="queryParams.agentId"
+                (onChange)="fetchData()"
+            ></p-dropdown>
+            <p-dropdown
+                [filter]="true"
+                filterBy="name"
+                placeholder="Selecione um grupo de atendimento"
+                optionValue="id"
+                optionLabel="name"
+                [showClear]="true"
+                [options]="supportGroups"
+                [(ngModel)]="queryParams.supportGroupId"
+                (onChange)="fetchData()"
+            ></p-dropdown>
+        </div>
+    </p-fieldset>
+    <br />
+    <app-form-table-lazy (event)="event($event)" [totalRecords]="data.totalCount" [lazy]="true" [loading]="loading" [cols]="cols" [data]="data.orders"></app-form-table-lazy>
 </div>

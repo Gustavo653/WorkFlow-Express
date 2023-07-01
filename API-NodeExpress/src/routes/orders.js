@@ -80,7 +80,6 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
         order.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
       }
     }
-    console.log(order);
     const options = {
       where: {
         requesterId: verifyToken(req.headers.authorization).id,
@@ -90,9 +89,27 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
       },
       attributes: ["id", "title", "createdAt", "updatedAt", "closingDate"],
       include: [
-        { model: Priority, where: priorityId ? { id: priorityId } : {} },
-        { model: Category, where: categoryId ? { id: categoryId } : {} },
-        { model: Status, where: statusId ? { id: statusId } : {} },
+        {
+          model: Priority,
+          where:
+            priorityId !== undefined && priorityId !== "null"
+              ? { id: priorityId }
+              : {},
+        },
+        {
+          model: Category,
+          where:
+            categoryId !== undefined && categoryId !== "null"
+              ? { id: categoryId }
+              : {},
+        },
+        {
+          model: Status,
+          where:
+            statusId !== undefined && statusId !== "null"
+              ? { id: statusId }
+              : {},
+        },
         {
           model: User,
           as: "requester",
@@ -100,12 +117,16 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
         {
           model: User,
           as: "agent",
-          where: agentId ? { id: agentId } : {},
+          where:
+            agentId !== undefined && agentId !== "null" ? { id: agentId } : {},
           required: false,
         },
         {
           model: SupportGroup,
-          where: supportGroupId ? { id: supportGroupId } : {},
+          where:
+            supportGroupId !== undefined && supportGroupId !== "null"
+              ? { id: supportGroupId }
+              : {},
           required: false,
         },
       ],
@@ -113,7 +134,6 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
       limit,
       offset,
     };
-    console.log(options);
     const orders = await Order.findAndCountAll(options);
 
     res.status(200).json({
@@ -141,16 +161,104 @@ router.get(
   agentMiddleware,
   async (req, res, next) => {
     try {
-      const orders = await Order.findAll({
-        where: { agentId: verifyToken(req.headers.authorization).id },
-      });
+      const {
+        first,
+        rows,
+        sortOrder,
+        sortField,
+        filters,
+        priorityId,
+        categoryId,
+        statusId,
+        agentId,
+        supportGroupId,
+        search,
+      } = req.query;
 
-      const ordersWithDescription = orders.map((order) => {
-        const description = order.description.toString("utf8");
-        return { ...order.toJSON(), description };
-      });
+      const limit = rows ? parseInt(rows) : 10;
+      const offset = first ? parseInt(first) : 0;
+      const order = [];
 
-      res.status(200).json(ordersWithDescription);
+      if (sortField) {
+        const field = sortField.split(".");
+        if (field.length === 2) {
+          //const model = field[0];
+          //const attribute = field[1];
+          //order.push([
+          //  { model: sequelize.models[model], attributes: [] },
+          //  attribute,
+          //  sortOrder == 1 ? "ASC" : "DESC",
+          //]);
+        } else {
+          order.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
+        }
+      }
+      const options = {
+        where: {
+          agentId: verifyToken(req.headers.authorization).id,
+          title: {
+            [Op.like]: `%${search}%`,
+          },
+        },
+        attributes: ["id", "title", "createdAt", "updatedAt", "closingDate"],
+        include: [
+            {
+              model: Priority,
+              where:
+                priorityId !== undefined && priorityId !== "null"
+                  ? { id: priorityId }
+                  : {},
+            },
+            {
+              model: Category,
+              where:
+                categoryId !== undefined && categoryId !== "null"
+                  ? { id: categoryId }
+                  : {},
+            },
+            {
+              model: Status,
+              where:
+                statusId !== undefined && statusId !== "null"
+                  ? { id: statusId }
+                  : {},
+            },
+            {
+              model: User,
+              as: "requester",
+            },
+            {
+              model: User,
+              as: "agent",
+              where:
+                agentId !== undefined && agentId !== "null" ? { id: agentId } : {},
+              required: false,
+            },
+            {
+              model: SupportGroup,
+              where:
+                supportGroupId !== undefined && supportGroupId !== "null"
+                  ? { id: supportGroupId }
+                  : {},
+              required: false,
+            },
+          ],
+        order,
+        limit,
+        offset,
+      };
+      const orders = await Order.findAndCountAll(options);
+
+      res.status(200).json({
+        first: offset,
+        rows: limit,
+        sortOrder: sortOrder == 1 ? "ASC" : "DESC",
+        sortField: sortField || "",
+        filters: filters ? JSON.parse(filters) : {},
+        totalPages: Math.ceil(orders.count / limit),
+        totalCount: orders.count,
+        orders: orders.rows,
+      });
     } catch (error) {
       next({
         statusCode: 500,

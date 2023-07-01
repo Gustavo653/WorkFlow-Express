@@ -25,6 +25,7 @@ import { DialogModule } from 'primeng/dialog';
 import { ListboxModule } from 'primeng/listbox';
 import { FormTableLazyComponent } from './form-table-lazy/form-table-lazy.component';
 import { PickListModule } from 'primeng/picklist';
+import { TooltipModule } from 'primeng/tooltip';
 
 @NgModule({
     declarations: [FormTableComponent, FormComponent, FormTableLazyComponent],
@@ -55,6 +56,7 @@ import { PickListModule } from 'primeng/picklist';
         InputTextareaModule,
         DialogModule,
         PickListModule,
+        TooltipModule,
     ],
 })
 export class AtomicModule {}

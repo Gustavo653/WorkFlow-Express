@@ -16,6 +16,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { EditorModule } from 'primeng/editor';
 import { MineComponent } from './mine/mine.component';
 import { AgentComponent } from './agent/agent.component';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
     declarations: [CreateComponent, MineComponent, AgentComponent],
@@ -35,6 +36,7 @@ import { AgentComponent } from './agent/agent.component';
         DropdownModule,
         SelectButtonModule,
         EditorModule,
+        FieldsetModule,
     ],
 })
 export class OrderModule {}

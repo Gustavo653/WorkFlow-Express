@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { PrimeFlexStyle } from 'src/app/demo/api/base';
+import { CategoryService } from 'src/app/demo/service/category.service.ts';
 import { OrderService } from 'src/app/demo/service/order.service';
+import { PriorityService } from 'src/app/demo/service/priority.service';
+import { StatusService } from 'src/app/demo/service/status.service';
+import { SupportGroupService } from 'src/app/demo/service/supportGroup.service';
+import { UserService } from 'src/app/demo/service/user.service';
 
 @Component({
     templateUrl: './mine.component.html',
@@ -30,14 +36,27 @@ import { OrderService } from 'src/app/demo/service/order.service';
 })
 export class MineComponent implements OnInit {
     loading: boolean = true;
+    style = new PrimeFlexStyle();
     cols: any[] = [];
     data: any;
+    users: any[] = [];
+    supportGroups: any[] = [];
+    priorities: any[] = [];
+    statuses: any[] = [];
+    categories: any[] = [];
     queryParams: any = {
         first: 1,
         rows: 10,
         search: '',
     };
-    constructor(private orderService: OrderService, private activatedRoute: ActivatedRoute) {}
+    constructor(
+        private orderService: OrderService,
+        private userService: UserService,
+        private supportGroupService: SupportGroupService,
+        private priorityService: PriorityService,
+        private statusService: StatusService,
+        private categoryService: CategoryService
+    ) {}
 
     ngOnInit() {
         this.cols = [
@@ -106,7 +125,27 @@ export class MineComponent implements OnInit {
                 format: 'dd/MM/yy HH:mm:ss',
             },
         ];
+        this.fetchDataFiltros();
         this.fetchData();
+    }
+
+    fetchDataFiltros() {
+        this.loading = true;
+        this.userService.getUsers().subscribe((x) => {
+            this.users = x;
+        });
+        this.supportGroupService.getSupportGroups().subscribe((x) => {
+            this.supportGroups = x;
+        });
+        this.priorityService.getPriorities().subscribe((x) => {
+            this.priorities = x;
+        });
+        this.statusService.getStatuses().subscribe((x) => {
+            this.statuses = x;
+        });
+        this.categoryService.getCategories().subscribe((x) => {
+            this.categories = x;
+        });
     }
 
     fetchData() {
@@ -123,6 +162,5 @@ export class MineComponent implements OnInit {
         this.queryParams.sortField = event.data.sortField ?? 'id';
         this.queryParams.sortOrder = event.data.sortOrder ?? 1;
         this.fetchData();
-        console.log(JSON.stringify(event));
     }
 }

@@ -23,7 +23,7 @@
             <button pButton label="Limpar" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt)"></button>
             <span class="p-input-icon-left mb-2">
                 <i class="pi pi-search"></i>
-                <input pInputText type="text" #filter (input)="onGlobalFilter(dt, $event)" placeholder="Buscar palavra-chave" class="w-full" />
+                <input pInputText pTooltip="Filtro apenas por campos ordenáveis" type="text" #filter (input)="onGlobalFilter(dt, $event)" placeholder="Buscar palavra-chave" class="w-full" />
             </span>
         </div>
     </ng-template>
