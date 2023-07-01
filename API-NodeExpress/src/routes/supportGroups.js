@@ -80,7 +80,7 @@ router.put("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
     if (group) {
       group.name = name;
       await group.save();
-      await group.removeUsers();
+      await group.setUsers([]);
       for (const user of users) {
         const databaseUser = await User.findByPk(user.id);
         if (databaseUser) {

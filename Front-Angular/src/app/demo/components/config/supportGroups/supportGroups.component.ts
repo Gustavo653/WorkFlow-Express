@@ -60,7 +60,7 @@ export class SupportGroupsComponent implements OnInit {
             },
             {
                 field: 'userCount',
-                header: 'QTD Usuários',
+                header: 'Quantidade de Atendentes',
                 type: 'text',
             },
             {
@@ -130,19 +130,17 @@ export class SupportGroupsComponent implements OnInit {
 
     getFormData(registry: any) {
         this.loading = true;
+        this.modalDialog = false;
         if (!registry) {
-            this.loading = false;
-            this.modalDialog = false;
+            this.fetchData();
         } else {
             if (registry.id) {
                 this.supportGroupService.updateSupportGroup(registry.id, registry.name, registry.Users).subscribe((x) => {
                     this.fetchData();
-                    this.modalDialog = false;
                 });
             } else {
                 this.supportGroupService.createSupportGroup(registry.name, registry.Users).subscribe((x) => {
                     this.fetchData();
-                    this.modalDialog = false;
                 });
             }
         }
