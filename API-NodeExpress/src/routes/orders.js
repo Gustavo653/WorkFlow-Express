@@ -53,7 +53,6 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
       rows,
       sortOrder,
       sortField,
-      filters,
       priorityId,
       categoryId,
       statusId,
@@ -64,7 +63,7 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
 
     const limit = rows ? parseInt(rows) : 10;
     const offset = first ? parseInt(first) : 0;
-    const order = [];
+    const sort = [];
 
     if (sortField) {
       const field = sortField.split(".");
@@ -77,7 +76,7 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
         //  sortOrder == 1 ? "ASC" : "DESC",
         //]);
       } else {
-        order.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
+        sort.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
       }
     }
     const options = {
@@ -130,7 +129,7 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
           required: false,
         },
       ],
-      order,
+      sort,
       limit,
       offset,
     };
@@ -141,7 +140,6 @@ router.get("/requester", authMiddleware, async (req, res, next) => {
       rows: limit,
       sortOrder: sortOrder == 1 ? "ASC" : "DESC",
       sortField: sortField || "",
-      filters: filters ? JSON.parse(filters) : {},
       totalPages: Math.ceil(orders.count / limit),
       totalCount: orders.count,
       orders: orders.rows,
@@ -166,18 +164,17 @@ router.get(
         rows,
         sortOrder,
         sortField,
-        filters,
         priorityId,
         categoryId,
         statusId,
-        agentId,
-        supportGroupId,
+        type,
         search,
       } = req.query;
 
+      const userId = verifyToken(req.headers.authorization).id;
       const limit = rows ? parseInt(rows) : 10;
       const offset = first ? parseInt(first) : 0;
-      const order = [];
+      const sort = [];
 
       if (sortField) {
         const field = sortField.split(".");
@@ -190,62 +187,61 @@ router.get(
           //  sortOrder == 1 ? "ASC" : "DESC",
           //]);
         } else {
-          order.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
+          sort.push([sortField, sortOrder == 1 ? "ASC" : "DESC"]);
         }
       }
       const options = {
         where: {
-          agentId: verifyToken(req.headers.authorization).id,
           title: {
             [Op.like]: `%${search}%`,
           },
         },
         attributes: ["id", "title", "createdAt", "updatedAt", "closingDate"],
         include: [
-            {
-              model: Priority,
-              where:
-                priorityId !== undefined && priorityId !== "null"
-                  ? { id: priorityId }
-                  : {},
-            },
-            {
-              model: Category,
-              where:
-                categoryId !== undefined && categoryId !== "null"
-                  ? { id: categoryId }
-                  : {},
-            },
-            {
-              model: Status,
-              where:
-                statusId !== undefined && statusId !== "null"
-                  ? { id: statusId }
-                  : {},
-            },
-            {
+          {
+            model: Priority,
+            where:
+              priorityId !== undefined && priorityId !== "null"
+                ? { id: priorityId }
+                : {},
+          },
+          {
+            model: Category,
+            where:
+              categoryId !== undefined && categoryId !== "null"
+                ? { id: categoryId }
+                : {},
+          },
+          {
+            model: Status,
+            where:
+              statusId !== undefined && statusId !== "null"
+                ? { id: statusId }
+                : {},
+          },
+          {
+            model: User,
+            as: "requester",
+          },
+          {
+            model: User,
+            as: "agent",
+            where: type == 0 ? { id: userId } : {},
+            required: type == 0 ? true : false,
+          },
+          {
+            model: SupportGroup,
+            required: type == 1 ? true : false,
+            include: {
               model: User,
-              as: "requester",
+              where: { id: userId },
             },
-            {
-              model: User,
-              as: "agent",
-              where:
-                agentId !== undefined && agentId !== "null" ? { id: agentId } : {},
-              required: false,
-            },
-            {
-              model: SupportGroup,
-              where:
-                supportGroupId !== undefined && supportGroupId !== "null"
-                  ? { id: supportGroupId }
-                  : {},
-              required: false,
-            },
-          ],
-        order,
+          },
+        ],
+        sort,
         limit,
         offset,
+        subQuery: false,
       };
       const orders = await Order.findAndCountAll(options);
 
@@ -254,7 +250,6 @@ router.get(
         rows: limit,
         sortOrder: sortOrder == 1 ? "ASC" : "DESC",
         sortField: sortField || "",
-        filters: filters ? JSON.parse(filters) : {},
         totalPages: Math.ceil(orders.count / limit),
         totalCount: orders.count,
         orders: orders.rows,

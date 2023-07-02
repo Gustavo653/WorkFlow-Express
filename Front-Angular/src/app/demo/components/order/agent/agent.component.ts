@@ -39,24 +39,21 @@ export class AgentComponent implements OnInit {
     style = new PrimeFlexStyle();
     cols: any[] = [];
     data: any;
-    users: any[] = [];
-    supportGroups: any[] = [];
     priorities: any[] = [];
     statuses: any[] = [];
     categories: any[] = [];
     queryParams: any = {
         first: 1,
         rows: 10,
+        type: '0',
         search: '',
     };
-    constructor(
-        private orderService: OrderService,
-        private userService: UserService,
-        private supportGroupService: SupportGroupService,
-        private priorityService: PriorityService,
-        private statusService: StatusService,
-        private categoryService: CategoryService
-    ) {}
+    agentSelector: any[] = [
+        { label: 'Meus chamados', value: '0' },
+        { label: 'Chamados de meus grupos', value: '1' },
+        { label: 'Todos', value: '2' },
+    ];
+    constructor(private orderService: OrderService, private priorityService: PriorityService, private statusService: StatusService, private categoryService: CategoryService) {}
 
     ngOnInit() {
         this.cols = [
@@ -131,12 +128,6 @@ export class AgentComponent implements OnInit {
 
     fetchDataFiltros() {
         this.loading = true;
-        this.userService.getUsers().subscribe((x) => {
-            this.users = x;
-        });
-        this.supportGroupService.getSupportGroups().subscribe((x) => {
-            this.supportGroups = x;
-        });
         this.priorityService.getPriorities().subscribe((x) => {
             this.priorities = x;
         });

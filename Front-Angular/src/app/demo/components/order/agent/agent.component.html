@@ -38,28 +38,7 @@
                 [(ngModel)]="queryParams.statusId"
                 (onChange)="fetchData()"
             ></p-dropdown>
-            <p-dropdown
-                [filter]="true"
-                filterBy="firstName"
-                placeholder="Selecione um atendente"
-                optionValue="id"
-                optionLabel="firstName"
-                [showClear]="true"
-                [options]="users"
-                [(ngModel)]="queryParams.agentId"
-                (onChange)="fetchData()"
-            ></p-dropdown>
-            <p-dropdown
-                [filter]="true"
-                filterBy="name"
-                placeholder="Selecione um grupo de atendimento"
-                optionValue="id"
-                optionLabel="name"
-                [showClear]="true"
-                [options]="supportGroups"
-                [(ngModel)]="queryParams.supportGroupId"
-                (onChange)="fetchData()"
-            ></p-dropdown>
+            <p-selectButton (onChange)="fetchData()" [options]="agentSelector" [(ngModel)]="queryParams.type" optionLabel="label" optionValue="value"></p-selectButton>
         </div>
     </p-fieldset>
     <br />
