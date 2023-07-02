@@ -235,7 +235,7 @@ router.get(
             required: type == 1 ? true : false,
             include: {
               model: User,
-              where: { id: userId },
+              where: type == 1 ? { id: userId } : {},
             },
           },
         ],
@@ -265,35 +265,41 @@ router.get(
   }
 );
 
-router.post("/finish/:id", authMiddleware, async (req, res, next) => {
-  try {
-    const { id } = req.params;
+router.post(
+  "/finish/:id",
+  authMiddleware,
+  agentMiddleware,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
 
-    const status = await Status.findOne({
-      where: {
-        name: "Encerrado",
-      },
-    });
+      const status = await Status.findOne({
+        where: {
+          name: "Encerrado",
+        },
+      });
 
-    if (status) {
-      const order = await Order.findByPk(id);
-      order.statusId = status.id;
-      await order.save();
+      if (status) {
+        const order = await Order.findByPk(id);
+        order.statusId = status.id;
+        order.closingDate = new Date();
+        await order.save();
 
-      res.status(200).json(order);
-    } else {
-      res.status(404).json({ message: "Status 'Encerrado' não encontrado." });
+        res.status(200).json(order);
+      } else {
+        res.status(404).json({ message: "Status 'Encerrado' não encontrado." });
+      }
+    } catch (error) {
+      next({
+        statusCode: 500,
+        message: "Erro ao obter os chamados.",
+        detail: error,
+      });
     }
-  } catch (error) {
-    next({
-      statusCode: 500,
-      message: "Erro ao obter os chamados.",
-      detail: error,
-    });
   }
-});
+);
 
-router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
+router.get("/:id", authMiddleware, agentMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const order = await Order.findByPk(id, {
@@ -329,7 +335,7 @@ router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   }
 });
 
-router.put("/:id", authMiddleware, async (req, res, next) => {
+router.put("/:id", authMiddleware, agentMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const {

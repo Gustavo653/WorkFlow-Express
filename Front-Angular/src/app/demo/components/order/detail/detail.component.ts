@@ -53,9 +53,9 @@ export class DetailComponent implements OnInit {
 
     clearAgentSelection() {
         if (this.agentValue == 'agent') {
-            this.data.supportGroupId = undefined;
+            this.data.supportGroupId = null;
         } else {
-            this.data.agentId = undefined;
+            this.data.agentId = null;
         }
     }
 
