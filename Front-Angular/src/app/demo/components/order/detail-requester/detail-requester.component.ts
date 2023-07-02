@@ -100,6 +100,22 @@ export class DetailRequesterComponent implements OnInit {
         }
     }
 
+    rateOrder() {
+        this.loading = true;
+        if (this.data.rating) {
+            this.orderService.rateOrder(this.data.id, this.data.rating).subscribe((x) => {
+                this.messageService.add(MessageServiceSuccess);
+                this.loading = false;
+            });
+        } else {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Certifique-se de preencher todos os campos!',
+            });
+            this.loading = false;
+        }
+    }
+
     finishOrder() {
         this.confirmationService.confirm({
             header: 'Finalizar Chamado',

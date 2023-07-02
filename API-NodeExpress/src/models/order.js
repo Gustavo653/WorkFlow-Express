@@ -22,6 +22,9 @@ const Order = sequelize.define("Order", {
   closingDate: {
     type: DataTypes.DATE,
   },
+  rating: {
+    type: DataTypes.INTEGER,
+  },
 });
 
 Order.belongsTo(Priority, { foreignKey: "priorityId" });

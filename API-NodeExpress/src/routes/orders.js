@@ -299,6 +299,29 @@ router.post(
   }
 );
 
+router.post(
+  "/rate/:id",
+  authMiddleware,
+  async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const { rating } = req.body;
+
+      const order = await Order.findByPk(id);
+      order.rating = rating;
+      await order.save();
+
+      res.status(200).json(order);
+    } catch (error) {
+      next({
+        statusCode: 500,
+        message: "Erro ao obter os chamados.",
+        detail: error,
+      });
+    }
+  }
+);
+
 router.get("/detail-requester/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -342,10 +365,16 @@ router.get("/:id", authMiddleware, agentMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const order = await Order.findByPk(id, {
-      include: {
-        model: TimeEntry,
-        include: User,
-      },
+      include: [
+        {
+          model: TimeEntry,
+          include: User,
+        },
+        {
+          model: User,
+          as: "requester",
+        },
+      ],
     });
     if (order) {
       const description = order.description.toString("utf8");

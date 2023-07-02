@@ -12,6 +12,10 @@
                         <label>Título</label>
                         <input [class]="style.formItem" [readonly]="!isOrderFinished()" pInputText [(ngModel)]="data.title" />
                     </span>
+                    <span [class]="style.formItem">
+                        <label>Solicitante</label>
+                        <input [class]="style.formItem" [readonly]="!isOrderFinished()" pInputText [(ngModel)]="data.requester.firstName" />
+                    </span>
                     <span [class]="style.formItem"
                         ><label>Prioridade</label>
                         <p-dropdown
@@ -92,15 +96,31 @@
                             (onChange)="clearAgentSelection()"
                         ></p-dropdown>
                     </span>
+                    <span [class]="style.formItem">
+                        <label>Criado em</label>
+                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.openingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
+                    </span>
+                    <span [class]="style.formItem">
+                        <label>Atualizado em</label>
+                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                    </span>
+                    <span [class]="style.formItem">
+                        <label>Encerrado em</label>
+                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.closingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
+                    </span>
                 </div>
             </div>
             <div class="col-12 md:col-6 lg:col-9">
                 <h5>Descrição</h5>
-                <p-editor [(ngModel)]="data.description" [readonly]="!isOrderFinished()" [style]="{ height: '21.5rem' }"></p-editor>
+                <p-editor [(ngModel)]="data.description" [readonly]="!isOrderFinished()" [style]="{ height: '45rem' }"></p-editor>
             </div>
         </div>
-        <p-fieldset *ngIf="isOrderFinished()" legend="Ações" [collapsed]="false" [toggleable]="true">
-            <div class="flex flex-row flex-wrap">
+        <p-fieldset legend="Ações" [collapsed]="true" [toggleable]="true">
+            <div *ngIf="!isOrderFinished()">
+                <label>Seu atendimento foi avaliado como:</label>
+                <p-rating [cancel]="false" [readonly]="true" [(ngModel)]="data.rating"></p-rating>
+            </div>
+            <div *ngIf="isOrderFinished()" class="flex flex-row flex-wrap">
                 <button pButton icon="pi pi-save" label="Salvar Alterações" class="p-button" (click)="updateOrder()"></button>
                 <button pButton icon="pi pi-check-circle" label="Encerrar" class="p-button-success ml-2" (click)="finishOrder()"></button>
             </div>

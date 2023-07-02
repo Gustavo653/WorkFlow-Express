@@ -85,17 +85,28 @@
                             (onChange)="clearAgentSelection()"
                         ></p-dropdown>
                     </span>
+                    <span [class]="style.formItem">
+                        <label>Criado em</label>
+                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.openingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
+                    </span>
+                    <span [class]="style.formItem">
+                        <label>Atualizado em</label>
+                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                    </span>
+                    <span [class]="style.formItem">
+                        <label>Encerrado em</label>
+                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.closingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
+                    </span>
                 </div>
             </div>
             <div class="col-12 md:col-6 lg:col-9">
                 <h5>Descrição</h5>
-                <p-editor [(ngModel)]="data.description" [readonly]="true" [style]="{ height: '21.5rem' }"></p-editor>
+                <p-editor [(ngModel)]="data.description" [readonly]="true" [style]="{ height: '40rem' }"></p-editor>
             </div>
         </div>
         <p-fieldset *ngIf="!isOrderFinished()" legend="Ações" [collapsed]="false" [toggleable]="true">
-            <div class="flex flex-row flex-wrap">
-                <p-rating></p-rating>
-            </div>
+            <p-rating [cancel]="false" [(ngModel)]="data.rating"></p-rating>
+            <button pButton label="Classificar Atendimento" class="p-button" (click)="rateOrder()"></button>
         </p-fieldset>
     </div>
     <div class="card">

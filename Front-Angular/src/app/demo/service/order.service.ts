@@ -69,6 +69,15 @@ export class OrderService {
         );
     }
 
+    rateOrder(id: string, rating: string): Observable<any> {
+        return this.getAPIURL().pipe(
+            switchMap((url) => {
+                const apiUrl = `${url}/orders/rate/${id}`;
+                return this.http.post(apiUrl, { rating });
+            })
+        );
+    }
+
     createTimeEntry(description: string, startTime: Date, endTime: Date, type: string, orderId: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
