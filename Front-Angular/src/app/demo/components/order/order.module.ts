@@ -17,9 +17,11 @@ import { EditorModule } from 'primeng/editor';
 import { MineComponent } from './mine/mine.component';
 import { AgentComponent } from './agent/agent.component';
 import { FieldsetModule } from 'primeng/fieldset';
+import { DetailComponent } from './detail/detail.component';
+import { RatingModule } from 'primeng/rating';
 
 @NgModule({
-    declarations: [CreateComponent, MineComponent, AgentComponent],
+    declarations: [CreateComponent, MineComponent, AgentComponent, DetailComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,
@@ -37,6 +39,7 @@ import { FieldsetModule } from 'primeng/fieldset';
         SelectButtonModule,
         EditorModule,
         FieldsetModule,
+        RatingModule,
     ],
 })
 export class OrderModule {}

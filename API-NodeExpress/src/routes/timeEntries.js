@@ -1,77 +1,78 @@
 const express = require("express");
-const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
-const adminMiddleware = require("../middleware/adminMiddleware");
 const TimeEntry = require("../models/timeEntry");
+const authMiddleware = require("../middleware/authMiddleware");
 
-router.post("/", authMiddleware, adminMiddleware, async (req, res, next) => {
+const router = express.Router();
+
+router.post("/", authMiddleware, async (req, res, next) => {
   try {
-    const {
+    const { description, startTime, endTime, type, orderId, userId } = req.body;
+    const timeEntry = await TimeEntry.create({
       description,
-      initialDate,
-      finishDate,
-      orderId,
-      userId = verifyToken(req.headers.authorization).id,
-    } = req.body;
-    const group = await TimeEntry.create({
-      description,
-      initialDate,
-      finishDate,
+      startTime,
+      endTime,
+      type,
       orderId,
       userId,
     });
-    res.status(201).json(group);
+    res.status(201).json(timeEntry);
   } catch (error) {
     next({
       statusCode: 500,
-      message: "Erro ao criar o apontamento.",
+      message: "Erro ao criar apontamento.",
       detail: error,
     });
   }
 });
 
-router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
+router.get("/", authMiddleware, async (req, res, next) => {
   try {
-    const groups = await TimeEntry.findAll();
-    res.status(200).json(groups);
+    const timeEntries = await TimeEntry.findAll();
+    res.json(timeEntries);
   } catch (error) {
     next({
       statusCode: 500,
-      message: "Erro ao obter os apontamentos.",
+      message: "Erro ao buscar os apontamentos.",
       detail: error,
     });
   }
 });
 
-router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
+router.get("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const group = await TimeEntry.findByPk(id);
-    if (group) {
-      res.status(200).json(group);
+    const timeEntry = await TimeEntry.findByPk(id);
+    if (timeEntry) {
+      res.json(timeEntry);
     } else {
-      res.status(404).json({ error: "Apontamento não encontrado." });
+      res.status(404).json({ error: "TimeEntry não encontrado." });
     }
   } catch (error) {
     next({
       statusCode: 500,
-      message: "Erro ao obter o apontamento.",
+      message: "Erro ao buscar o apontamento.",
       detail: error,
     });
   }
 });
 
-router.put("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
+router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { name } = req.body;
-    const group = await TimeEntry.findByPk(id);
-    if (group) {
-      group.name = name;
-      await group.save();
-      res.status(200).json(group);
+    const { description, startTime, endTime, type, orderId, userId } = req.body;
+    const timeEntry = await TimeEntry.findByPk(id);
+    if (timeEntry) {
+      await timeEntry.update({
+        description,
+        startTime,
+        endTime,
+        type,
+        orderId,
+        userId,
+      });
+      res.json(timeEntry);
     } else {
-      res.status(404).json({ error: "Apontamento não encontrado." });
+      res.status(404).json({ error: "TimeEntry não encontrado." });
     }
   } catch (error) {
     next({
@@ -82,28 +83,23 @@ router.put("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   }
 });
 
-router.delete(
-  "/:id",
-  authMiddleware,
-  adminMiddleware,
-  async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const group = await TimeEntry.findByPk(id);
-      if (group) {
-        await group.destroy();
-        res.status(204).end();
-      } else {
-        res.status(404).json({ error: "Apontamento não encontrado." });
-      }
-    } catch (error) {
-      next({
-        statusCode: 500,
-        message: "Erro ao excluir o apontamento.",
-        detail: error,
-      });
+router.delete("/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const timeEntry = await TimeEntry.findByPk(id);
+    if (timeEntry) {
+      await timeEntry.destroy();
+      res.json({ message: "TimeEntry excluído com sucesso." });
+    } else {
+      res.status(404).json({ error: "TimeEntry não encontrado." });
     }
+  } catch (error) {
+    next({
+      statusCode: 500,
+      message: "Erro ao excluir o apontamento.",
+      detail: error,
+    });
   }
-);
+});
 
 module.exports = router;

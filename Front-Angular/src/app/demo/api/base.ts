@@ -12,7 +12,7 @@ export class PrimeFlexStyle {
     label: string = 'block text-780 text-mg font-medium mb-2';
     title: string = 'block text-900 text-xl font-medium mb-2';
     labelDialog: string = 'width: 25rem; font-weight: 600';
-    formItem: string = 'flex flex-column flex-wrap justify-content-around w-full mb-4';
+    formItem: string = 'flex flex-column flex-wrap justify-content-around w-full mb-2';
     formCard: string = 'flex flex-column md:flex-row align-items-start flex-wrap justify-content-evenly';
     formCheck: string = 'flex flex-row flex-wrap justify-content-between align-items-center gap-4';
     mbCheckbox: string = 'mb-2';

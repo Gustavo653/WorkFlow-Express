@@ -11,6 +11,7 @@ const Category = require("../models/category");
 const User = require("../models/user");
 const SupportGroup = require("../models/supportGroup");
 const { Op } = require("sequelize");
+const TimeEntry = require("../models/timeEntry");
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
@@ -286,9 +287,13 @@ router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
 router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const order = await Order.findByPk(id);
+    const order = await Order.findByPk(id, {
+      include: TimeEntry,
+    });
     if (order) {
-      res.status(200).json(order);
+      const description = order.description.toString("utf8");
+      const orderWithDescription = { ...order.toJSON(), description };
+      res.status(200).json(orderWithDescription);
     } else {
       res.status(404).json({ error: "Chamado não encontrado." });
     }

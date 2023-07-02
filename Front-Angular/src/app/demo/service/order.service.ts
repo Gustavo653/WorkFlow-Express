@@ -24,6 +24,14 @@ export class OrderService {
         );
     }
 
+    getOrder(id: number): Observable<any> {
+        return this.getAPIURL().pipe(
+            switchMap((url) => {
+                return this.http.get(`${url}/orders/${id}`);
+            })
+        );
+    }
+
     createOrder(title: string, description: string, priorityId: number, agentId: number, categoryId: number, supportGroupId: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
