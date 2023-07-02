@@ -69,6 +69,15 @@ export class DetailComponent implements OnInit {
         );
     }
 
+    isOrderFinished() {
+        if (this.statuses === undefined) return false;
+        const finishedStatus = this.statuses.find((x) => {
+            return x.id === this.data.statusId;
+        });
+        if (finishedStatus === undefined) return false;
+        return finishedStatus.name !== 'Encerrado';
+    }
+
     validateTimeEntryData() {
         return this.startTime != undefined && this.endTime != undefined && this.timeEntryRegistry.description != undefined;
     }
