@@ -20,9 +20,10 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { DetailComponent } from './detail/detail.component';
 import { RatingModule } from 'primeng/rating';
 import { CalendarModule } from 'primeng/calendar';
+import { DetailRequesterComponent } from './detail-requester/detail-requester.component';
 
 @NgModule({
-    declarations: [CreateComponent, MineComponent, AgentComponent, DetailComponent],
+    declarations: [CreateComponent, MineComponent, AgentComponent, DetailComponent, DetailRequesterComponent],
     imports: [
         CommonModule,
         ReactiveFormsModule,

@@ -64,7 +64,7 @@ export class MineComponent implements OnInit {
                 field: '',
                 header: 'Detalhes',
                 type: 'redirect',
-                format: '/order/detail',
+                format: '/order/detail-requester',
             },
             {
                 field: 'id',

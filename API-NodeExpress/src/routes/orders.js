@@ -299,6 +299,45 @@ router.post(
   }
 );
 
+router.get("/detail-requester/:id", authMiddleware, async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const order = await Order.findByPk(id, {
+      include: {
+        model: TimeEntry,
+        include: User,
+      },
+    });
+    if (order) {
+      const description = order.description.toString("utf8");
+      const orderWithDescription = { ...order.toJSON(), description };
+
+      const timeEntriesWithDescriptions = order.TimeEntries.map((entry) => {
+        const description =
+          entry.type == "requester"
+            ? entry.description.toString("utf8")
+            : "Este chamado teve uma movimentação interna";
+        return { ...entry.toJSON(), description };
+      });
+
+      const orderWithTimeEntries = {
+        ...orderWithDescription,
+        TimeEntries: timeEntriesWithDescriptions,
+      };
+
+      res.status(200).json(orderWithTimeEntries);
+    } else {
+      res.status(404).json({ error: "Chamado não encontrado." });
+    }
+  } catch (error) {
+    next({
+      statusCode: 500,
+      message: "Erro ao obter o chamado.",
+      detail: error,
+    });
+  }
+});
+
 router.get("/:id", authMiddleware, agentMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;

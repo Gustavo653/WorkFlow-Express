@@ -10,9 +10,9 @@ import { SupportGroupService } from 'src/app/demo/service/supportGroup.service';
 import { UserService } from 'src/app/demo/service/user.service';
 
 @Component({
-    templateUrl: './detail.component.html',
+    templateUrl: './detail-requester.component.html',
 })
-export class DetailComponent implements OnInit {
+export class DetailRequesterComponent implements OnInit {
     startTime?: Date;
     endTime?: Date;
     users: any[] = [];
@@ -58,14 +58,6 @@ export class DetailComponent implements OnInit {
             this.data.agentId = null;
         }
     }
-
-    anyTimeEntry() {
-        const timeEntries = this.data.TimeEntries as any[];
-
-        const hasItems = timeEntries.length > 0;
-        return hasItems;
-    }
-
 
     validateOrderData() {
         return (
@@ -181,9 +173,16 @@ export class DetailComponent implements OnInit {
         });
     }
 
+    anyTimeEntry() {
+        const timeEntries = this.data.TimeEntries as any[];
+
+        const hasItems = timeEntries.length > 0;
+        return hasItems;
+    }
+
     fetchData() {
         this.loading = true;
-        this.orderService.getOrder(this.orderId).subscribe((x) => {
+        this.orderService.getRequesterOrder(this.orderId).subscribe((x) => {
             if (x.agentId != undefined) this.agentValue = 'agent';
             if (x.supportGroupId != undefined) this.agentValue = 'supportGroup';
             this.data = x;
