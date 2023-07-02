@@ -1,12 +1,28 @@
 const express = require("express");
 const TimeEntry = require("../models/timeEntry");
 const authMiddleware = require("../middleware/authMiddleware");
-
+const { verifyToken } = require("../utils/jwtUtils");
+const Status = require("../models/status");
+const Order = require("../models/order");
 const router = express.Router();
 
 router.post("/", authMiddleware, async (req, res, next) => {
   try {
-    const { description, startTime, endTime, type, orderId, userId } = req.body;
+    const { description, startTime, endTime, type, orderId } = req.body;
+    const userId = verifyToken(req.headers.authorization).id;
+
+    const status = await Status.findOne({
+      where: {
+        name: "Em Progresso",
+      },
+    });
+
+    const order = await Order.findByPk(orderId);
+    if (order) {
+      order.statusId = status.dataValues.id;
+      await order.save();
+    }
+
     const timeEntry = await TimeEntry.create({
       description,
       startTime,
@@ -45,7 +61,7 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
     if (timeEntry) {
       res.json(timeEntry);
     } else {
-      res.status(404).json({ error: "TimeEntry não encontrado." });
+      res.status(404).json({ error: "Apontamento não encontrado." });
     }
   } catch (error) {
     next({
@@ -59,7 +75,7 @@ router.get("/:id", authMiddleware, async (req, res, next) => {
 router.put("/:id", authMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { description, startTime, endTime, type, orderId, userId } = req.body;
+    const { description, startTime, endTime, type } = req.body;
     const timeEntry = await TimeEntry.findByPk(id);
     if (timeEntry) {
       await timeEntry.update({
@@ -67,12 +83,10 @@ router.put("/:id", authMiddleware, async (req, res, next) => {
         startTime,
         endTime,
         type,
-        orderId,
-        userId,
       });
       res.json(timeEntry);
     } else {
-      res.status(404).json({ error: "TimeEntry não encontrado." });
+      res.status(404).json({ error: "Apontamento não encontrado." });
     }
   } catch (error) {
     next({
@@ -89,9 +103,9 @@ router.delete("/:id", authMiddleware, async (req, res, next) => {
     const timeEntry = await TimeEntry.findByPk(id);
     if (timeEntry) {
       await timeEntry.destroy();
-      res.json({ message: "TimeEntry excluído com sucesso." });
+      res.json({ message: "Apontamento excluído com sucesso." });
     } else {
-      res.status(404).json({ error: "TimeEntry não encontrado." });
+      res.status(404).json({ error: "Apontamento não encontrado." });
     }
   } catch (error) {
     next({

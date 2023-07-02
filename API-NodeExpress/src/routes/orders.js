@@ -265,16 +265,25 @@ router.get(
   }
 );
 
-router.get("/", authMiddleware, adminMiddleware, async (req, res, next) => {
+router.post("/finish/:id", authMiddleware, async (req, res, next) => {
   try {
-    const orders = await Order.findAll();
+    const { id } = req.params;
 
-    const ordersWithDescription = orders.map((order) => {
-      const description = order.description.toString("utf8");
-      return { ...order.toJSON(), description };
+    const status = await Status.findOne({
+      where: {
+        name: "Encerrado",
+      },
     });
 
-    res.status(200).json(ordersWithDescription);
+    if (status) {
+      const order = await Order.findByPk(id);
+      order.statusId = status.id;
+      await order.save();
+
+      res.status(200).json(order);
+    } else {
+      res.status(404).json({ message: "Status 'Encerrado' não encontrado." });
+    }
   } catch (error) {
     next({
       statusCode: 500,
@@ -288,12 +297,26 @@ router.get("/:id", authMiddleware, adminMiddleware, async (req, res, next) => {
   try {
     const { id } = req.params;
     const order = await Order.findByPk(id, {
-      include: TimeEntry,
+      include: {
+        model: TimeEntry,
+        include: User,
+      },
     });
     if (order) {
       const description = order.description.toString("utf8");
       const orderWithDescription = { ...order.toJSON(), description };
-      res.status(200).json(orderWithDescription);
+
+      const timeEntriesWithDescriptions = order.TimeEntries.map((entry) => {
+        const description = entry.description.toString("utf8");
+        return { ...entry.toJSON(), description };
+      });
+
+      const orderWithTimeEntries = {
+        ...orderWithDescription,
+        TimeEntries: timeEntriesWithDescriptions,
+      };
+
+      res.status(200).json(orderWithTimeEntries);
     } else {
       res.status(404).json({ error: "Chamado não encontrado." });
     }

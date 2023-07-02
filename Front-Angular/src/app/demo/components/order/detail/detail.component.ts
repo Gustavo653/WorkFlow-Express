@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PrimeFlexStyle } from 'src/app/demo/api/base';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { MessageServiceSuccess, PrimeFlexStyle } from 'src/app/demo/api/base';
 import { CategoryService } from 'src/app/demo/service/category.service.ts';
 import { OrderService } from 'src/app/demo/service/order.service';
 import { PriorityService } from 'src/app/demo/service/priority.service';
@@ -12,6 +13,8 @@ import { UserService } from 'src/app/demo/service/user.service';
     templateUrl: './detail.component.html',
 })
 export class DetailComponent implements OnInit {
+    startTime?: Date;
+    endTime?: Date;
     users: any[] = [];
     supportGroups: any[] = [];
     priorities: any[] = [];
@@ -22,9 +25,15 @@ export class DetailComponent implements OnInit {
     style = new PrimeFlexStyle();
     orderId: number = Number(this.activatedRoute.snapshot.paramMap.get('id') ?? 0);
     agentValue: string = 'agent';
+    timeEntryRegistry: any = {};
     agentSelector: any[] = [
         { label: 'Atendente', value: 'agent' },
         { label: 'Grupo de Atendimento', value: 'supportGroup' },
+    ];
+    timeEntrySelectorValue: string = 'requester';
+    timeEntrySelector: any[] = [
+        { label: 'Solicitantes e Atendentes', value: 'requester' },
+        { label: 'Apenas Atendentes', value: 'agent' },
     ];
     constructor(
         private userService: UserService,
@@ -33,7 +42,9 @@ export class DetailComponent implements OnInit {
         private statusService: StatusService,
         private categoryService: CategoryService,
         private orderService: OrderService,
-        private activatedRoute: ActivatedRoute
+        private activatedRoute: ActivatedRoute,
+        private messageService: MessageService,
+        private confirmationService: ConfirmationService
     ) {}
 
     ngOnInit(): void {
@@ -46,6 +57,111 @@ export class DetailComponent implements OnInit {
         } else {
             this.data.agentId = undefined;
         }
+    }
+
+    validateOrderData() {
+        return (
+            this.data.title != undefined &&
+            this.data.description != undefined &&
+            this.data.priorityId != undefined &&
+            this.data.categoryId != undefined &&
+            (this.data.supportGroupId != undefined || this.data.agentId != undefined)
+        );
+    }
+
+    validateTimeEntryData() {
+        return this.startTime != undefined && this.endTime != undefined && this.timeEntryRegistry.description != undefined;
+    }
+
+    updateOrder() {
+        this.loading = true;
+        if (this.validateOrderData()) {
+            this.orderService
+                .updateOrder(this.data.id, this.data.title, this.data.description, this.data.priorityId, this.data.agentId, this.data.categoryId, this.data.supportGroupId)
+                .subscribe((x) => {
+                    this.messageService.add(MessageServiceSuccess);
+                    this.loading = false;
+                });
+        } else {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Certifique-se de preencher todos os campos!',
+            });
+            this.loading = false;
+        }
+    }
+
+    finishOrder() {
+        this.confirmationService.confirm({
+            header: 'Finalizar Chamado',
+            message: `Você deseja finalizar o chamado: ${this.data.description}?`,
+            acceptLabel: 'Aceitar',
+            rejectLabel: 'Rejeitar',
+            accept: () => {
+                this.loading = true;
+                this.orderService.finishOrder(this.data.id).subscribe((x) => {
+                    this.messageService.add(MessageServiceSuccess);
+                    this.fetchData();
+                });
+            },
+        });
+    }
+
+    editTimeEntry(timeEntry: any) {
+        this.startTime = new Date(timeEntry.startTime);
+        this.endTime = new Date(timeEntry.endTime);
+        this.timeEntryRegistry = timeEntry;
+    }
+
+    clearTimeEntry() {
+        this.startTime = undefined;
+        this.endTime = undefined;
+        this.timeEntryRegistry = {};
+    }
+
+    createOrUpdateTimeEntry() {
+        this.loading = true;
+        if (this.validateTimeEntryData()) {
+            if (this.timeEntryRegistry.id) {
+                this.orderService.updateTimeEntry(this.timeEntryRegistry.id, this.timeEntryRegistry.description, this.startTime!, this.endTime!, this.timeEntrySelectorValue).subscribe((x) => {
+                    this.messageService.add(MessageServiceSuccess);
+                    this.timeEntryRegistry = {};
+                    this.startTime = undefined;
+                    this.endTime = undefined;
+                    this.fetchData();
+                });
+            } else {
+                this.orderService.createTimeEntry(this.timeEntryRegistry.description, this.startTime!, this.endTime!, this.timeEntrySelectorValue, this.data.id).subscribe((x) => {
+                    this.messageService.add(MessageServiceSuccess);
+                    this.timeEntryRegistry = {};
+                    this.startTime = undefined;
+                    this.endTime = undefined;
+                    this.fetchData();
+                });
+            }
+        } else {
+            this.messageService.add({
+                severity: 'warn',
+                summary: 'Certifique-se de preencher todos os campos!',
+            });
+            this.loading = false;
+        }
+    }
+
+    deleteTimeEntry(timeEntry: any) {
+        this.confirmationService.confirm({
+            header: 'Excluir Registro',
+            message: `Você deseja excluir o apontamento: ${timeEntry.description}?`,
+            acceptLabel: 'Aceitar',
+            rejectLabel: 'Rejeitar',
+            accept: () => {
+                this.loading = true;
+                this.orderService.deleteTimeEntry(timeEntry.id).subscribe((x) => {
+                    this.messageService.add(MessageServiceSuccess);
+                    this.fetchData();
+                });
+            },
+        });
     }
 
     fetchData() {

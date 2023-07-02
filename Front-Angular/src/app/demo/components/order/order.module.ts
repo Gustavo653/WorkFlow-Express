@@ -19,6 +19,7 @@ import { AgentComponent } from './agent/agent.component';
 import { FieldsetModule } from 'primeng/fieldset';
 import { DetailComponent } from './detail/detail.component';
 import { RatingModule } from 'primeng/rating';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
     declarations: [CreateComponent, MineComponent, AgentComponent, DetailComponent],
@@ -39,6 +40,7 @@ import { RatingModule } from 'primeng/rating';
         SelectButtonModule,
         EditorModule,
         FieldsetModule,
+        CalendarModule,
         RatingModule,
     ],
 })

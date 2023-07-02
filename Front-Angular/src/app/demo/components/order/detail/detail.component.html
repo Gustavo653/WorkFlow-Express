@@ -1,4 +1,5 @@
 <p-progressBar [hidden]="!loading" mode="indeterminate" [style]="{ height: '3px' }"></p-progressBar>
+<p-confirmDialog></p-confirmDialog>
 <div *ngIf="!loading">
     <div class="card">
         <button pButton icon="pi pi-refresh" label="Retornar" class="p-button" onclick="window.history.back(); return false;"></button>
@@ -52,7 +53,6 @@
                         <label>Categoria</label>
                     </span>
                     <p-selectButton [class]="style.formItem" [options]="agentSelector" [(ngModel)]="agentValue" optionLabel="label" optionValue="value"></p-selectButton>
-
                     <span [class]="style.formItem" *ngIf="agentValue == 'agent'" class="p-float-label">
                         <p-dropdown
                             [class]="style.formItem"
@@ -90,8 +90,8 @@
         </div>
         <p-fieldset legend="Ações" [collapsed]="false" [toggleable]="true">
             <div class="flex flex-row flex-wrap">
-                <button pButton icon="pi pi-save" label="Salvar Alterações" class="p-button" onclick="window.history.back(); return false;"></button>
-                <button pButton icon="pi pi-check-circle" label="Encerrar" class="p-button-success ml-2" onclick="window.history.back(); return false;"></button>
+                <button pButton icon="pi pi-save" label="Salvar Alterações" class="p-button" (click)="updateOrder()"></button>
+                <button pButton icon="pi pi-check-circle" label="Encerrar" class="p-button-success ml-2" (click)="finishOrder()"></button>
                 <div class="ml-2">
                     <label>Avalie o atendimento de seu chamado!</label>
                     <p-rating [cancel]="false"></p-rating>
@@ -100,11 +100,82 @@
         </p-fieldset>
     </div>
     <div class="card">
-        <h5>Novo Apontamento</h5>
-        <p-editor [(ngModel)]="data.description" [style]="{ height: '21.5rem' }"></p-editor>
-        <button pButton icon="pi pi-save" label="Criar Apontamento" class="p-button mt-3" onclick="window.history.back(); return false;"></button>
+        <h5>{{ timeEntryRegistry.id ? "Atualizar" : "Criar" }} Apontamento</h5>
+        <button pButton icon="pi pi-save" [label]="timeEntryRegistry.id ? 'Atualizar Apontamento' : 'Criar Apontamento'" class="p-button mb-3" (click)="createOrUpdateTimeEntry()"></button>
+        <button pButton icon="pi pi-times" *ngIf="timeEntryRegistry.id" label="Cancelar Edição" class="p-button-danger ml-2 mb-3" (click)="clearTimeEntry()"></button>
+        <div class="grid">
+            <div class="col-12 md:col-6 lg:col-3">
+                <h5>Parâmetros</h5>
+                <span [class]="style.formItem" class="p-float-label">
+                    <p-calendar [class]="style.formItem" [(ngModel)]="startTime" dateFormat="dd/mm/yy" hourFormat="HH:mm:ss" [showTime]="true" [showSeconds]="true"></p-calendar>
+                    <label>Início Apontamento</label>
+                </span>
+                <span [class]="style.formItem" class="p-float-label">
+                    <p-calendar [class]="style.formItem" [(ngModel)]="endTime" dateFormat="dd/mm/yy" hourFormat="HH:mm:ss" [showTime]="true" [showSeconds]="true"></p-calendar>
+                    <label>Fim Apontamento</label>
+                </span>
+                <span [class]="style.formItem">
+                    <label>Apontamento visível para:</label>
+                    <p-selectButton [class]="style.formItem" [options]="timeEntrySelector" [(ngModel)]="timeEntrySelectorValue" optionLabel="label" optionValue="value"></p-selectButton>
+                </span>
+            </div>
+            <div class="col-12 md:col-6 lg:col-9">
+                <h5>Descrição</h5>
+                <p-editor [(ngModel)]="timeEntryRegistry.description" [style]="{ height: '21.5rem' }"></p-editor>
+            </div>
+        </div>
     </div>
     <div class="card">
         <h5>Apontamentos</h5>
+        <div *ngFor="let item of data.TimeEntries">
+            <div class="card mb-2">
+                <button pButton icon="pi pi-pencil" label="Editar Apontamento" class="p-button-warning mb-3" (click)="editTimeEntry(item)"></button>
+                <button pButton icon="pi pi-trash" label="Excluir Apontamento" class="p-button-danger ml-2 mb-3" (click)="deleteTimeEntry(item)"></button>
+                <div class="grid">
+                    <div class="col-12 md:col-6 lg:col-3">
+                        <h5>Parâmetros</h5>
+                        <span [class]="style.formItem" class="p-float-label">
+                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.id" />
+                            <label>ID Apontamento</label>
+                        </span>
+                        <span [class]="style.formItem" class="p-float-label">
+                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.startTime | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <label>Início Apontamento</label>
+                        </span>
+                        <span [class]="style.formItem" class="p-float-label">
+                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.endTime | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <label>Fim Apontamento</label>
+                        </span>
+                        <span [class]="style.formItem" class="p-float-label">
+                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.createdAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <label>Criado em</label>
+                        </span>
+                        <span [class]="style.formItem" class="p-float-label">
+                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <label>Atualizado em</label>
+                        </span>
+                        <span [class]="style.formItem" class="p-float-label">
+                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.User.firstName" />
+                            <label>Criado por</label>
+                        </span>
+                        <span [class]="style.formItem">
+                            <label>Apontamento visível para:</label>
+                            <p-selectButton
+                                [class]="style.formItem"
+                                [disabled]="true"
+                                [options]="timeEntrySelector"
+                                [(ngModel)]="timeEntrySelectorValue"
+                                optionLabel="label"
+                                optionValue="value"
+                            ></p-selectButton>
+                        </span>
+                    </div>
+                    <div class="col-12 md:col-6 lg:col-9">
+                        <h5>Descrição</h5>
+                        <p-editor [ngModel]="item.description" [readonly]="true" [style]="{ height: '30rem' }"></p-editor>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
