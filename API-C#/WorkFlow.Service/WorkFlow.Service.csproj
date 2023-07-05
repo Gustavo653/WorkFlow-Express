@@ -18,8 +18,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Common.DTO\Common.DTO.csproj" />
     <ProjectReference Include="..\Common.Functions\Common.Functions.csproj" />
-    <ProjectReference Include="..\KeepHealth.Application\KeepHealth.Application.csproj" />
-    <ProjectReference Include="..\KeepHealth.Domain\KeepHealth.Domain.csproj" />
+    <ProjectReference Include="..\WorkFlow.Application\WorkFlow.Application.csproj" />
+    <ProjectReference Include="..\WorkFlow.Domain\WorkFlow.Domain.csproj" />
   </ItemGroup>
 
 </Project>

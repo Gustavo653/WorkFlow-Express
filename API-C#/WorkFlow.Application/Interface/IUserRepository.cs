@@ -1,7 +1,7 @@
 ﻿using Common.Infrastructure;
-using KeepHealth.Domain.Identity;
+using WorkFlow.Domain.Identity;
 
-namespace KeepHealth.Application.Interface
+namespace WorkFlow.Application.Interface
 {
     public interface IUserRepository : IRepositoryBase<User>
     {

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "KeepHealth": {
+    "WorkFlow": {
       "commandName": "Project",
       "launchBrowser": true,
       "launchUrl": "swagger",

@@ -1,8 +1,8 @@
 using Common.DTO;
-using KeepHealth.Domain.Enum;
-using KeepHealth.Domain.Identity;
+using WorkFlow.Domain.Enum;
+using WorkFlow.Domain.Identity;
 
-namespace KeepHealth.Service.Interface
+namespace WorkFlow.Service.Interface
 {
     public interface IAccountService
     {

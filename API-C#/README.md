@@ -21,4 +21,4 @@ If you want to learn more about creating good readme files then refer the follow
 
 
 
-dotnet ef migrations add Initial -p KeepHealth.Persistence -s KeepHealth.API -c KeepHealthContext --verbose
+dotnet ef migrations add Initial -p WorkFlow.Persistence -s WorkFlow.API -c WorkFlowContext --verbose

@@ -35,8 +35,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Common.DTO\Common.DTO.csproj" />
     <ProjectReference Include="..\Common.Functions\Common.Functions.csproj" />
-    <ProjectReference Include="..\KeepHealth.Persistence\KeepHealth.Persistence.csproj" />
-    <ProjectReference Include="..\KeepHealth.Service\KeepHealth.Service.csproj" />
+    <ProjectReference Include="..\WorkFlow.Persistence\WorkFlow.Persistence.csproj" />
+    <ProjectReference Include="..\WorkFlow.Service\WorkFlow.Service.csproj" />
   </ItemGroup>
 
 </Project>

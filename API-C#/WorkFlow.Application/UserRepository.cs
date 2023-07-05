@@ -1,13 +1,13 @@
 ﻿using Common.DataAccess;
-using KeepHealth.Application.Interface;
-using KeepHealth.Domain.Identity;
-using KeepHealth.Persistence;
+using WorkFlow.Application.Interface;
+using WorkFlow.Domain.Identity;
+using WorkFlow.Persistence;
 
-namespace KeepHealth.Application
+namespace WorkFlow.Application
 {
-    public class UserRepository : BaseRepository<User, KeepHealthContext>, IUserRepository
+    public class UserRepository : BaseRepository<User, WorkFlowContext>, IUserRepository
     {
-        public UserRepository(KeepHealthContext context) : base(context)
+        public UserRepository(WorkFlowContext context) : base(context)
         {
         }
     }

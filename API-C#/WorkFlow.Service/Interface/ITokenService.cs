@@ -1,7 +1,7 @@
 
 using Common.DTO;
 
-namespace KeepHealth.Service.Interface
+namespace WorkFlow.Service.Interface
 {
     public interface ITokenService
     {

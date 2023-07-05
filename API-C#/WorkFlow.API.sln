@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Integra", "Integra", "{0E28485A-1045-4D4D-900D-1866A7E0FE90}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{0E28485A-1045-4D4D-900D-1866A7E0FE90}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{AA6379D5-7DD7-4439-9AF7-AF52CEEE5D81}"
 EndProject
@@ -15,15 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Functions", "Common.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.DataAccess", "Common.DataAccess\Common.DataAccess.csproj", "{96B85E30-BB54-454A-89D9-3606A40DDD42}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeepHealth.Service", "KeepHealth.Service\KeepHealth.Service.csproj", "{BACE95A4-2930-4426-B85E-4D57F20143CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFlow.Service", "WorkFlow.Service\WorkFlow.Service.csproj", "{BACE95A4-2930-4426-B85E-4D57F20143CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeepHealth.Persistence", "KeepHealth.Persistence\KeepHealth.Persistence.csproj", "{AAF30EDD-A629-4DC7-82B4-A399B8005111}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFlow.Persistence", "WorkFlow.Persistence\WorkFlow.Persistence.csproj", "{AAF30EDD-A629-4DC7-82B4-A399B8005111}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeepHealth.Domain", "KeepHealth.Domain\KeepHealth.Domain.csproj", "{442D5193-532F-46B0-BF1C-0E2E62F31F6F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFlow.Domain", "WorkFlow.Domain\WorkFlow.Domain.csproj", "{442D5193-532F-46B0-BF1C-0E2E62F31F6F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeepHealth.Application", "KeepHealth.Application\KeepHealth.Application.csproj", "{6C83012C-7B95-4E5C-96E7-77B14FE3BA7E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFlow.Application", "WorkFlow.Application\WorkFlow.Application.csproj", "{6C83012C-7B95-4E5C-96E7-77B14FE3BA7E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KeepHealth.API", "KeepHealth.API\KeepHealth.API.csproj", "{18655CAA-44B1-4640-808A-55C369DE5E3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkFlow.API", "WorkFlow.API\WorkFlow.API.csproj", "{18655CAA-44B1-4640-808A-55C369DE5E3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -5,4 +5,4 @@ Microsoft.EntityFrameworkCore.Design
 
 
 Para criar migration:
-dotnet ef migrations add CreateDoctorPacient -p KeepHealth.Persistence -s KeepHealth.API -c KeepHealthContext --verbose
+dotnet ef migrations add CreateDoctorPacient -p WorkFlow.Persistence -s WorkFlow.API -c WorkFlowContext --verbose

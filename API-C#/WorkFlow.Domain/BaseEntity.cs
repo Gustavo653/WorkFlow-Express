@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace KeepHealth.Domain
+namespace WorkFlow.Domain
 {
     public class BaseEntity
     {

@@ -1,7 +1,7 @@
 using AutoMapper;
 using Common.DTO;
-using KeepHealth.Domain.Identity;
-using KeepHealth.Service.Interface;
+using WorkFlow.Domain.Identity;
+using WorkFlow.Service.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -9,7 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace KeepHealth.Service
+namespace WorkFlow.Service
 {
     public class TokenService : ITokenService
     {

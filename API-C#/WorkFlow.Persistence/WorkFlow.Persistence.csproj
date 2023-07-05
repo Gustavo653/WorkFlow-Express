@@ -22,7 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <ProjectReference Include="..\KeepHealth.Domain\KeepHealth.Domain.csproj" />
+	  <ProjectReference Include="..\WorkFlow.Domain\WorkFlow.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,12 +1,12 @@
 using Common.Functions;
 using Hangfire;
-using KeepHealth.Application;
-using KeepHealth.Application.Interface;
-using KeepHealth.Domain.Enum;
-using KeepHealth.Domain.Identity;
-using KeepHealth.Persistence;
-using KeepHealth.Service;
-using KeepHealth.Service.Interface;
+using WorkFlow.Application;
+using WorkFlow.Application.Interface;
+using WorkFlow.Domain.Enum;
+using WorkFlow.Domain.Identity;
+using WorkFlow.Persistence;
+using WorkFlow.Service;
+using WorkFlow.Service.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,7 +17,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 
-namespace KeepHealth.API
+namespace WorkFlow.API
 {
     public class Program
     {
@@ -26,31 +26,27 @@ namespace KeepHealth.API
             var builder = WebApplication.CreateBuilder(args);
             var configuration = builder.Configuration;
 
-            string databaseKeepHealth = Environment.GetEnvironmentVariable("KeepHealth") ?? configuration.GetConnectionString("KeepHealth");
+            string databaseWorkFlow = Environment.GetEnvironmentVariable("WorkFlow") ?? configuration.GetConnectionString("WorkFlow");
 
             Console.WriteLine("Inicio parametros da aplicacao: \n");
-            Console.WriteLine($"(KeepHealth) String de conexao com banco de dados para Hangfire: \n{databaseKeepHealth} \n");
-            Console.WriteLine($"(KeepHealth) String de conexao com banco de dados para KeepHealth: \n{databaseKeepHealth} \n");
+            Console.WriteLine($"(WorkFlow) String de conexao com banco de dados para Hangfire: \n{databaseWorkFlow} \n");
+            Console.WriteLine($"(WorkFlow) String de conexao com banco de dados para WorkFlow: \n{databaseWorkFlow} \n");
             Console.WriteLine("Fim parametros da aplicacao \n");
 
-            builder.Services.AddDbContext<KeepHealthContext>(x =>
+            builder.Services.AddDbContext<WorkFlowContext>(x =>
             {
-                x.UseSqlServer(databaseKeepHealth);
+                x.UseSqlServer(databaseWorkFlow);
                 x.EnableSensitiveDataLogging();
                 x.EnableDetailedErrors();
             });
 
             builder.Services.AddIdentity<User, Role>()
-                            .AddEntityFrameworkStores<KeepHealthContext>()
+                            .AddEntityFrameworkStores<WorkFlowContext>()
                             .AddDefaultTokenProviders();
 
             builder.Services.AddTransient<ITokenService, TokenService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
-            builder.Services.AddTransient<IMedicalConditionRepository, MedicalConditionRepository>();
-            builder.Services.AddTransient<IPatientService, PatientService>();
-            builder.Services.AddTransient<IPatientRepository, PatientRepository>();
-            builder.Services.AddTransient<IPatient_MedicalConditionRepository, Patient_MedicalConditionRepository>();
             builder.Services.AddTransient<RoleManager<Role>>();
             builder.Services.AddTransient<UserManager<User>>();
 
@@ -58,7 +54,7 @@ namespace KeepHealth.API
             {
                 using (var serviceProvider = builder.Services.BuildServiceProvider())
                 {
-                    var dbContext = serviceProvider.GetService<KeepHealthContext>();
+                    var dbContext = serviceProvider.GetService<WorkFlowContext>();
                     dbContext.Database.Migrate();
                     SeedRoles(serviceProvider).Wait();
                     SeedAdminUser(serviceProvider).Wait();
@@ -77,7 +73,7 @@ namespace KeepHealth.API
             .AddRoleManager<RoleManager<Role>>()
             .AddSignInManager<SignInManager<User>>()
             .AddRoleValidator<RoleValidator<Role>>()
-            .AddEntityFrameworkStores<KeepHealthContext>()
+            .AddEntityFrameworkStores<WorkFlowContext>()
             .AddDefaultTokenProviders();
 
             builder.Services.AddAuthentication(options =>
@@ -118,11 +114,11 @@ namespace KeepHealth.API
 
             builder.Services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v1", new OpenApiInfo { Title = "KeepHealth.API", Version = "v1" });
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "WorkFlow.API", Version = "v1" });
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"JWT Authorization header usando Bearer.
-                                Entre com 'Bearer ' [espaço] então coloque seu token.
+                                Entre com 'Bearer ' [espaï¿½o] entï¿½o coloque seu token.
                                 Exemplo: 'Bearer 12345abcdef'",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
@@ -151,7 +147,7 @@ namespace KeepHealth.API
 
             builder.Services.AddCors();
 
-            builder.Services.AddHangfire(x => x.UseSqlServerStorage(databaseKeepHealth));
+            builder.Services.AddHangfire(x => x.UseSqlServerStorage(databaseWorkFlow));
             builder.Services.AddHangfireServer(x => x.WorkerCount = 1);
 
             builder.Services.AddMvc();

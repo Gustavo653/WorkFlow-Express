@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace KeepHealth.Domain.Identity
+namespace WorkFlow.Domain.Identity
 {
     public class UserRole : IdentityUserRole<long>
     {

@@ -1,26 +1,20 @@
-﻿using KeepHealth.Domain;
-using KeepHealth.Domain.Identity;
+﻿using WorkFlow.Domain;
+using WorkFlow.Domain.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace KeepHealth.Persistence
+namespace WorkFlow.Persistence
 {
-    public class KeepHealthContext : IdentityDbContext<User, Role, long,
+    public class WorkFlowContext : IdentityDbContext<User, Role, long,
                                                IdentityUserClaim<long>, UserRole, IdentityUserLogin<long>,
                                                IdentityRoleClaim<long>, IdentityUserToken<long>>
     {
-        public KeepHealthContext(DbContextOptions<KeepHealthContext> options) : base(options) { }
+        public WorkFlowContext(DbContextOptions<WorkFlowContext> options) : base(options) { }
 
-        protected KeepHealthContext()
+        protected WorkFlowContext()
         {
         }
-
-        public DbSet<Doctor> Doctor { get; set; }
-        public DbSet<MedicalSpeciality> MedicalSpeciality { get; set; }
-        public DbSet<MedicalCondition> MedicalCondition { get; set; }
-        public DbSet<Patient> Patient { get; set; }
-        public DbSet<Patient_MedicalCondition> Patient_MedicalConditions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

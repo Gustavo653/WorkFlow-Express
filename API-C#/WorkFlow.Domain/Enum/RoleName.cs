@@ -1,4 +1,4 @@
-﻿namespace KeepHealth.Domain.Enum
+﻿namespace WorkFlow.Domain.Enum
 {
     public enum RoleName
     {
