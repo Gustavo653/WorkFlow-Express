@@ -34,7 +34,7 @@ namespace WorkFlow.Service
         {
             try
             {
-                var user = await GetUserAsync(userUpdateDto.UserName);
+                var user = await GetUserAsync(userUpdateDto.Email);
                 return await _signInManager.CheckPasswordSignInAsync(user, userUpdateDto.Password, false);
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace WorkFlow.Service
         {
 
             var user = await _userRepository.GetEntities()
-                                            .FirstOrDefaultAsync(x => x.UserName == userName) ??
+                                            .FirstOrDefaultAsync(x => x.Email == userName) ??
                                             throw new Exception($"Usuário '{userName}' não encontrado!");
             return user;
         }
@@ -57,7 +57,7 @@ namespace WorkFlow.Service
             ResponseDTO responseDTO = new();
             try
             {
-                var user = await GetUserAsync(userDTO.UserName);
+                var user = await GetUserAsync(userDTO.Email);
                 var password = await CheckUserPasswordAsync(userDTO);
                 if (user != null && password.Succeeded)
                 {

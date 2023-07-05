@@ -2,8 +2,8 @@
 {
     public enum RoleName
     {
-        Patient,
-        Doctor,
+        Requester,
+        Agent,
         Admin
     }
 }

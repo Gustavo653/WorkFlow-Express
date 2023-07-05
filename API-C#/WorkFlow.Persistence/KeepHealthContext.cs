@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WorkFlow.Persistence
 {
-    public class WorkFlowContext : IdentityDbContext<User, Role, long,
-                                               IdentityUserClaim<long>, UserRole, IdentityUserLogin<long>,
-                                               IdentityRoleClaim<long>, IdentityUserToken<long>>
+    public class WorkFlowContext : IdentityDbContext<User, Role, int,
+                                               IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>,
+                                               IdentityRoleClaim<int>, IdentityUserToken<int>>
     {
         public WorkFlowContext(DbContextOptions<WorkFlowContext> options) : base(options) { }
 

@@ -96,8 +96,8 @@ namespace WorkFlow.API
             builder.Services.AddAuthorization(options =>
             {
                 options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(RoleName.Admin.ToString()));
-                options.AddPolicy("RequireDoctorRole", policy => policy.RequireRole(RoleName.Doctor.ToString()));
-                options.AddPolicy("RequirePatientRole", policy => policy.RequireRole(RoleName.Patient.ToString()));
+                options.AddPolicy("RequireRequesterRole", policy => policy.RequireRole(RoleName.Requester.ToString()));
+                options.AddPolicy("RequireAgentRole", policy => policy.RequireRole(RoleName.Agent.ToString()));
             });
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -183,7 +183,7 @@ namespace WorkFlow.API
         private static async Task SeedRoles(IServiceProvider serviceProvider)
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<Role>>();
-            var roles = new List<string>() { RoleName.Patient.ToString(), RoleName.Doctor.ToString(), RoleName.Admin.ToString() };
+            var roles = new List<string>() { RoleName.Requester.ToString(), RoleName.Agent.ToString(), RoleName.Admin.ToString() };
             foreach (var role in roles)
             {
                 if (!await roleManager.RoleExistsAsync(role))
