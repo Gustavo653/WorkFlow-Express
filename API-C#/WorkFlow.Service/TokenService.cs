@@ -27,14 +27,12 @@ namespace WorkFlow.Service
             _mapper = mapper;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"] ?? "TokenKey"));
         }
-        public async Task<string> CreateToken(UserDTO userDTO)
+        public async Task<string> CreateToken(User user)
         {
-            var user = _mapper.Map<User>(userDTO);
-
             var claims = new List<Claim>
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
+                new Claim(ClaimTypes.Name, user.Name),
             };
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -46,7 +44,7 @@ namespace WorkFlow.Service
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddDays(1),
+                Expires = DateTime.Now.AddHours(2),
                 SigningCredentials = creds
             };
 

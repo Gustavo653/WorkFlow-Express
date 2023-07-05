@@ -1,10 +1,10 @@
 
-using Common.DTO;
+using WorkFlow.Domain.Identity;
 
 namespace WorkFlow.Service.Interface
 {
     public interface ITokenService
     {
-        Task<string> CreateToken(UserDTO userDTO);
+        Task<string> CreateToken(User userDTO);
     }
 }

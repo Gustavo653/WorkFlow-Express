@@ -30,12 +30,12 @@ namespace WorkFlow.Service
             _tokenService = tokenService;
         }
 
-        private async Task<SignInResult> CheckUserPasswordAsync(UserLoginDTO userUpdateDto)
+        private async Task<SignInResult> CheckUserPassword(UserLoginDTO userLoginDTO)
         {
             try
             {
-                var user = await GetUserAsync(userUpdateDto.Email);
-                return await _signInManager.CheckPasswordSignInAsync(user, userUpdateDto.Password, false);
+                var user = await GetUserByEmail(userLoginDTO.Email);
+                return await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
             }
             catch (Exception ex)
             {
@@ -43,13 +43,18 @@ namespace WorkFlow.Service
             }
         }
 
-        private async Task<User> GetUserAsync(string userName)
+        private async Task<User> GetUserByEmail(string email)
         {
-
-            var user = await _userRepository.GetEntities()
-                                            .FirstOrDefaultAsync(x => x.Email == userName) ??
-                                            throw new Exception($"Usuário '{userName}' não encontrado!");
-            return user;
+            try
+            {
+                return await _userRepository.GetEntities()
+                                            .FirstOrDefaultAsync(x => x.Email == email) ??
+                                            throw new Exception($"Usuário '{email}' não encontrado!");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Erro ao obter o usuário. Erro: {ex.Message}");
+            }
         }
 
         public async Task<ResponseDTO> Login(UserLoginDTO userDTO)
@@ -57,15 +62,15 @@ namespace WorkFlow.Service
             ResponseDTO responseDTO = new();
             try
             {
-                var user = await GetUserAsync(userDTO.Email);
-                var password = await CheckUserPasswordAsync(userDTO);
+                var user = await GetUserByEmail(userDTO.Email);
+                var password = await CheckUserPassword(userDTO);
                 if (user != null && password.Succeeded)
                 {
                     responseDTO.Object = new
                     {
                         userName = user.UserName,
                         email = user.Email,
-                        token = await _tokenService.CreateToken(_mapper.Map<UserDTO>(user))
+                        token = await _tokenService.CreateToken(user)
                     };
                 }
                 else
@@ -83,7 +88,7 @@ namespace WorkFlow.Service
             ResponseDTO responseDTO = new();
             try
             {
-                responseDTO.Object = await GetUserAsync(userName);
+                responseDTO.Object = await GetUserByEmail(userName);
             }
             catch (Exception ex)
             {
@@ -92,12 +97,12 @@ namespace WorkFlow.Service
             return responseDTO;
         }
 
-        public async Task<ResponseDTO> CreateOrUpdateUser(long? id, UserDTO user)
+        public async Task<ResponseDTO> CreateOrUpdateUser(int? id, UserDTO user)
         {
             ResponseDTO responseDTO = new();
             try
             {
-                var userEntity = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id || x.Email == user.Email || x.UserName == user.UserName);
+                var userEntity = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
                 if (userEntity == null)
                 {
                     userEntity = new();
