@@ -20,6 +20,11 @@ namespace WorkFlow.Persistence
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>(x =>
+            {
+                x.HasIndex(y => y.Email).IsUnique();
+            });
+
             modelBuilder.Entity<UserRole>(userRole =>
             {
                 userRole.HasKey(ur => new { ur.UserId, ur.RoleId });

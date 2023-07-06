@@ -44,7 +44,7 @@ namespace WorkFlow.Service
             var tokenDescription = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddHours(2),
+                Expires = DateTime.Now.AddDays(1),
                 SigningCredentials = creds
             };
 

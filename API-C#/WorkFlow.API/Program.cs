@@ -68,6 +68,7 @@ namespace WorkFlow.API
                 options.Password.RequireLowercase = false;
                 options.Password.RequireUppercase = false;
                 options.Password.RequiredLength = 4;
+                options.User.RequireUniqueEmail = true;
             })
             .AddRoles<Role>()
             .AddRoleManager<RoleManager<Role>>()
@@ -93,12 +94,12 @@ namespace WorkFlow.API
                 };
             });
 
-            builder.Services.AddAuthorization(options =>
-            {
-                options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(RoleName.Admin.ToString()));
-                options.AddPolicy("RequireRequesterRole", policy => policy.RequireRole(RoleName.Requester.ToString()));
-                options.AddPolicy("RequireAgentRole", policy => policy.RequireRole(RoleName.Agent.ToString()));
-            });
+            //builder.Services.AddAuthorization(options =>
+            //{
+            //    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(RoleName.Admin.ToString()));
+            //    options.AddPolicy("RequireRequesterRole", policy => policy.RequireRole(RoleName.Requester.ToString()));
+            //    options.AddPolicy("RequireAgentRole", policy => policy.RequireRole(RoleName.Agent.ToString()));
+            //});
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -118,7 +119,7 @@ namespace WorkFlow.API
                 options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     Description = @"JWT Authorization header usando Bearer.
-                                Entre com 'Bearer ' [espa�o] ent�o coloque seu token.
+                                Entre com 'Bearer ' [espaço] então coloque seu token.
                                 Exemplo: 'Bearer 12345abcdef'",
                     Name = "Authorization",
                     In = ParameterLocation.Header,

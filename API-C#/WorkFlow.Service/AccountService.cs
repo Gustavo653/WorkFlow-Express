@@ -97,23 +97,49 @@ namespace WorkFlow.Service
             return responseDTO;
         }
 
-        public async Task<ResponseDTO> CreateOrUpdateUser(int? id, UserDTO user)
+        public async Task<ResponseDTO> CreateUser(UserDTO userDTO)
         {
             ResponseDTO responseDTO = new();
             try
             {
-                var userEntity = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id);
-                if (userEntity == null)
-                {
-                    userEntity = new();
-                    PropertyCopier<UserDTO, User>.Copy(user, userEntity);
-                    await _userManager.CreateAsync(userEntity, user.Password);
-                }
-                else
-                {
-                    PropertyCopier<UserDTO, User>.Copy(user, userEntity);
-                    await _userManager.UpdateAsync(userEntity);
-                }
+                var user = await _userManager.FindByEmailAsync(userDTO.Email);
+                if (user != null) throw new Exception("Este usuário já existe!");
+                var userEntity = new User();
+                PropertyCopier<UserDTO, User>.Copy(userDTO, userEntity);
+                await _userManager.CreateAsync(userEntity, userDTO.Password);
+                responseDTO.Object = userEntity;
+            }
+            catch (Exception ex)
+            {
+                responseDTO.SetError(ex);
+            }
+            return responseDTO;
+        }
+
+        public async Task<ResponseDTO> UpdateUser(int id, UserDTO user)
+        {
+            ResponseDTO responseDTO = new();
+            try
+            {
+                var userEntity = await _userManager.FindByIdAsync(id.ToString()) ?? throw new Exception("Usuário não encotrado!");
+                PropertyCopier<UserDTO, User>.Copy(user, userEntity);
+                await _userManager.UpdateAsync(userEntity);
+                responseDTO.Object = userEntity;
+            }
+            catch (Exception ex)
+            {
+                responseDTO.SetError(ex);
+            }
+            return responseDTO;
+        }
+
+        public async Task<ResponseDTO> RemoveUser(int id)
+        {
+            ResponseDTO responseDTO = new();
+            try
+            {
+                var userEntity = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Usuário não encontrado!");
+                await _userManager.DeleteAsync(userEntity);
                 responseDTO.Object = userEntity;
             }
             catch (Exception ex)
@@ -130,6 +156,21 @@ namespace WorkFlow.Service
             {
                 if (!await _userManager.IsInRoleAsync(user, role.ToString()))
                     await _userManager.AddToRoleAsync(user, role.ToString());
+            }
+            catch (Exception ex)
+            {
+                responseDTO.SetError(ex);
+            }
+            return responseDTO;
+        }
+
+        public async Task<ResponseDTO> RemoveUserInRole(User user, RoleName role)
+        {
+            ResponseDTO responseDTO = new();
+            try
+            {
+                if (await _userManager.IsInRoleAsync(user, role.ToString()))
+                    await _userManager.RemoveFromRoleAsync(user, role.ToString());
             }
             catch (Exception ex)
             {

@@ -12,7 +12,7 @@ using WorkFlow.Persistence;
 namespace WorkFlow.Persistence.Migrations
 {
     [DbContext(typeof(WorkFlowContext))]
-    [Migration("20230705230837_Initial")]
+    [Migration("20230706003851_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -203,6 +203,10 @@ namespace WorkFlow.Persistence.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique()
+                        .HasFilter("[Email] IS NOT NULL");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
