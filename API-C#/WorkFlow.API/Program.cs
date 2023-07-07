@@ -1,5 +1,12 @@
 using Common.Functions;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
+using System.Text.Json.Serialization;
 using WorkFlow.Application;
 using WorkFlow.Application.Interface;
 using WorkFlow.Domain.Enum;
@@ -7,14 +14,6 @@ using WorkFlow.Domain.Identity;
 using WorkFlow.Persistence;
 using WorkFlow.Service;
 using WorkFlow.Service.Interface;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using System.Text;
-using System.Text.Json.Serialization;
 
 
 namespace WorkFlow.API
@@ -46,7 +45,9 @@ namespace WorkFlow.API
 
             builder.Services.AddTransient<ITokenService, TokenService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
+            builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
+            builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
             builder.Services.AddTransient<RoleManager<Role>>();
             builder.Services.AddTransient<UserManager<User>>();
 

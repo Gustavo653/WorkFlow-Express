@@ -1,8 +1,8 @@
-﻿using WorkFlow.Domain;
-using WorkFlow.Domain.Identity;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using WorkFlow.Domain;
+using WorkFlow.Domain.Identity;
 
 namespace WorkFlow.Persistence
 {
@@ -16,9 +16,16 @@ namespace WorkFlow.Persistence
         {
         }
 
+        public DbSet<Category> Categories { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Category>(x =>
+            {
+                x.HasIndex(a => a.Name).IsUnique();
+            });
 
             modelBuilder.Entity<User>(x =>
             {

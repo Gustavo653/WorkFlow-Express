@@ -1,6 +1,4 @@
-﻿using Common.DTO;
-
-namespace Common.Infrastructure
+﻿namespace Common.Infrastructure
 {
     public interface IServiceBase
     {

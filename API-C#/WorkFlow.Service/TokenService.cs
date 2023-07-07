@@ -1,13 +1,12 @@
 using AutoMapper;
-using Common.DTO;
-using WorkFlow.Domain.Identity;
-using WorkFlow.Service.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using WorkFlow.Domain.Identity;
+using WorkFlow.Service.Interface;
 
 namespace WorkFlow.Service
 {

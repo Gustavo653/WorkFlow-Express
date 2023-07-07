@@ -1,13 +1,13 @@
 using AutoMapper;
 using Common.DTO;
 using Common.Functions;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using WorkFlow.Application.Interface;
 using WorkFlow.Domain.Enum;
 using WorkFlow.Domain.Identity;
-using WorkFlow.Service.Interface;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using WorkFlow.DTO;
+using WorkFlow.Service.Interface;
 
 namespace WorkFlow.Service
 {
