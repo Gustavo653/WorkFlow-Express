@@ -7,6 +7,7 @@ using WorkFlow.Domain.Identity;
 using WorkFlow.Service.Interface;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using WorkFlow.DTO;
 
 namespace WorkFlow.Service
 {
@@ -48,6 +49,7 @@ namespace WorkFlow.Service
             try
             {
                 return await _userRepository.GetEntities()
+                                            .Include(x => x.UserRoles).ThenInclude(x => x.Role)
                                             .FirstOrDefaultAsync(x => x.Email == email) ??
                                             throw new Exception($"Usuário '{email}' não encontrado!");
             }
@@ -83,12 +85,12 @@ namespace WorkFlow.Service
             return responseDTO;
         }
 
-        public async Task<ResponseDTO> GetUserByUserNameAsync(string userName)
+        public async Task<ResponseDTO> GetCurrent(string email)
         {
             ResponseDTO responseDTO = new();
             try
             {
-                responseDTO.Object = await GetUserByEmail(userName);
+                responseDTO.Object = await GetUserByEmail(email);
             }
             catch (Exception ex)
             {
@@ -103,10 +105,16 @@ namespace WorkFlow.Service
             try
             {
                 var user = await _userManager.FindByEmailAsync(userDTO.Email);
-                if (user != null) throw new Exception("Este usuário já existe!");
+                if (user != null)
+                {
+                    responseDTO.SetBadInput($"Já existe um usuário cadastrado com este e-mail: {userDTO.Email}!");
+                    return responseDTO;
+                }
                 var userEntity = new User();
                 PropertyCopier<UserDTO, User>.Copy(userDTO, userEntity);
                 await _userManager.CreateAsync(userEntity, userDTO.Password);
+                foreach (var item in userDTO.Roles)
+                    await AddUserInRole(userEntity, item);
                 responseDTO.Object = userEntity;
             }
             catch (Exception ex)
@@ -116,14 +124,23 @@ namespace WorkFlow.Service
             return responseDTO;
         }
 
-        public async Task<ResponseDTO> UpdateUser(int id, UserDTO user)
+        public async Task<ResponseDTO> UpdateUser(int id, UserDTO userDTO)
         {
             ResponseDTO responseDTO = new();
             try
             {
-                var userEntity = await _userManager.FindByIdAsync(id.ToString()) ?? throw new Exception("Usuário não encotrado!");
-                PropertyCopier<UserDTO, User>.Copy(user, userEntity);
+                var userEntity = await _userManager.FindByIdAsync(id.ToString());
+                if (userEntity == null)
+                {
+                    responseDTO.SetBadInput($"Usuário não encotrado com este id: {id}!");
+                    return responseDTO;
+                }
+                PropertyCopier<UserDTO, User>.Copy(userDTO, userEntity);
                 await _userManager.UpdateAsync(userEntity);
+                var userRoles = await _userManager.GetRolesAsync(userEntity);
+                await _userManager.RemoveFromRolesAsync(userEntity, userRoles);
+                foreach (var item in userDTO.Roles)
+                    await AddUserInRole(userEntity, item);
                 responseDTO.Object = userEntity;
             }
             catch (Exception ex)
@@ -138,7 +155,14 @@ namespace WorkFlow.Service
             ResponseDTO responseDTO = new();
             try
             {
-                var userEntity = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == id) ?? throw new Exception("Usuário não encontrado!");
+                var userEntity = await _userManager.FindByIdAsync(id.ToString());
+                if (userEntity == null)
+                {
+                    responseDTO.SetBadInput($"Usuário não encontrado com este id: {id}!");
+                    return responseDTO;
+                }
+                var userRoles = await _userManager.GetRolesAsync(userEntity);
+                await _userManager.RemoveFromRolesAsync(userEntity, userRoles);
                 await _userManager.DeleteAsync(userEntity);
                 responseDTO.Object = userEntity;
             }
@@ -149,34 +173,10 @@ namespace WorkFlow.Service
             return responseDTO;
         }
 
-        public async Task<ResponseDTO> AddUserInRole(User user, RoleName role)
+        private async Task AddUserInRole(User user, RoleName role)
         {
-            ResponseDTO responseDTO = new();
-            try
-            {
-                if (!await _userManager.IsInRoleAsync(user, role.ToString()))
-                    await _userManager.AddToRoleAsync(user, role.ToString());
-            }
-            catch (Exception ex)
-            {
-                responseDTO.SetError(ex);
-            }
-            return responseDTO;
-        }
-
-        public async Task<ResponseDTO> RemoveUserInRole(User user, RoleName role)
-        {
-            ResponseDTO responseDTO = new();
-            try
-            {
-                if (await _userManager.IsInRoleAsync(user, role.ToString()))
-                    await _userManager.RemoveFromRoleAsync(user, role.ToString());
-            }
-            catch (Exception ex)
-            {
-                responseDTO.SetError(ex);
-            }
-            return responseDTO;
+            if (!await _userManager.IsInRoleAsync(user, role.ToString()))
+                await _userManager.AddToRoleAsync(user, role.ToString());
         }
     }
 }

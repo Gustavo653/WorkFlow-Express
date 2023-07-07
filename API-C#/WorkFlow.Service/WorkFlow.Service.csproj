@@ -20,6 +20,7 @@
     <ProjectReference Include="..\Common.Functions\Common.Functions.csproj" />
     <ProjectReference Include="..\WorkFlow.Application\WorkFlow.Application.csproj" />
     <ProjectReference Include="..\WorkFlow.Domain\WorkFlow.Domain.csproj" />
+    <ProjectReference Include="..\WorkFlow.DTO\WorkFlow.DTO.csproj" />
   </ItemGroup>
 
 </Project>

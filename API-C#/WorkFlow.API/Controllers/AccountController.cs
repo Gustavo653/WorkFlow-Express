@@ -1,9 +1,9 @@
-using Common.DTO;
 using Common.Functions;
 using WorkFlow.Service.Interface;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using WorkFlow.Domain.Enum;
+using WorkFlow.DTO;
 
 namespace WorkFlow.API.Controllers
 {
@@ -16,11 +16,11 @@ namespace WorkFlow.API.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet("GetUser")]
+        [HttpGet("Current")]
         public async Task<IActionResult> GetUser()
         {
-            var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
-            return StatusCode(user.Code, user.Object);
+            var user = await _accountService.GetCurrent(User.GetEmail());
+            return StatusCode(user.Code, user);
         }
 
         [HttpPost("Login")]
@@ -39,7 +39,7 @@ namespace WorkFlow.API.Controllers
             return StatusCode(user.Code, user);
         }
 
-        [HttpPut("Update/:id")]
+        [HttpPut("Update/{id}")]
         [Authorize(Roles = nameof(RoleName.Admin))]
         public async Task<IActionResult> UpdateUser([FromRoute] int id, [FromBody] UserDTO userDTO)
         {
@@ -47,7 +47,7 @@ namespace WorkFlow.API.Controllers
             return StatusCode(user.Code, user);
         }
 
-        [HttpDelete("Delete/:id")]
+        [HttpDelete("Delete/{id}")]
         [Authorize(Roles = nameof(RoleName.Admin))]
         public async Task<IActionResult> RemoveUser([FromRoute] int id)
         {

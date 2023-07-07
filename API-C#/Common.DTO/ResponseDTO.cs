@@ -26,5 +26,10 @@ namespace Common.DTO
             Code = 404;
             Message = "Registro não encontrado!";
         }
+        public void SetBadInput(string message)
+        {
+            Code = 400;
+            Message = $"Verifique os registros enviados! Detalhes: {message}";
+        }
     }
 }

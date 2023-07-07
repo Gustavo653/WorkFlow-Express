@@ -1,17 +1,16 @@
 using Common.DTO;
 using WorkFlow.Domain.Enum;
 using WorkFlow.Domain.Identity;
+using WorkFlow.DTO;
 
 namespace WorkFlow.Service.Interface
 {
     public interface IAccountService
     {
-        Task<ResponseDTO> CreateUser(UserDTO user);
-        Task<ResponseDTO> UpdateUser(int id, UserDTO user);
+        Task<ResponseDTO> CreateUser(UserDTO userDTO);
+        Task<ResponseDTO> UpdateUser(int id, UserDTO userDTO);
         Task<ResponseDTO> RemoveUser(int id);
-        Task<ResponseDTO> AddUserInRole(User user, RoleName role);
-        Task<ResponseDTO> RemoveUserInRole(User user, RoleName role);
-        Task<ResponseDTO> GetUserByUserNameAsync(string userName);
-        Task<ResponseDTO> Login(UserLoginDTO userDTO);
+        Task<ResponseDTO> GetCurrent(string email);
+        Task<ResponseDTO> Login(UserLoginDTO userLoginDTO);
     }
 }
