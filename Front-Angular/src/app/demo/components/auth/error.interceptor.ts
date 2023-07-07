@@ -10,16 +10,17 @@ import { MessageService } from 'primeng/api';
     providedIn: 'root',
 })
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private router: Router, private authService: AuthService, private messageService: MessageService) {}
+    constructor(private router: Router, private authService: AuthService, private messageService: MessageService) { }
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
+                console.log(error.error);
                 if (error.status === 400) {
                     this.messageService.add({
                         severity: 'warn',
                         summary: 'Ocorreu um erro ao validar os dados.',
-                        detail: error.error.message,
+                        detail: error.error.title,
                     });
                 } else if (error.status === 401) {
                     this.messageService.add({

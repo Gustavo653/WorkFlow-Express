@@ -17,7 +17,7 @@ export class CategoryService {
     getCategories(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/categories`;
+                const apiUrl = `${url}/api/categories`;
                 return this.http.get(apiUrl);
             })
         );
@@ -26,7 +26,7 @@ export class CategoryService {
     createCategory(name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/categories`;
+                const apiUrl = `${url}/api/categories`;
                 const body = { name };
                 return this.http.post(apiUrl, body);
             })
@@ -36,7 +36,7 @@ export class CategoryService {
     updateCategory(id: string, name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/categories/${id}`;
+                const apiUrl = `${url}/api/categories/${id}`;
                 const body = { name };
                 return this.http.put(apiUrl, body);
             })
@@ -46,7 +46,7 @@ export class CategoryService {
     deleteCategory(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/categories/${id}`;
+                const apiUrl = `${url}/api/categories/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

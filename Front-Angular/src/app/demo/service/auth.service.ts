@@ -10,7 +10,7 @@ export class AuthService {
     login(email: string, password: string) {
         return this.storageService.getAPIURL().pipe(
             switchMap((url) => {
-                return this.http.post<any>(`${url}/users/login`, {
+                return this.http.post<any>(`${url}/api/account/login`, {
                     email: email,
                     password: password,
                 });
@@ -55,9 +55,9 @@ export class AuthService {
         const url = await this.storageService.getAPIURL().toPromise();
 
         try {
-            let data = await this.http.get<any>(`${url}/users/current`).toPromise();
-            this.saveFirstName(data.firstName);
-            this.saveRole(data.role);
+            let data = await this.http.get<any>(`${url}/api/account/current`).toPromise();
+            this.saveFirstName(data.object.name);
+            this.saveRole(JSON.stringify(data.object.userRoles));
         } catch (error) {
             status = 401;
         }

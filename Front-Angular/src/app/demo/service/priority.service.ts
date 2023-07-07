@@ -17,7 +17,7 @@ export class PriorityService {
     getPriorities(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/priorities`;
+                const apiUrl = `${url}/api/priorities`;
                 return this.http.get(apiUrl);
             })
         );
@@ -26,7 +26,7 @@ export class PriorityService {
     createPriority(name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/priorities`;
+                const apiUrl = `${url}/api/priorities`;
                 const body = { name };
                 return this.http.post(apiUrl, body);
             })
@@ -36,7 +36,7 @@ export class PriorityService {
     updatePriority(id: string, name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/priorities/${id}`;
+                const apiUrl = `${url}/api/priorities/${id}`;
                 const body = { name };
                 return this.http.put(apiUrl, body);
             })
@@ -46,7 +46,7 @@ export class PriorityService {
     deletePriority(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/priorities/${id}`;
+                const apiUrl = `${url}/api/priorities/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

@@ -54,7 +54,7 @@ export interface RuntimeConfig {
 export const MenuRoutes = [
     {
         label: 'Geral',
-        role: ['admin', 'requester', 'agent'],
+        role: ['ADMIN', 'REQUESTER', 'AGENT'],
         items: [
             {
                 label: 'Dashboard',
@@ -75,7 +75,7 @@ export const MenuRoutes = [
     },
     {
         label: 'Atendente',
-        role: ['admin', 'agent'],
+        role: ['ADMIN', 'AGENT'],
         items: [
             {
                 label: 'Meus Atendimentos',
@@ -86,7 +86,7 @@ export const MenuRoutes = [
     },
     {
         label: 'Administrador',
-        role: ['admin'],
+        role: ['ADMIN'],
         items: [
             {
                 label: 'Gerenciar Usuários',

@@ -38,6 +38,17 @@ export class LoginComponent {
     onSubmit(form: any) {
         this.hidden = false;
         if (form.valid) {
+            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            const emailValid = emailRegex.test(form.value.email);
+            if (!emailValid) {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Endereço de e-mail inválido',
+                    detail: 'Por favor, insira um endereço de e-mail válido.',
+                });
+                this.hidden = true;
+                return;
+            }
             this.authService.login(form.value.email, form.value.senha).subscribe(
                 async (res) => {
                     this.messageService.add({
@@ -46,20 +57,14 @@ export class LoginComponent {
                         detail: `Estamos lhe redirecionando para a página principal.`,
                     });
                     this.hidden = true;
-                    this.authService.saveToken(res.token ?? '');
+                    this.authService.saveToken(res.object.token ?? '');
                     this.router.navigate(['']);
-                },
-                (err: any) => {
-                    this.messageService.add({
-                        severity: 'error',
-                        summary: 'Houve um erro ao processar sua solicitação!',
-                        detail: `Código: ${err.status} \n Mensagem: ${err.error.message}`,
-                    });
-                    this.hidden = true;
                 }
             );
+            this.hidden = true;
         }
     }
 
-    constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {}
+
+    constructor(private authService: AuthService, private router: Router, private messageService: MessageService) { }
 }

@@ -17,7 +17,7 @@ export class UserService {
     getUsers(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users`;
+                const apiUrl = `${url}/api/users`;
                 return this.http.get(apiUrl);
             })
         );
@@ -26,7 +26,7 @@ export class UserService {
     createUser(firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users`;
+                const apiUrl = `${url}/api/users`;
                 const body = { firstName, lastName, email, role, password };
                 return this.http.post(apiUrl, body);
             })
@@ -36,7 +36,7 @@ export class UserService {
     updateUser(id: string, firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users/${id}`;
+                const apiUrl = `${url}/api/users/${id}`;
                 const body = { firstName, lastName, email, role, password };
                 return this.http.put(apiUrl, body);
             })
@@ -46,7 +46,7 @@ export class UserService {
     deleteUser(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/users/${id}`;
+                const apiUrl = `${url}/api/users/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

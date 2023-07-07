@@ -20,18 +20,24 @@ import { MenuRoutes } from '../demo/api/base';
 })
 export class AppMenuComponent implements OnInit {
     model: any[] = MenuRoutes.filter((x) => {
-        const role = this.authService.getRole();
-        const routeRoles = x.role;
-        if (role === 'admin') {
+        const roles = JSON.parse(this.authService.getRole()!).map((item: { role: { normalizedName: any; }; }) => item.role.normalizedName);
+
+        if (roles.includes('ADMIN')) {
             return true;
         }
+
+        const routeRoles = x.role;
         if (routeRoles && Array.isArray(routeRoles)) {
-            return routeRoles.some((routeRole) => routeRole === role);
+            return routeRoles.some((routeRole) => roles.includes(routeRole));
         }
+
         return false;
     });
 
-    constructor(public layoutService: LayoutService, private authService: AuthService, private router: Router) {}
+
+
+
+    constructor(public layoutService: LayoutService, private authService: AuthService, private router: Router) { }
 
     public logout(): void {
         this.authService.clearData();
@@ -44,5 +50,5 @@ export class AppMenuComponent implements OnInit {
         return username;
     }
 
-    ngOnInit() {}
+    ngOnInit() { }
 }
