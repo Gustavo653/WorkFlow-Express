@@ -1,5 +1,6 @@
 using Common.Functions;
 using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -27,15 +28,21 @@ namespace WorkFlow.API
             var configuration = builder.Configuration;
 
             string databaseWorkFlow = Environment.GetEnvironmentVariable("WorkFlow") ?? configuration.GetConnectionString("WorkFlow");
+            string databaseType = Environment.GetEnvironmentVariable("DatabaseType") ?? configuration.GetConnectionString("DatabaseType");
 
             Console.WriteLine("Inicio parametros da aplicacao: \n");
-            Console.WriteLine($"(WorkFlow) String de conexao com banco de dados para Hangfire: \n{databaseWorkFlow} \n");
             Console.WriteLine($"(WorkFlow) String de conexao com banco de dados para WorkFlow: \n{databaseWorkFlow} \n");
+            Console.WriteLine($"(DatabaseType) Tipo de banco de dados para WorkFlow: \n{databaseType} \n");
             Console.WriteLine("Fim parametros da aplicacao \n");
 
             builder.Services.AddDbContext<WorkFlowContext>(x =>
             {
-                x.UseSqlServer(databaseWorkFlow);
+                if (databaseType == "MsSQL")
+                    x.UseSqlServer(databaseWorkFlow);
+                else if (databaseType == "PostgreSQL")
+                    x.UseNpgsql(databaseWorkFlow);
+                else
+                    throw new Exception("Nenhum tipo de banco de dados suportado escolhido! (MsSQL ou PostgreSQL)");
                 x.EnableSensitiveDataLogging();
                 x.EnableDetailedErrors();
             });
@@ -146,7 +153,15 @@ namespace WorkFlow.API
 
             builder.Services.AddCors();
 
-            builder.Services.AddHangfire(x => x.UseSqlServerStorage(databaseWorkFlow));
+            builder.Services.AddHangfire(x =>
+            {
+                if (databaseType == "MsSQL")
+                    x.UseSqlServerStorage(databaseWorkFlow);
+                else if (databaseType == "PostgreSQL")
+                    x.UsePostgreSqlStorage(databaseWorkFlow);
+                else
+                    throw new Exception("Nenhum tipo de banco de dados suportado escolhido! (MsSQL ou PostgreSQL)");
+            });
             builder.Services.AddHangfireServer(x => x.WorkerCount = 1);
 
             builder.Services.AddMvc();
