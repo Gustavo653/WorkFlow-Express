@@ -136,7 +136,7 @@ export class StatusesComponent implements OnInit {
 
     fetchData() {
         this.statusService.getStatuses().subscribe((x) => {
-            this.data = x;
+            this.data = x.object;
             this.loading = false;
         });
     }

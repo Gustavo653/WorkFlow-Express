@@ -24,7 +24,7 @@ namespace WorkFlow.Service
                 var priorityExists = await _priorityRepository.GetEntities().AnyAsync(c => c.Name == basicDTO.Name);
                 if (priorityExists)
                 {
-                    responseDTO.SetBadInput($"A categoria {basicDTO.Name} já existe!");
+                    responseDTO.SetBadInput($"A prioridade {basicDTO.Name} já existe!");
                     return responseDTO;
                 }
                 var priority = new Priority
@@ -51,7 +51,7 @@ namespace WorkFlow.Service
                 var priority = await _priorityRepository.GetTrackedEntities().FirstOrDefaultAsync(c => c.Id == id);
                 if (priority == null)
                 {
-                    responseDTO.SetBadInput($"A categoria {basicDTO.Name} não existe!");
+                    responseDTO.SetBadInput($"A prioridade {basicDTO.Name} não existe!");
                     return responseDTO;
                 }
                 priority.Name = basicDTO.Name;
@@ -74,7 +74,7 @@ namespace WorkFlow.Service
                 var priority = await _priorityRepository.GetTrackedEntities().FirstOrDefaultAsync(c => c.Id == id);
                 if (priority == null)
                 {
-                    responseDTO.SetBadInput($"A categoria com id: {id} não existe!");
+                    responseDTO.SetBadInput($"A prioridade com id: {id} não existe!");
                     return responseDTO;
                 }
                 _priorityRepository.Delete(priority);

@@ -55,9 +55,11 @@ namespace WorkFlow.API
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<IPriorityService, PriorityService>();
+            builder.Services.AddTransient<IStatusService, StatusService>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
             builder.Services.AddTransient<IPriorityRepository, PriorityRepository>();
+            builder.Services.AddTransient<IStatusRepository, StatusRepository>();
             builder.Services.AddTransient<RoleManager<Role>>();
             builder.Services.AddTransient<UserManager<User>>();
 

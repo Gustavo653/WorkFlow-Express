@@ -18,6 +18,7 @@ namespace WorkFlow.Persistence
 
         public DbSet<Category> Categories { get; set; }
         public DbSet<Priority> Priorities { get; set; }
+        public DbSet<Status> Statuses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
