@@ -7,11 +7,11 @@ import { switchMap } from 'rxjs';
 export class AuthService {
     constructor(private http: HttpClient, private storageService: StorageService) {}
 
-    login(email: string, password: string) {
+    login(userName: string, password: string) {
         return this.storageService.getAPIURL().pipe(
             switchMap((url) => {
                 return this.http.post<any>(`${url}/api/account/login`, {
-                    email: email,
+                    userName: userName,
                     password: password,
                 });
             })

@@ -57,6 +57,7 @@ import { TooltipModule } from 'primeng/tooltip';
         DialogModule,
         PickListModule,
         TooltipModule,
+        MultiSelectModule
     ],
 })
-export class AtomicModule {}
+export class AtomicModule { }

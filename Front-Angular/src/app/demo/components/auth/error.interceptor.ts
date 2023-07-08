@@ -26,6 +26,7 @@ export class ErrorInterceptor implements HttpInterceptor {
                     this.messageService.add({
                         severity: 'warn',
                         summary: 'Sua sessão expirou.',
+                        detail: error.error.message
                     });
                     this.router.navigate(['login']);
                 } else if (error.status === 403) {

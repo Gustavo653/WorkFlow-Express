@@ -19,7 +19,7 @@ namespace WorkFlow.API.Controllers
         [HttpGet("Current")]
         public async Task<IActionResult> GetUser()
         {
-            var user = await _accountService.GetCurrent(User.GetEmail());
+            var user = await _accountService.GetCurrent(User.GetUserName());
             return StatusCode(user.Code, user);
         }
 
@@ -28,6 +28,13 @@ namespace WorkFlow.API.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDTO userLogin)
         {
             var user = await _accountService.Login(userLogin);
+            return StatusCode(user.Code, user);
+        }
+
+        [HttpGet("")]
+        public async Task<IActionResult> GetUsers()
+        {
+            var user = await _accountService.GetUsers();
             return StatusCode(user.Code, user);
         }
 

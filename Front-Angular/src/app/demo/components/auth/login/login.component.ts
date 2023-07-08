@@ -38,18 +38,7 @@ export class LoginComponent {
     onSubmit(form: any) {
         this.hidden = false;
         if (form.valid) {
-            const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-            const emailValid = emailRegex.test(form.value.email);
-            if (!emailValid) {
-                this.messageService.add({
-                    severity: 'error',
-                    summary: 'Endereço de e-mail inválido',
-                    detail: 'Por favor, insira um endereço de e-mail válido.',
-                });
-                this.hidden = true;
-                return;
-            }
-            this.authService.login(form.value.email, form.value.senha).subscribe(
+            this.authService.login(form.value.userName, form.value.senha).subscribe(
                 async (res) => {
                     this.messageService.add({
                         severity: 'success',

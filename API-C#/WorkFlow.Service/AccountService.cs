@@ -31,11 +31,10 @@ namespace WorkFlow.Service
             _tokenService = tokenService;
         }
 
-        private async Task<SignInResult> CheckUserPassword(UserLoginDTO userLoginDTO)
+        private async Task<SignInResult> CheckUserPassword(User user, UserLoginDTO userLoginDTO)
         {
             try
             {
-                var user = await GetUserByEmail(userLoginDTO.Email);
                 return await _signInManager.CheckPasswordSignInAsync(user, userLoginDTO.Password, false);
             }
             catch (Exception ex)
@@ -44,14 +43,13 @@ namespace WorkFlow.Service
             }
         }
 
-        private async Task<User> GetUserByEmail(string email)
+        private async Task<User?> GetUserByUserName(string userName)
         {
             try
             {
                 return await _userRepository.GetEntities()
                                             .Include(x => x.UserRoles).ThenInclude(x => x.Role)
-                                            .FirstOrDefaultAsync(x => x.Email == email) ??
-                                            throw new Exception($"Usuário '{email}' não encontrado!");
+                                            .FirstOrDefaultAsync(x => x.UserName == userName);
             }
             catch (Exception ex)
             {
@@ -64,19 +62,28 @@ namespace WorkFlow.Service
             ResponseDTO responseDTO = new();
             try
             {
-                var user = await GetUserByEmail(userDTO.Email);
-                var password = await CheckUserPassword(userDTO);
-                if (user != null && password.Succeeded)
+                var user = await GetUserByUserName(userDTO.UserName);
+                if (user == null)
                 {
-                    responseDTO.Object = new
-                    {
-                        userName = user.UserName,
-                        email = user.Email,
-                        token = await _tokenService.CreateToken(user)
-                    };
-                }
-                else
                     responseDTO.Code = 401;
+                    responseDTO.Message = "Nãoautenticado!";
+                    return responseDTO;
+                }
+                var password = await CheckUserPassword(user, userDTO);
+                if (!password.Succeeded)
+                {
+                    responseDTO.Code = 401;
+                    responseDTO.Message = "Não autenticado!";
+                    return responseDTO;
+                }
+
+                responseDTO.Object = new
+                {
+                    userName = user.UserName,
+                    name = user.Name,
+                    email = user.Email,
+                    token = await _tokenService.CreateToken(user)
+                };
             }
             catch (Exception ex)
             {
@@ -85,12 +92,12 @@ namespace WorkFlow.Service
             return responseDTO;
         }
 
-        public async Task<ResponseDTO> GetCurrent(string email)
+        public async Task<ResponseDTO> GetCurrent(string userName)
         {
             ResponseDTO responseDTO = new();
             try
             {
-                responseDTO.Object = await GetUserByEmail(email);
+                responseDTO.Object = await GetUserByUserName(userName);
             }
             catch (Exception ex)
             {
@@ -104,10 +111,15 @@ namespace WorkFlow.Service
             ResponseDTO responseDTO = new();
             try
             {
-                var user = await _userManager.FindByEmailAsync(userDTO.Email);
+                var user = await _userManager.FindByNameAsync(userDTO.UserName);
                 if (user != null)
                 {
                     responseDTO.SetBadInput($"Já existe um usuário cadastrado com este e-mail: {userDTO.Email}!");
+                    return responseDTO;
+                }
+                if (userDTO.Password == null)
+                {
+                    responseDTO.SetBadInput($"A senha deve ser preenchida");
                     return responseDTO;
                 }
                 var userEntity = new User();
@@ -137,6 +149,11 @@ namespace WorkFlow.Service
                 }
                 PropertyCopier<UserDTO, User>.Copy(userDTO, userEntity);
                 await _userManager.UpdateAsync(userEntity);
+                if (userDTO.Password != null)
+                {
+                    await _userManager.RemovePasswordAsync(userEntity);
+                    await _userManager.AddPasswordAsync(userEntity, userDTO.Password);
+                }
                 var userRoles = await _userManager.GetRolesAsync(userEntity);
                 await _userManager.RemoveFromRolesAsync(userEntity, userRoles);
                 foreach (var item in userDTO.Roles)
@@ -177,6 +194,27 @@ namespace WorkFlow.Service
         {
             if (!await _userManager.IsInRoleAsync(user, role.ToString()))
                 await _userManager.AddToRoleAsync(user, role.ToString());
+        }
+
+        public async Task<ResponseDTO> GetUsers()
+        {
+            ResponseDTO responseDTO = new();
+            try
+            {
+                responseDTO.Object = await _userManager.Users.Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Email,
+                    x.UserName,
+                    roles = string.Join(",", x.UserRoles.Select(ur => ur.Role.NormalizedName))
+                }).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                responseDTO.SetError(ex);
+            }
+            return responseDTO;
         }
     }
 }

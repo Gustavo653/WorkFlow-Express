@@ -28,9 +28,9 @@ namespace WorkFlow.Persistence
                 x.HasIndex(a => a.Name).IsUnique();
             });
 
-            modelBuilder.Entity<User>(x =>
+            modelBuilder.Entity<Priority>(x =>
             {
-                x.HasIndex(y => y.Email).IsUnique();
+                x.HasIndex(a => a.Name).IsUnique();
             });
 
             modelBuilder.Entity<UserRole>(userRole =>

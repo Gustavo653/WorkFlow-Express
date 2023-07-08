@@ -2,9 +2,13 @@ using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
+using System.Threading.Tasks;
 using WorkFlow.Domain.Identity;
 using WorkFlow.Service.Interface;
 
@@ -24,8 +28,25 @@ namespace WorkFlow.Service
             _config = config;
             _userManager = userManager;
             _mapper = mapper;
-            _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["TokenKey"] ?? "TokenKey"));
+            _key = GetSecurityKey(config["TokenKey"]!);
         }
+
+        private SymmetricSecurityKey GetSecurityKey(string key)
+        {
+            if (string.IsNullOrEmpty(key) || key.Length < 64)
+            {
+                byte[] keyBytes = new byte[64];
+                using (var rng = RandomNumberGenerator.Create())
+                {
+                    rng.GetBytes(keyBytes);
+                }
+                key = Convert.ToBase64String(keyBytes);
+                _config["TokenKey"] = key;
+            }
+
+            return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
+        }
+
         public async Task<string> CreateToken(User user)
         {
             var claims = new List<Claim>
@@ -35,9 +56,7 @@ namespace WorkFlow.Service
                 new Claim(ClaimTypes.Email, user.Email!),
             };
 
-            var roles = await _userManager.GetRolesAsync(user);
-
-            claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            claims.AddRange(user.UserRoles.Select(role => new Claim(ClaimTypes.Role, role.Role.Name!)));
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);
 

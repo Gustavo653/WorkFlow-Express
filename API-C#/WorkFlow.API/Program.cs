@@ -30,10 +30,10 @@ namespace WorkFlow.API
             string databaseWorkFlow = Environment.GetEnvironmentVariable("WorkFlow") ?? configuration.GetConnectionString("WorkFlow");
             string databaseType = Environment.GetEnvironmentVariable("DatabaseType") ?? configuration.GetConnectionString("DatabaseType");
 
-            Console.WriteLine("Inicio parametros da aplicacao: \n");
+            Console.WriteLine("Inicio parametros da aplicação: \n");
             Console.WriteLine($"(WorkFlow) String de conexao com banco de dados para WorkFlow: \n{databaseWorkFlow} \n");
             Console.WriteLine($"(DatabaseType) Tipo de banco de dados para WorkFlow: \n{databaseType} \n");
-            Console.WriteLine("Fim parametros da aplicacao \n");
+            Console.WriteLine("Fim parametros da aplicação \n");
 
             builder.Services.AddDbContext<WorkFlowContext>(x =>
             {
@@ -69,7 +69,6 @@ namespace WorkFlow.API
                     dbContext.Database.Migrate();
                     SeedRoles(serviceProvider).Wait();
                     SeedAdminUser(serviceProvider).Wait();
-                    //SeedPriorities(serviceProvider).Wait();
                 }
             });
 
@@ -221,17 +220,6 @@ namespace WorkFlow.API
             }
             if (!await userManager.IsInRoleAsync(adminUser ?? user, RoleName.Admin.ToString()))
                 await userManager.AddToRoleAsync(adminUser ?? user, RoleName.Admin.ToString());
-        }
-
-        private static async Task SeedPriorities(IServiceProvider serviceProvider)
-        {
-            var priorityService = serviceProvider.GetRequiredService<PriorityService>();
-            var priorities = new List<string>() { "Baixa", "Média", "Alta", "Urgente" };
-            foreach (var priority in priorities)
-            {
-                BasicDTO basicDTO = new() { Name = priority };
-                await priorityService.CreatePriority(basicDTO);
-            }
         }
     }
 }

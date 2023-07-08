@@ -23,7 +23,7 @@ export class FormComponent implements OnInit, OnChanges {
         if (this.inputData) this.data = this.inputData;
     }
 
-    constructor(private formBuilder: FormBuilder) {}
+    constructor(private formBuilder: FormBuilder) { }
 
     createFormGroup(): FormGroup {
         const formGroupConfig: { [key: string]: any } = {};
@@ -37,6 +37,7 @@ export class FormComponent implements OnInit, OnChanges {
     }
 
     save() {
+        console.log(this.form);
         if (this.form?.valid) this.formData.emit(this.data);
     }
 

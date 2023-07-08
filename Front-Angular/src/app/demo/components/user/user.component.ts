@@ -34,26 +34,26 @@ export class UserComponent implements OnInit {
     cols: any[] = [];
     data: any[] = [];
     fields: FormField[] = [
-        { id: 'firstName', type: 'text', name: 'firstName', label: 'Nome', required: true },
-        { id: 'lastName', type: 'text', name: 'lastName', label: 'Sobrenome', required: true },
+        { id: 'name', type: 'text', name: 'name', label: 'Nome', required: true },
+        { id: 'userName', type: 'text', name: 'userName', label: 'Login', required: true },
         {
-            id: 'role',
-            type: 'select',
-            name: 'role',
+            id: 'roles',
+            type: 'multiselect',
+            name: 'roles',
             label: 'Tipo de Usuário',
             required: true,
             options: [
                 {
-                    code: 'admin',
-                    name: 'Administrador',
-                },
-                {
-                    code: 'requester',
+                    code: 'REQUESTER',
                     name: 'Solicitante',
                 },
                 {
-                    code: 'agent',
+                    code: 'AGENT',
                     name: 'Atendente',
+                },
+                {
+                    code: 'ADMIN',
+                    name: 'Administrador',
                 },
             ],
         },
@@ -72,17 +72,17 @@ export class UserComponent implements OnInit {
                 type: 'number',
             },
             {
-                field: 'firstName',
+                field: 'name',
                 header: 'Nome',
                 type: 'text',
             },
             {
-                field: 'lastName',
-                header: 'Sobrenome',
+                field: 'userName',
+                header: 'Login',
                 type: 'text',
             },
             {
-                field: 'role',
+                field: 'roles',
                 header: 'Tipo de Usuário',
                 type: 'role',
             },
@@ -90,18 +90,6 @@ export class UserComponent implements OnInit {
                 field: 'email',
                 header: 'E-mail',
                 type: 'text',
-            },
-            {
-                field: 'createdAt',
-                header: 'Criado em',
-                type: 'date',
-                format: 'dd/MM/yy HH:mm:ss',
-            },
-            {
-                field: 'updatedAt',
-                header: 'Atualizado em',
-                type: 'date',
-                format: 'dd/MM/yy HH:mm:ss',
             },
             {
                 field: '',
@@ -131,16 +119,16 @@ export class UserComponent implements OnInit {
     createUser() {
         this.selectedRegistry = {
             email: undefined,
-            firstName: undefined,
-            lastName: undefined,
+            name: undefined,
             password: undefined,
-            role: undefined,
+            roles: undefined,
         };
         this.modalDialog = true;
     }
 
     editRegistry(registry: any) {
         this.selectedRegistry = { ...registry };
+        this.selectedRegistry.roles = registry.roles.split(',').map((role: string) => role.trim());
         this.selectedRegistry.password = null;
         this.modalDialog = true;
     }
@@ -162,18 +150,19 @@ export class UserComponent implements OnInit {
     }
 
     getFormData(registry: any) {
+        console.log(registry);
         this.loading = true;
         if (!registry) {
             this.loading = false;
             this.modalDialog = false;
         } else {
             if (registry.id) {
-                this.userService.updateUser(registry.id, registry.firstName, registry.lastName, registry.email, registry.role, registry.password).subscribe((x) => {
+                this.userService.updateUser(registry.id, registry.userName, registry.name, registry.email, registry.roles, registry.password).subscribe((x) => {
                     this.fetchData();
                     this.modalDialog = false;
                 });
             } else {
-                this.userService.createUser(registry.firstName, registry.lastName, registry.email, registry.role, registry.password).subscribe((x) => {
+                this.userService.createUser(registry.userName, registry.name, registry.email, registry.roles, registry.password).subscribe((x) => {
                     this.fetchData();
                     this.modalDialog = false;
                 });
@@ -183,7 +172,7 @@ export class UserComponent implements OnInit {
 
     fetchData() {
         this.userService.getUsers().subscribe((x) => {
-            this.data = x;
+            this.data = x.object;
             this.loading = false;
         });
     }
