@@ -11,6 +11,7 @@ using WorkFlow.Application;
 using WorkFlow.Application.Interface;
 using WorkFlow.Domain.Enum;
 using WorkFlow.Domain.Identity;
+using WorkFlow.DTO;
 using WorkFlow.Persistence;
 using WorkFlow.Service;
 using WorkFlow.Service.Interface;
@@ -46,8 +47,10 @@ namespace WorkFlow.API
             builder.Services.AddTransient<ITokenService, TokenService>();
             builder.Services.AddTransient<IAccountService, AccountService>();
             builder.Services.AddTransient<ICategoryService, CategoryService>();
+            builder.Services.AddTransient<IPriorityService, PriorityService>();
             builder.Services.AddTransient<IUserRepository, UserRepository>();
             builder.Services.AddTransient<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddTransient<IPriorityRepository, PriorityRepository>();
             builder.Services.AddTransient<RoleManager<Role>>();
             builder.Services.AddTransient<UserManager<User>>();
 
@@ -59,6 +62,7 @@ namespace WorkFlow.API
                     dbContext.Database.Migrate();
                     SeedRoles(serviceProvider).Wait();
                     SeedAdminUser(serviceProvider).Wait();
+                    //SeedPriorities(serviceProvider).Wait();
                 }
             });
 
@@ -94,13 +98,6 @@ namespace WorkFlow.API
                     ValidateAudience = false
                 };
             });
-
-            //builder.Services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(RoleName.Admin.ToString()));
-            //    options.AddPolicy("RequireRequesterRole", policy => policy.RequireRole(RoleName.Requester.ToString()));
-            //    options.AddPolicy("RequireAgentRole", policy => policy.RequireRole(RoleName.Agent.ToString()));
-            //});
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -209,6 +206,17 @@ namespace WorkFlow.API
             }
             if (!await userManager.IsInRoleAsync(adminUser ?? user, RoleName.Admin.ToString()))
                 await userManager.AddToRoleAsync(adminUser ?? user, RoleName.Admin.ToString());
+        }
+
+        private static async Task SeedPriorities(IServiceProvider serviceProvider)
+        {
+            var priorityService = serviceProvider.GetRequiredService<PriorityService>();
+            var priorities = new List<string>() { "Baixa", "Média", "Alta", "Urgente" };
+            foreach (var priority in priorities)
+            {
+                BasicDTO basicDTO = new() { Name = priority };
+                await priorityService.CreatePriority(basicDTO);
+            }
         }
     }
 }
