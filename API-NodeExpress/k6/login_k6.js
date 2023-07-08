@@ -10,7 +10,7 @@ export const options = {
 
 export default function () {
   const loginPayload = JSON.stringify({
-    email: "admin@admin.com",
+    userName: "admin",
     password: "admin",
   });
 

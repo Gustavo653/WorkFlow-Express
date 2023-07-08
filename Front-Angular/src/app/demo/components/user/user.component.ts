@@ -136,7 +136,7 @@ export class UserComponent implements OnInit {
     deleteRegistry(registry: any) {
         this.confirmationService.confirm({
             header: 'Deletar registro',
-            message: `Tem certeza que deseja apagar o registro: ${registry.firstName}`,
+            message: `Tem certeza que deseja apagar o registro: ${registry.name}`,
             acceptLabel: 'Aceitar',
             rejectLabel: 'Rejeitar',
             accept: () => {

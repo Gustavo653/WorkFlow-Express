@@ -66,7 +66,7 @@ namespace WorkFlow.Service
                 if (user == null)
                 {
                     responseDTO.Code = 401;
-                    responseDTO.Message = "Nãoautenticado!";
+                    responseDTO.Message = "Não autenticado!";
                     return responseDTO;
                 }
                 var password = await CheckUserPassword(user, userDTO);
