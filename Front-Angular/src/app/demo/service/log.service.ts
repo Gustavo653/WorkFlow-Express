@@ -13,7 +13,7 @@ export class LogService {
         const params = type ? { type } : undefined;
         return this.storageService.getAPIURL().pipe(
             switchMap((url) => {
-                return this.http.get<any>(`${url}/api/logs`, { params });
+                return this.http.get<any>(`${url}/logs`, { params });
             })
         );
     }

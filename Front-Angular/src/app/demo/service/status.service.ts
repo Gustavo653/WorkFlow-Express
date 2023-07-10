@@ -17,7 +17,7 @@ export class StatusService {
     getStatuses(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/status`;
+                const apiUrl = `${url}/statuses`;
                 return this.http.get(apiUrl);
             })
         );
@@ -26,7 +26,7 @@ export class StatusService {
     createStatus(name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/status`;
+                const apiUrl = `${url}/statuses`;
                 const body = { name };
                 return this.http.post(apiUrl, body);
             })
@@ -36,7 +36,7 @@ export class StatusService {
     updateStatus(id: string, name: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/status/${id}`;
+                const apiUrl = `${url}/statuses/${id}`;
                 const body = { name };
                 return this.http.put(apiUrl, body);
             })
@@ -46,7 +46,7 @@ export class StatusService {
     deleteStatus(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/status/${id}`;
+                const apiUrl = `${url}/statuses/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

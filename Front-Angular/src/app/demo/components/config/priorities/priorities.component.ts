@@ -136,7 +136,7 @@ export class PrioritiesComponent implements OnInit {
 
     fetchData() {
         this.priorityService.getPriorities().subscribe((x) => {
-            this.data = x.object;
+            this.data = x;
             this.loading = false;
         });
     }

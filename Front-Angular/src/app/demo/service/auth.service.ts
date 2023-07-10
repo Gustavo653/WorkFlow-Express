@@ -7,11 +7,11 @@ import { switchMap } from 'rxjs';
 export class AuthService {
     constructor(private http: HttpClient, private storageService: StorageService) {}
 
-    login(userName: string, password: string) {
+    login(email: string, password: string) {
         return this.storageService.getAPIURL().pipe(
             switchMap((url) => {
-                return this.http.post<any>(`${url}/api/account/login`, {
-                    userName: userName,
+                return this.http.post<any>(`${url}/users/login`, {
+                    email: email,
                     password: password,
                 });
             })
@@ -55,9 +55,9 @@ export class AuthService {
         const url = await this.storageService.getAPIURL().toPromise();
 
         try {
-            let data = await this.http.get<any>(`${url}/api/account/current`).toPromise();
-            this.saveFirstName(data.object.name);
-            this.saveRole(JSON.stringify(data.object.userRoles));
+            let data = await this.http.get<any>(`${url}/users/current`).toPromise();
+            this.saveFirstName(data.firstName);
+            this.saveRole(data.role);
         } catch (error) {
             status = 401;
         }

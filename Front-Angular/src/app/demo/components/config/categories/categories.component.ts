@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormField, MessageServiceSuccess } from 'src/app/demo/api/base';
-import { CategoryService } from 'src/app/demo/service/category.service';
+import { CategoryService } from 'src/app/demo/service/category.service.ts';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 
 @Component({
@@ -135,7 +135,7 @@ export class CategoriesComponent implements OnInit {
 
     fetchData() {
         this.categoryService.getCategories().subscribe((x) => {
-            this.data = x.object;
+            this.data = x;
             this.loading = false;
         });
     }

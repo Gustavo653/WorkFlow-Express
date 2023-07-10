@@ -17,7 +17,7 @@ export class SupportGroupService {
     getSupportGroups(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/support-groups`;
+                const apiUrl = `${url}/support-groups`;
                 return this.http.get(apiUrl);
             })
         );
@@ -26,7 +26,7 @@ export class SupportGroupService {
     createSupportGroup(name: string, users: any[]): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/support-groups`;
+                const apiUrl = `${url}/support-groups`;
                 const body = { name, users };
                 return this.http.post(apiUrl, body);
             })
@@ -36,7 +36,7 @@ export class SupportGroupService {
     updateSupportGroup(id: string, name: string, users: any[]): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/support-groups/${id}`;
+                const apiUrl = `${url}/support-groups/${id}`;
                 const body = { name, users };
                 return this.http.put(apiUrl, body);
             })
@@ -46,7 +46,7 @@ export class SupportGroupService {
     deleteSupportGroup(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/support-groups/${id}`;
+                const apiUrl = `${url}/support-groups/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

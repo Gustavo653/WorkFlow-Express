@@ -17,27 +17,27 @@ export class UserService {
     getUsers(): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/account`;
+                const apiUrl = `${url}/users`;
                 return this.http.get(apiUrl);
             })
         );
     }
 
-    createUser(userName:string, name: string, email: string, roles: string[], password: string): Observable<any> {
+    createUser(firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/account`;
-                const body = { name, userName, email, roles, password };
+                const apiUrl = `${url}/users`;
+                const body = { firstName, lastName, email, role, password };
                 return this.http.post(apiUrl, body);
             })
         );
     }
 
-    updateUser(id: string, userName:string, name: string, email: string, roles: string[], password: string): Observable<any> {
+    updateUser(id: string, firstName: string, lastName: string, email: string, role: string, password: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/account/${id}`;
-                const body = { name, userName, email, roles, password };
+                const apiUrl = `${url}/users/${id}`;
+                const body = { firstName, lastName, email, role, password };
                 return this.http.put(apiUrl, body);
             })
         );
@@ -46,7 +46,7 @@ export class UserService {
     deleteUser(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/account/${id}`;
+                const apiUrl = `${url}/users/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

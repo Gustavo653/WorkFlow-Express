@@ -17,7 +17,7 @@ export class OrderService {
     getOrders(type: number, queryParams?: any): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = type === 0 ? `${url}/api/orders/requester` : `${url}/api/orders/agent`;
+                const apiUrl = type === 0 ? `${url}/orders/requester` : `${url}/orders/agent`;
                 const params = new HttpParams({ fromObject: queryParams });
                 return this.http.get(apiUrl, { params });
             })
@@ -27,7 +27,7 @@ export class OrderService {
     getOrder(id: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                return this.http.get(`${url}/api/orders/${id}`);
+                return this.http.get(`${url}/orders/${id}`);
             })
         );
     }
@@ -35,7 +35,7 @@ export class OrderService {
     getRequesterOrder(id: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                return this.http.get(`${url}/api/orders/detail-requester/${id}`);
+                return this.http.get(`${url}/orders/detail-requester/${id}`);
             })
         );
     }
@@ -43,7 +43,7 @@ export class OrderService {
     createOrder(title: string, description: string, priorityId: number, agentId: number, categoryId: number, supportGroupId: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/orders`;
+                const apiUrl = `${url}/orders`;
                 const body = { title, description, priorityId, agentId, categoryId, supportGroupId };
                 return this.http.post(apiUrl, body);
             })
@@ -53,7 +53,7 @@ export class OrderService {
     updateOrder(id: string, title: string, description: string, priorityId: number, agentId: number, categoryId: number, supportGroupId: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/orders/${id}`;
+                const apiUrl = `${url}/orders/${id}`;
                 const body = { title, description, priorityId, agentId, categoryId, supportGroupId };
                 return this.http.put(apiUrl, body);
             })
@@ -63,7 +63,7 @@ export class OrderService {
     finishOrder(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/orders/finish/${id}`;
+                const apiUrl = `${url}/orders/finish/${id}`;
                 return this.http.post(apiUrl, {});
             })
         );
@@ -72,7 +72,7 @@ export class OrderService {
     rateOrder(id: string, rating: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/orders/rate/${id}`;
+                const apiUrl = `${url}/orders/rate/${id}`;
                 return this.http.post(apiUrl, { rating });
             })
         );
@@ -81,7 +81,7 @@ export class OrderService {
     createTimeEntry(description: string, startTime: Date, endTime: Date, type: string, orderId: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/time-entries`;
+                const apiUrl = `${url}/time-entries`;
                 const body = { description, startTime, endTime, type, orderId };
                 return this.http.post(apiUrl, body);
             })
@@ -91,7 +91,7 @@ export class OrderService {
     updateTimeEntry(id: number, description: string, startTime: Date, endTime: Date, type: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/time-entries/${id}`;
+                const apiUrl = `${url}/time-entries/${id}`;
                 const body = { description, startTime, endTime, type };
                 return this.http.post(apiUrl, body);
             })
@@ -101,7 +101,7 @@ export class OrderService {
     deleteTimeEntry(id: string): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
-                const apiUrl = `${url}/api/time-entries/${id}`;
+                const apiUrl = `${url}/time-entries/${id}`;
                 return this.http.delete(apiUrl);
             })
         );

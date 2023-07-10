@@ -10,23 +10,21 @@ import { MessageService } from 'primeng/api';
     providedIn: 'root',
 })
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(private router: Router, private authService: AuthService, private messageService: MessageService) { }
+    constructor(private router: Router, private authService: AuthService, private messageService: MessageService) {}
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         return next.handle(request).pipe(
             catchError((error: HttpErrorResponse) => {
-                console.log(error.error);
                 if (error.status === 400) {
                     this.messageService.add({
                         severity: 'warn',
                         summary: 'Ocorreu um erro ao validar os dados.',
-                        detail: error.error.title,
+                        detail: error.error.message,
                     });
                 } else if (error.status === 401) {
                     this.messageService.add({
                         severity: 'warn',
                         summary: 'Sua sessão expirou.',
-                        detail: error.error.message
                     });
                     this.router.navigate(['login']);
                 } else if (error.status === 403) {

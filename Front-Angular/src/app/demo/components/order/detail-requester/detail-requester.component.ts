@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { MessageServiceSuccess, PrimeFlexStyle } from 'src/app/demo/api/base';
-import { CategoryService } from 'src/app/demo/service/category.service';
+import { CategoryService } from 'src/app/demo/service/category.service.ts';
 import { OrderService } from 'src/app/demo/service/order.service';
 import { PriorityService } from 'src/app/demo/service/priority.service';
 import { StatusService } from 'src/app/demo/service/status.service';

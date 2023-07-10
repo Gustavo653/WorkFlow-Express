@@ -38,7 +38,7 @@ export class LoginComponent {
     onSubmit(form: any) {
         this.hidden = false;
         if (form.valid) {
-            this.authService.login(form.value.userName, form.value.senha).subscribe(
+            this.authService.login(form.value.email, form.value.senha).subscribe(
                 async (res) => {
                     this.messageService.add({
                         severity: 'success',
@@ -46,14 +46,20 @@ export class LoginComponent {
                         detail: `Estamos lhe redirecionando para a página principal.`,
                     });
                     this.hidden = true;
-                    this.authService.saveToken(res.object.token ?? '');
+                    this.authService.saveToken(res.token ?? '');
                     this.router.navigate(['']);
+                },
+                (err: any) => {
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Houve um erro ao processar sua solicitação!',
+                        detail: `Código: ${err.status} \n Mensagem: ${err.error.message}`,
+                    });
+                    this.hidden = true;
                 }
             );
-            this.hidden = true;
         }
     }
 
-
-    constructor(private authService: AuthService, private router: Router, private messageService: MessageService) { }
+    constructor(private authService: AuthService, private router: Router, private messageService: MessageService) {}
 }
