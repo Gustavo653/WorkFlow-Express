@@ -1,8 +1,8 @@
 Preparação MsSQLServer
 sudo docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=SenhaBraba123" -p 1433:1433 --name MsSQL -d mcr.microsoft.com/mssql/server:2022-latest
 
-Preparação PostgreSQL
-sudo docker run --name PostgreSQL -e POSTGRES_PASSWORD=SenhaBraba123 -d -p 5432:5432 postgres
+Preparação MySQL
+docker run --name MySQL -e MYSQL_ROOT_PASSWORD=SenhaBraba123 -p 3306:3306 -d mysql
 
 Build imagem docker
 sudo docker build -t workflow-api .
