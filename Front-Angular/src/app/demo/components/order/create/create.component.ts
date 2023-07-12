@@ -9,11 +9,17 @@ import { StatusService } from 'src/app/demo/service/status.service';
 import { SupportGroupService } from 'src/app/demo/service/supportGroup.service';
 import { UserService } from 'src/app/demo/service/user.service';
 
+interface UploadEvent {
+    originalEvent: Event;
+    files: File[];
+}
+
 @Component({
     templateUrl: './create.component.html',
 })
 export class CreateComponent implements OnInit {
     style = new PrimeFlexStyle();
+    uploadedFiles: any[] = [];
     loading: boolean = true;
     users: any[] = [];
     supportGroups: any[] = [];
@@ -35,7 +41,7 @@ export class CreateComponent implements OnInit {
         private orderService: OrderService,
         private messageService: MessageService,
         private router: Router
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.fetchData();
@@ -51,12 +57,29 @@ export class CreateComponent implements OnInit {
         );
     }
 
+    onUpload(event: UploadEvent) {
+        for (let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+    }
+
+    removeFile(event: any): void {
+        const file: File = event;
+        const index = this.uploadedFiles.findIndex((uploadedFile: File) => uploadedFile.name === file.name);
+        if (index !== -1) {
+            this.uploadedFiles.splice(index, 1);
+        }
+    }
+
     createOrder() {
         this.loading = true;
         if (this.validateData()) {
             this.orderService.createOrder(this.data.title, this.data.description, this.data.priorityId, this.data.agentId, this.data.categoryId, this.data.supportGroupId).subscribe((x) => {
-                this.messageService.add(MessageServiceSuccess);
-                this.router.navigate(['']);
+                const attachmentRequests = this.uploadedFiles.map((y) => this.orderService.createOrderAttachment(x.id, y).toPromise());
+                Promise.all(attachmentRequests).then(() => {
+                    this.messageService.add(MessageServiceSuccess);
+                    this.router.navigate(['']);
+                });
             });
         } else {
             this.messageService.add({

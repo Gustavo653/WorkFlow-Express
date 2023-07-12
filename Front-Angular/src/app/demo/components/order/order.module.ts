@@ -20,7 +20,8 @@ import { FieldsetModule } from 'primeng/fieldset';
 import { DetailComponent } from './detail/detail.component';
 import { RatingModule } from 'primeng/rating';
 import { CalendarModule } from 'primeng/calendar';
-import { DetailRequesterComponent } from './detail-requester/detail-requester.component';
+import { DetailRequesterComponent } from './detail-requester/detail-requester.component'; 
+import { FileUploadModule } from 'primeng/fileupload';
 
 @NgModule({
     declarations: [CreateComponent, MineComponent, AgentComponent, DetailComponent, DetailRequesterComponent],
@@ -42,7 +43,8 @@ import { DetailRequesterComponent } from './detail-requester/detail-requester.co
         EditorModule,
         FieldsetModule,
         CalendarModule,
+        FileUploadModule,
         RatingModule,
     ],
 })
-export class OrderModule {}
+export class OrderModule { }

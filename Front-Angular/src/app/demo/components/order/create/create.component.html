@@ -1,7 +1,8 @@
 <p-progressBar [hidden]="!loading" mode="indeterminate" [style]="{ height: '3px' }"></p-progressBar>
 <div class="card" *ngIf="!loading">
     <h3>Criar Chamado</h3>
-    <button pButton icon="pi pi-plus" label="Criar Chamado" class="p-button-success mb-3" (click)="createOrder()"></button>
+    <button pButton icon="pi pi-plus" label="Criar Chamado" class="p-button-success mb-3"
+        (click)="createOrder()"></button>
     <div class="grid">
         <div class="col-12 md:col-6 lg:col-3">
             <h5>Parâmetros</h5>
@@ -10,56 +11,34 @@
                     <input pInputText [(ngModel)]="data.title" />
                     <label>Título</label>
                 </span>
-                <p-dropdown
-                    [class]="style.formItem"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Selecione uma prioridade"
-                    optionValue="id"
-                    optionLabel="name"
-                    [options]="priorities"
-                    [(ngModel)]="data.priorityId"
-                ></p-dropdown>
-                <p-dropdown
-                    [class]="style.formItem"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Selecione uma categoria"
-                    optionValue="id"
-                    optionLabel="name"
-                    [options]="categories"
-                    [(ngModel)]="data.categoryId"
-                ></p-dropdown>
-                <p-selectButton [class]="style.formItem" [options]="agentSelector" [(ngModel)]="agentValue" optionLabel="label" optionValue="value"></p-selectButton>
-                <p-dropdown
-                    [class]="style.formItem"
-                    [filter]="true"
-                    filterBy="firstName"
-                    placeholder="Selecione um atendente"
-                    optionValue="id"
-                    optionLabel="firstName"
-                    [options]="users"
-                    [(ngModel)]="data.agentId"
-                    *ngIf="agentValue == 'agent'"
-                    (onChange)="clearAgentSelection()"
-                ></p-dropdown>
-                <p-dropdown
-                    [class]="style.formItem"
-                    [filter]="true"
-                    filterBy="name"
-                    placeholder="Selecione um grupo de atendimento"
-                    optionValue="id"
-                    optionLabel="name"
-                    [options]="supportGroups"
-                    [(ngModel)]="data.supportGroupId"
-                    *ngIf="agentValue == 'supportGroup'"
-                    (onChange)="clearAgentSelection()"
-                ></p-dropdown>
+                <p-dropdown [class]="style.formItem" [filter]="true" filterBy="name"
+                    placeholder="Selecione uma prioridade" optionValue="id" optionLabel="name" [options]="priorities"
+                    [(ngModel)]="data.priorityId"></p-dropdown>
+                <p-dropdown [class]="style.formItem" [filter]="true" filterBy="name"
+                    placeholder="Selecione uma categoria" optionValue="id" optionLabel="name" [options]="categories"
+                    [(ngModel)]="data.categoryId"></p-dropdown>
+                <p-selectButton [class]="style.formItem" [options]="agentSelector" [(ngModel)]="agentValue"
+                    optionLabel="label" optionValue="value"></p-selectButton>
+                <p-dropdown [class]="style.formItem" [filter]="true" filterBy="firstName"
+                    placeholder="Selecione um atendente" optionValue="id" optionLabel="firstName" [options]="users"
+                    [(ngModel)]="data.agentId" *ngIf="agentValue == 'agent'"
+                    (onChange)="clearAgentSelection()"></p-dropdown>
+                <p-dropdown [class]="style.formItem" [filter]="true" filterBy="name"
+                    placeholder="Selecione um grupo de atendimento" optionValue="id" optionLabel="name"
+                    [options]="supportGroups" [(ngModel)]="data.supportGroupId" *ngIf="agentValue == 'supportGroup'"
+                    (onChange)="clearAgentSelection()"></p-dropdown>
             </div>
         </div>
         <div class="col-12 md:col-6 lg:col-9">
             <h5>Descrição</h5>
             <p-editor [(ngModel)]="data.description" [style]="{ height: '21.5rem' }"></p-editor>
+        </div>
+        <div class="col-12">
+            <h5>Anexos</h5>
+            <p-fileUpload name="file" [customUpload]="true" (onRemove)="removeFile($event)"
+                (onSelect)="onUpload($event)" [showUploadButton]="false" [showCancelButton]="false" [multiple]="true"
+                [multiple]="true" chooseLabel="Selecionar" [maxFileSize]="10000000">
+            </p-fileUpload>
         </div>
     </div>
 </div>

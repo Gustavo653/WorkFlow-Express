@@ -8,7 +8,7 @@ import { StorageService } from './storage.service';
     providedIn: 'root',
 })
 export class OrderService {
-    constructor(private http: HttpClient, private storageService: StorageService) {}
+    constructor(private http: HttpClient, private storageService: StorageService) { }
 
     private getAPIURL(): Observable<string> {
         return this.storageService.getAPIURL();
@@ -46,6 +46,17 @@ export class OrderService {
                 const apiUrl = `${url}/orders`;
                 const body = { title, description, priorityId, agentId, categoryId, supportGroupId };
                 return this.http.post(apiUrl, body);
+            })
+        );
+    }
+
+    createOrderAttachment(orderId: number, file: File): Observable<any> {
+        return this.getAPIURL().pipe(
+            switchMap((url) => {
+                const apiUrl = `${url}/order-attachments/${orderId}`;
+                const formData = new FormData();
+                formData.append('file', file);
+                return this.http.post(apiUrl, formData);
             })
         );
     }
