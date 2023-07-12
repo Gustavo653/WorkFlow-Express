@@ -6,10 +6,10 @@ const storage = new Storage({ keyFilename });
 const bucketName = 'workflow-express-bucket';
 const bucket = storage.bucket(bucketName);
 
-exports.uploadImage = (file) => new Promise((resolve, reject) => {
+exports.uploadImage = (file, fileName) => new Promise((resolve, reject) => {
     const { originalname, buffer } = file;
 
-    const blob = bucket.file(originalname.replace(/ /g, "_"));
+    const blob = bucket.file(fileName);
     const blobStream = blob.createWriteStream({
         resumable: false
     });
@@ -19,7 +19,6 @@ exports.uploadImage = (file) => new Promise((resolve, reject) => {
             const publicUrl = util.format(
                 `https://storage.googleapis.com/${bucket.name}/${blob.name}`
             );
-
             resolve(publicUrl);
         })
         .on('error', (err) => {
@@ -28,3 +27,17 @@ exports.uploadImage = (file) => new Promise((resolve, reject) => {
         })
         .end(buffer);
 });
+
+
+exports.deleteImage = (fileName) => new Promise((resolve, reject) => {
+    const file = bucket.file(fileName);
+    file.delete((err, _) => {
+        if (err) {
+            console.error(err);
+            reject(`Erro ao excluir o anexo ${fileName}`);
+        } else {
+            resolve(`Anexo ${fileName} excluído com sucesso`);
+        }
+    });
+});
+

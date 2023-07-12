@@ -11,12 +11,12 @@ const categoriesRouter = require("./routes/categories");
 const prioritiesRouter = require("./routes/priorities");
 const statusesRouter = require("./routes/statuses");
 const ordersRouter = require("./routes/orders");
+const orderAttachmentsRouter = require("./routes/orderAttachments");
 const timeEntriesRouter = require("./routes/timeEntries");
 const log = require("./models/log");
 const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
 const multer = require('multer'); 
-const { uploadImage } = require('./utils/cloudStorage')
 
 const app = express();
 app.use(cors());
@@ -24,23 +24,10 @@ app.use(cors());
 const multerMid = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 15 * 1024 * 1024,
+    fileSize: 10 * 1024 * 1024,
   },
 });
-app.use(multerMid.single('file'))
-
-app.post('/uploads', async (req, res, next) => {
-  try {
-    const myFile = req.file
-    const imageUrl = await uploadImage(myFile)
-    res.status(200).json({
-      message: "Upload succeed",
-      daat: imageUrl
-    })
-  } catch (err) {
-    next(err)
-  }
-})
+app.use(multerMid.single('file'));
 
 const port = process.env.PORT;
 
@@ -61,7 +48,9 @@ app.use(
     },
   })
 );
-app.use(express.json());
+
+app.use(express.json({ limit: "200mb" }));
+app.use(express.urlencoded({ extended: true, limit: "200mb" }));
 
 app.use(infoHandler);
 
@@ -73,6 +62,7 @@ app.use("/priorities", prioritiesRouter);
 app.use("/statuses", statusesRouter);
 app.use("/orders", ordersRouter);
 app.use("/time-entries", timeEntriesRouter);
+app.use("/order-attachments", orderAttachmentsRouter);
 
 app.use("*", (req, res) => {
   res.status(404).json({

@@ -3,7 +3,7 @@ const sequelize = require("../database/database");
 
 const Log = sequelize.define("Log", {
   message: {
-    type: DataTypes.TEXT,
+    type: DataTypes.BLOB,
     allowNull: false,
   },
   type: {
