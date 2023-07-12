@@ -15,9 +15,33 @@ const timeEntriesRouter = require("./routes/timeEntries");
 const log = require("./models/log");
 const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
+const multer = require('multer'); 
+const { uploadImage } = require('./utils/cloudStorage')
 
 const app = express();
 app.use(cors());
+
+const multerMid = multer({
+  storage: multer.memoryStorage(),
+  limits: {
+    fileSize: 15 * 1024 * 1024,
+  },
+});
+app.use(multerMid.single('file'))
+
+app.post('/uploads', async (req, res, next) => {
+  try {
+    const myFile = req.file
+    const imageUrl = await uploadImage(myFile)
+    res.status(200).json({
+      message: "Upload succeed",
+      daat: imageUrl
+    })
+  } catch (err) {
+    next(err)
+  }
+})
+
 const port = process.env.PORT;
 
 async function startServer() {
