@@ -18,6 +18,5 @@ const OrderAttachment = sequelize.define("OrderAttachment", {
 });
 
 OrderAttachment.belongsTo(Order, { foreignKey: "orderId" });
-Order.hasMany(OrderAttachment);
 
 module.exports = OrderAttachment;
