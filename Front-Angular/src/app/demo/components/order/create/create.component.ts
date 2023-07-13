@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { MessageServiceSuccess, PrimeFlexStyle } from 'src/app/demo/api/base';
+import { MessageServiceSuccess, PrimeFlexStyle, UploadEvent } from 'src/app/demo/api/base';
 import { CategoryService } from 'src/app/demo/service/category.service.ts';
 import { OrderService } from 'src/app/demo/service/order.service';
 import { PriorityService } from 'src/app/demo/service/priority.service';
 import { StatusService } from 'src/app/demo/service/status.service';
 import { SupportGroupService } from 'src/app/demo/service/supportGroup.service';
 import { UserService } from 'src/app/demo/service/user.service';
-
-interface UploadEvent {
-    originalEvent: Event;
-    files: File[];
-}
 
 @Component({
     templateUrl: './create.component.html',
@@ -30,7 +25,7 @@ export class CreateComponent implements OnInit {
     agentValue: string = 'agent';
     agentSelector: any[] = [
         { label: 'Atendente', value: 'agent' },
-        { label: 'Grupo de Atendimento', value: 'supportGroup' },
+        { label: 'Grupo', value: 'supportGroup' },
     ];
     constructor(
         private userService: UserService,

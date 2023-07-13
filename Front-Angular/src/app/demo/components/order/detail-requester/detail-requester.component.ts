@@ -28,7 +28,7 @@ export class DetailRequesterComponent implements OnInit {
     timeEntryRegistry: any = {};
     agentSelector: any[] = [
         { label: 'Atendente', value: 'agent' },
-        { label: 'Grupo de Atendimento', value: 'supportGroup' },
+        { label: 'Grupo', value: 'supportGroup' },
     ];
     timeEntrySelectorValue: string = 'requester';
     timeEntrySelector: any[] = [

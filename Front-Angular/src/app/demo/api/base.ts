@@ -8,6 +8,11 @@ export interface dictionaryList {
     name: string;
 }
 
+export interface UploadEvent {
+    originalEvent: Event;
+    files: File[];
+}
+
 export class PrimeFlexStyle {
     label: string = 'block text-780 text-mg font-medium mb-2';
     title: string = 'block text-900 text-xl font-medium mb-2';

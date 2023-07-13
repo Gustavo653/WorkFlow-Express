@@ -2,7 +2,8 @@
 <p-confirmDialog></p-confirmDialog>
 <div *ngIf="!loading">
     <div class="card">
-        <button pButton icon="pi pi-refresh" label="Retornar" class="p-button" onclick="window.history.back(); return false;"></button>
+        <button pButton icon="pi pi-refresh" label="Retornar" class="p-button"
+            onclick="window.history.back(); return false;"></button>
         <h3>Detalhes do chamado {{ data.id }}</h3>
         <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
@@ -10,140 +11,120 @@
                 <div [class]="style.formCard">
                     <span [class]="style.formItem">
                         <label>Título</label>
-                        <input [class]="style.formItem" [readonly]="!isOrderFinished()" pInputText [(ngModel)]="data.title" />
+                        <input [class]="style.formItem" [readonly]="!isOrderFinished()" pInputText
+                            [(ngModel)]="data.title" />
                     </span>
                     <span [class]="style.formItem">
                         <label>Solicitante</label>
-                        <input [class]="style.formItem" [readonly]="!isOrderFinished()" pInputText [(ngModel)]="data.requester.firstName" />
+                        <input [class]="style.formItem" [readonly]="!isOrderFinished()" pInputText
+                            [(ngModel)]="data.requester.firstName" />
                     </span>
-                    <span [class]="style.formItem"
-                        ><label>Prioridade</label>
-                        <p-dropdown
-                            [filter]="true"
-                            placeholder="Selecione um valor"
-                            filterBy="name"
-                            optionValue="id"
-                            [class]="style.formItem"
-                            optionLabel="name"
-                            [options]="priorities"
-                            [readonly]="!isOrderFinished()"
-                            [(ngModel)]="data.priorityId"
-                        ></p-dropdown>
+                    <span [class]="style.formItem"><label>Prioridade</label>
+                        <p-dropdown [filter]="true" placeholder="Selecione um valor" filterBy="name" optionValue="id"
+                            [class]="style.formItem" optionLabel="name" [options]="priorities"
+                            [readonly]="!isOrderFinished()" [(ngModel)]="data.priorityId"></p-dropdown>
                     </span>
                     <span [class]="style.formItem">
                         <label>Status</label>
-                        <p-dropdown
-                            [class]="style.formItem"
-                            [filter]="true"
-                            placeholder="Selecione um valor"
-                            filterBy="name"
-                            optionValue="id"
-                            optionLabel="name"
-                            [readonly]="true"
-                            [options]="statuses"
-                            [(ngModel)]="data.statusId"
-                        ></p-dropdown>
+                        <p-dropdown [class]="style.formItem" [filter]="true" placeholder="Selecione um valor"
+                            filterBy="name" optionValue="id" optionLabel="name" [readonly]="true" [options]="statuses"
+                            [(ngModel)]="data.statusId"></p-dropdown>
                     </span>
                     <span [class]="style.formItem">
                         <label>Categoria</label>
-                        <p-dropdown
-                            [class]="style.formItem"
-                            [filter]="true"
-                            placeholder="Selecione um valor"
-                            filterBy="name"
-                            optionValue="id"
-                            optionLabel="name"
-                            [options]="categories"
-                            [readonly]="!isOrderFinished()"
-                            [(ngModel)]="data.categoryId"
-                        ></p-dropdown>
+                        <p-dropdown [class]="style.formItem" [filter]="true" placeholder="Selecione um valor"
+                            filterBy="name" optionValue="id" optionLabel="name" [options]="categories"
+                            [readonly]="!isOrderFinished()" [(ngModel)]="data.categoryId"></p-dropdown>
                     </span>
-                    <p-selectButton
-                        [class]="style.formItem"
-                        [disabled]="!isOrderFinished()"
-                        [options]="agentSelector"
-                        [(ngModel)]="agentValue"
-                        optionLabel="label"
-                        optionValue="value"
-                    ></p-selectButton>
+                    <p-selectButton [class]="style.formItem" [disabled]="!isOrderFinished()" [options]="agentSelector"
+                        [(ngModel)]="agentValue" optionLabel="label" optionValue="value"></p-selectButton>
                     <span [class]="style.formItem" *ngIf="agentValue == 'agent'">
                         <label>Atendente</label>
-                        <p-dropdown
-                            [class]="style.formItem"
-                            [filter]="true"
-                            placeholder="Selecione um valor"
-                            filterBy="firstName"
-                            optionValue="id"
-                            optionLabel="firstName"
-                            [options]="users"
-                            [(ngModel)]="data.agentId"
-                            [readonly]="!isOrderFinished()"
-                            (onChange)="clearAgentSelection()"
-                        ></p-dropdown>
+                        <p-dropdown [class]="style.formItem" [filter]="true" placeholder="Selecione um valor"
+                            filterBy="firstName" optionValue="id" optionLabel="firstName" [options]="users"
+                            [(ngModel)]="data.agentId" [readonly]="!isOrderFinished()"
+                            (onChange)="clearAgentSelection()"></p-dropdown>
                     </span>
                     <span [class]="style.formItem" *ngIf="agentValue == 'supportGroup'">
                         <label>Grupo de Atendimento</label>
-                        <p-dropdown
-                            [class]="style.formItem"
-                            [filter]="true"
-                            placeholder="Selecione um valor"
-                            filterBy="name"
-                            optionValue="id"
-                            optionLabel="name"
-                            [options]="supportGroups"
-                            [(ngModel)]="data.supportGroupId"
-                            [readonly]="!isOrderFinished()"
-                            (onChange)="clearAgentSelection()"
-                        ></p-dropdown>
+                        <p-dropdown [class]="style.formItem" [filter]="true" placeholder="Selecione um valor"
+                            filterBy="name" optionValue="id" optionLabel="name" [options]="supportGroups"
+                            [(ngModel)]="data.supportGroupId" [readonly]="!isOrderFinished()"
+                            (onChange)="clearAgentSelection()"></p-dropdown>
                     </span>
                     <span [class]="style.formItem">
                         <label>Criado em</label>
-                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.openingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
+                        <input [class]="style.formItem" [readOnly]="true" pInputText
+                            [ngModel]="data.openingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
                     </span>
                     <span [class]="style.formItem">
                         <label>Atualizado em</label>
-                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                        <input [class]="style.formItem" [readOnly]="true" pInputText
+                            [ngModel]="data.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
                     </span>
                     <span [class]="style.formItem">
                         <label>Encerrado em</label>
-                        <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="data.closingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
+                        <input [class]="style.formItem" [readOnly]="true" pInputText
+                            [ngModel]="data.closingDate | date : 'dd/MM/yyyy HH:mm:ss'" />
                     </span>
                 </div>
             </div>
             <div class="col-12 md:col-6 lg:col-9">
                 <h5>Descrição</h5>
-                <p-editor [(ngModel)]="data.description" [readonly]="!isOrderFinished()" [style]="{ height: '45rem' }"></p-editor>
+                <p-editor [(ngModel)]="data.description" [readonly]="!isOrderFinished()"
+                    [style]="{ height: '45rem' }"></p-editor>
+            </div>
+            <div class="col-12">
+                <h5>Anexos</h5>
+                <p-fileUpload name="file" [customUpload]="true" (onRemove)="removeFile($event)"
+                    (onSelect)="onUpload($event)" [showUploadButton]="false" [showCancelButton]="false"
+                    [multiple]="true" [multiple]="true" chooseLabel="Selecionar" [maxFileSize]="10000000">
+                    <ng-template pTemplate="content">
+                        <h6 class="mt-2">Anexos salvos</h6>
+                        <div *ngFor="let item of data.OrderAttachments">
+                            <a target="_blank"
+                                [href]="'https://storage.googleapis.com/workflow-express-bucket/'+item.uniqueIdentifier+item.extension">{{item.fileName}}</a>
+                        </div>
+                    </ng-template>
+                </p-fileUpload>
             </div>
         </div>
-        <p-fieldset legend="Ações" [collapsed]="true" [toggleable]="true">
+        <p-fieldset legend="Ações" [collapsed]="false" [toggleable]="true">
             <div *ngIf="!isOrderFinished()">
                 <label>Seu atendimento foi avaliado como:</label>
                 <p-rating [cancel]="false" [readonly]="true" [(ngModel)]="data.rating"></p-rating>
             </div>
             <div *ngIf="isOrderFinished()" class="flex flex-row flex-wrap">
-                <button pButton icon="pi pi-save" label="Salvar Alterações" class="p-button" (click)="updateOrder()"></button>
-                <button pButton icon="pi pi-check-circle" label="Encerrar" class="p-button-success ml-2" (click)="finishOrder()"></button>
+                <button pButton icon="pi pi-save" label="Salvar Alterações" class="p-button"
+                    (click)="updateOrder()"></button>
+                <button pButton icon="pi pi-check-circle" label="Encerrar" class="p-button-success ml-2"
+                    (click)="finishOrder()"></button>
             </div>
         </p-fieldset>
     </div>
     <div class="card" *ngIf="isOrderFinished()">
         <h5>{{ timeEntryRegistry.id ? "Atualizar" : "Criar" }} Apontamento</h5>
-        <button pButton icon="pi pi-save" [label]="timeEntryRegistry.id ? 'Atualizar Apontamento' : 'Criar Apontamento'" class="p-button mb-3" (click)="createOrUpdateTimeEntry()"></button>
-        <button pButton icon="pi pi-times" *ngIf="timeEntryRegistry.id" label="Cancelar Edição" class="p-button-danger ml-2 mb-3" (click)="clearTimeEntry()"></button>
+        <button pButton icon="pi pi-save" [label]="timeEntryRegistry.id ? 'Atualizar Apontamento' : 'Criar Apontamento'"
+            class="p-button mb-3" (click)="createOrUpdateTimeEntry()"></button>
+        <button pButton icon="pi pi-times" *ngIf="timeEntryRegistry.id" label="Cancelar Edição"
+            class="p-button-danger ml-2 mb-3" (click)="clearTimeEntry()"></button>
         <div class="grid">
             <div class="col-12 md:col-6 lg:col-3">
                 <h5>Parâmetros</h5>
                 <span [class]="style.formItem">
                     <label>Início Apontamento</label>
-                    <p-calendar [class]="style.formItem" [(ngModel)]="startTime" dateFormat="dd/mm/yy" hourFormat="HH:mm:ss" [showTime]="true" [showSeconds]="true"></p-calendar>
+                    <p-calendar [class]="style.formItem" [(ngModel)]="startTime" dateFormat="dd/mm/yy"
+                        hourFormat="HH:mm:ss" [showTime]="true" [showSeconds]="true"></p-calendar>
                 </span>
                 <span [class]="style.formItem">
                     <label>Fim Apontamento</label>
-                    <p-calendar [class]="style.formItem" [(ngModel)]="endTime" dateFormat="dd/mm/yy" hourFormat="HH:mm:ss" [showTime]="true" [showSeconds]="true"></p-calendar>
+                    <p-calendar [class]="style.formItem" [(ngModel)]="endTime" dateFormat="dd/mm/yy"
+                        hourFormat="HH:mm:ss" [showTime]="true" [showSeconds]="true"></p-calendar>
                 </span>
                 <span [class]="style.formItem">
                     <label>Apontamento visível para:</label>
-                    <p-selectButton [class]="style.formItem" [options]="timeEntrySelector" [(ngModel)]="timeEntrySelectorValue" optionLabel="label" optionValue="value"></p-selectButton>
+                    <p-selectButton [class]="style.formItem" [options]="timeEntrySelector"
+                        [(ngModel)]="timeEntrySelectorValue" optionLabel="label" optionValue="value"></p-selectButton>
                 </span>
             </div>
             <div class="col-12 md:col-6 lg:col-9">
@@ -158,8 +139,10 @@
         <div *ngFor="let item of data.TimeEntries">
             <div class="card mb-2">
                 <div *ngIf="isOrderFinished()">
-                    <button pButton icon="pi pi-pencil" label="Editar Apontamento" class="p-button-warning mb-3" (click)="editTimeEntry(item)"></button>
-                    <button pButton icon="pi pi-trash" label="Excluir Apontamento" class="p-button-danger ml-2 mb-3" (click)="deleteTimeEntry(item)"></button>
+                    <button pButton icon="pi pi-pencil" label="Editar Apontamento" class="p-button-warning mb-3"
+                        (click)="editTimeEntry(item)"></button>
+                    <button pButton icon="pi pi-trash" label="Excluir Apontamento" class="p-button-danger ml-2 mb-3"
+                        (click)="deleteTimeEntry(item)"></button>
                 </div>
                 <div class="grid">
                     <div class="col-12 md:col-6 lg:col-3">
@@ -170,27 +153,33 @@
                         </span>
                         <span [class]="style.formItem">
                             <label>Início Apontamento</label>
-                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.startTime | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <input [class]="style.formItem" [readOnly]="true" pInputText
+                                [ngModel]="item.startTime | date : 'dd/MM/yyyy HH:mm:ss'" />
                         </span>
                         <span [class]="style.formItem">
                             <label>Fim Apontamento</label>
-                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.endTime | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <input [class]="style.formItem" [readOnly]="true" pInputText
+                                [ngModel]="item.endTime | date : 'dd/MM/yyyy HH:mm:ss'" />
                         </span>
                         <span [class]="style.formItem">
                             <label>Criado em</label>
-                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.createdAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <input [class]="style.formItem" [readOnly]="true" pInputText
+                                [ngModel]="item.createdAt | date : 'dd/MM/yyyy HH:mm:ss'" />
                         </span>
                         <span [class]="style.formItem">
                             <label>Atualizado em</label>
-                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
+                            <input [class]="style.formItem" [readOnly]="true" pInputText
+                                [ngModel]="item.updatedAt | date : 'dd/MM/yyyy HH:mm:ss'" />
                         </span>
                         <span [class]="style.formItem">
                             <label>Criado por</label>
-                            <input [class]="style.formItem" [readOnly]="true" pInputText [ngModel]="item.User.firstName" />
+                            <input [class]="style.formItem" [readOnly]="true" pInputText
+                                [ngModel]="item.User.firstName" />
                         </span>
                         <span [class]="style.formItem">
                             <label>Apontamento visível para:</label>
-                            <p-selectButton [class]="style.formItem" [disabled]="true" [options]="timeEntrySelector" [(ngModel)]="item.type" optionLabel="label" optionValue="value"></p-selectButton>
+                            <p-selectButton [class]="style.formItem" [disabled]="true" [options]="timeEntrySelector"
+                                [(ngModel)]="item.type" optionLabel="label" optionValue="value"></p-selectButton>
                         </span>
                     </div>
                     <div class="col-12 md:col-6 lg:col-9">

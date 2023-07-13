@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { MessageServiceSuccess, PrimeFlexStyle } from 'src/app/demo/api/base';
+import { MessageServiceSuccess, PrimeFlexStyle, UploadEvent } from 'src/app/demo/api/base';
 import { CategoryService } from 'src/app/demo/service/category.service.ts';
 import { OrderService } from 'src/app/demo/service/order.service';
 import { PriorityService } from 'src/app/demo/service/priority.service';
@@ -14,7 +14,8 @@ import { UserService } from 'src/app/demo/service/user.service';
 })
 export class DetailComponent implements OnInit {
     startTime?: Date;
-    endTime?: Date;
+    endTime?: Date; 
+    uploadedFiles: any[] = [];
     users: any[] = [];
     supportGroups: any[] = [];
     priorities: any[] = [];
@@ -28,7 +29,7 @@ export class DetailComponent implements OnInit {
     timeEntryRegistry: any = {};
     agentSelector: any[] = [
         { label: 'Atendente', value: 'agent' },
-        { label: 'Grupo de Atendimento', value: 'supportGroup' },
+        { label: 'Grupo', value: 'supportGroup' },
     ];
     timeEntrySelectorValue: string = 'requester';
     timeEntrySelector: any[] = [
@@ -45,7 +46,7 @@ export class DetailComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private messageService: MessageService,
         private confirmationService: ConfirmationService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.fetchData();
@@ -66,6 +67,19 @@ export class DetailComponent implements OnInit {
         return hasItems;
     }
 
+    onUpload(event: UploadEvent) {
+        for (let file of event.files) {
+            this.uploadedFiles.push(file);
+        }
+    }
+
+    removeFile(event: any): void {
+        const file: File = event;
+        const index = this.uploadedFiles.findIndex((uploadedFile: File) => uploadedFile.name === file.name);
+        if (index !== -1) {
+            this.uploadedFiles.splice(index, 1);
+        }
+    }
 
     validateOrderData() {
         return (

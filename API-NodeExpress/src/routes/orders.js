@@ -7,6 +7,7 @@ const Order = require("../models/order");
 const { verifyToken } = require("../utils/jwtUtils");
 const Status = require("../models/status");
 const Priority = require("../models/priority");
+const OrderAttachment = require("../models/orderAttachment");
 const Category = require("../models/category");
 const User = require("../models/user");
 const SupportGroup = require("../models/supportGroup");
@@ -205,7 +206,7 @@ router.get(
               priorityId !== undefined && priorityId !== "null"
                 ? { id: priorityId }
                 : {},
-          },
+          }, 
           {
             model: Category,
             where:
@@ -369,6 +370,10 @@ router.get("/:id", authMiddleware, agentMiddleware, async (req, res, next) => {
         {
           model: TimeEntry,
           include: User,
+        },        
+        {
+          model: OrderAttachment,
+          required: false
         },
         {
           model: User,
