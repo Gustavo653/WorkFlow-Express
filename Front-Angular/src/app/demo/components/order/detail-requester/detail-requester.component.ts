@@ -32,8 +32,8 @@ export class DetailRequesterComponent implements OnInit {
     ];
     timeEntrySelectorValue: string = 'requester';
     timeEntrySelector: any[] = [
-        { label: 'Solicitantes e Atendentes', value: 'requester' },
-        { label: 'Apenas Atendentes', value: 'agent' },
+        { label: 'Solicitantes', value: 'requester' },
+        { label: 'Atendentes', value: 'agent' },
     ];
     constructor(
         private userService: UserService,

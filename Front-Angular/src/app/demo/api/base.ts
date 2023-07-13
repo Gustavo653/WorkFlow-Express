@@ -11,6 +11,7 @@ export interface dictionaryList {
 export interface UploadEvent {
     originalEvent: Event;
     files: File[];
+    currentFiles: File[];
 }
 
 export class PrimeFlexStyle {

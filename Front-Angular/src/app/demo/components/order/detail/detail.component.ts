@@ -14,8 +14,7 @@ import { UserService } from 'src/app/demo/service/user.service';
 })
 export class DetailComponent implements OnInit {
     startTime?: Date;
-    endTime?: Date; 
-    uploadedFiles: any[] = [];
+    endTime?: Date;
     users: any[] = [];
     supportGroups: any[] = [];
     priorities: any[] = [];
@@ -33,8 +32,8 @@ export class DetailComponent implements OnInit {
     ];
     timeEntrySelectorValue: string = 'requester';
     timeEntrySelector: any[] = [
-        { label: 'Solicitantes e Atendentes', value: 'requester' },
-        { label: 'Apenas Atendentes', value: 'agent' },
+        { label: 'Solicitantes', value: 'requester' },
+        { label: 'Atendentes', value: 'agent' },
     ];
     constructor(
         private userService: UserService,
@@ -68,17 +67,19 @@ export class DetailComponent implements OnInit {
     }
 
     onUpload(event: UploadEvent) {
-        for (let file of event.files) {
-            this.uploadedFiles.push(file);
-        }
+        console.log(event);
+        const attachmentRequests = event.currentFiles.map((y) => this.orderService.createOrderAttachment(this.orderId, y).toPromise());
+        Promise.all(attachmentRequests).then(() => {
+            this.messageService.add(MessageServiceSuccess);
+            this.fetchData();
+        });
     }
 
-    removeFile(event: any): void {
-        const file: File = event;
-        const index = this.uploadedFiles.findIndex((uploadedFile: File) => uploadedFile.name === file.name);
-        if (index !== -1) {
-            this.uploadedFiles.splice(index, 1);
-        }
+    removeFile(uniqueIdentifier: string): void {
+        this.orderService.deleteOrderAttachment(uniqueIdentifier).subscribe((x) => {
+            this.messageService.add(MessageServiceSuccess);
+            this.fetchData();
+        });
     }
 
     validateOrderData() {
@@ -201,6 +202,7 @@ export class DetailComponent implements OnInit {
             if (x.agentId != undefined) this.agentValue = 'agent';
             if (x.supportGroupId != undefined) this.agentValue = 'supportGroup';
             this.data = x;
+            this.loading = false;
         });
         this.userService.getUsers().subscribe((x) => {
             this.users = x;
@@ -217,6 +219,5 @@ export class DetailComponent implements OnInit {
         this.categoryService.getCategories().subscribe((x) => {
             this.categories = x;
         });
-        this.loading = false;
     }
 }

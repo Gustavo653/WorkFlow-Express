@@ -61,6 +61,15 @@ export class OrderService {
         );
     }
 
+    deleteOrderAttachment(uniqueIdentifier: string): Observable<any> {
+        return this.getAPIURL().pipe(
+            switchMap((url) => {
+                const apiUrl = `${url}/order-attachments/${uniqueIdentifier}`;
+                return this.http.delete(apiUrl);
+            })
+        );
+    }
+
     updateOrder(id: string, title: string, description: string, priorityId: number, agentId: number, categoryId: number, supportGroupId: number): Observable<any> {
         return this.getAPIURL().pipe(
             switchMap((url) => {
