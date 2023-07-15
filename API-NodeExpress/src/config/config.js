@@ -6,7 +6,8 @@ module.exports = {
     password: 'SenhaBraba123',
     database: 'WorkFlowAPI',
     host: 'localhost',
-    dialect: 'mssql'
+    dialect: 'mssql', 
+    logging: console.log
   },
   test: {
     username: process.env.DATABASE_USER,
