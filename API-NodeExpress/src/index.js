@@ -18,8 +18,31 @@ const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
 const multer = require('multer');
 
+const bodyParser = require("body-parser");
+const swaggerJsdoc = require("swagger-jsdoc");
+const swaggerUi = require("swagger-ui-express");
+
 const app = express();
 app.use(cors());
+
+const options = {
+  definition: {
+    openapi: "3.1.0",
+    info: {
+      title: "WorkFlow Express API with Swagger",
+      version: "1.0.0",
+      description:
+        "WorkFlow Express API with Swagger",
+    },
+  },
+  apis: ["src/routes/*.js"],
+};
+
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerJsdoc(options), { explorer: true })
+);
 
 const multerMid = multer({
   storage: multer.memoryStorage(),
