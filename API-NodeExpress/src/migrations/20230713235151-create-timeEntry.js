@@ -32,8 +32,8 @@ module.exports = {
           model: 'Orders',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       userId: {
         type: Sequelize.INTEGER,

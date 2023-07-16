@@ -58,25 +58,4 @@ const User = sequelize.define("User", {
   },
 });
 
-User.sync()
-  .then(async () => {
-    const admin = await User.findOne({ where: { email: "admin@example.com" } });
-    if (admin) {
-      console.log("O usuário admin já existe.");
-      return;
-    }
-    const hashedPassword = await generatePassword("admin123");
-    console.log("Usuário admin criado com sucesso.");
-    return User.create({
-      firstName: "Admin",
-      password: hashedPassword,
-      role: "admin",
-      lastName: "User",
-      email: "admin@example.com",
-    });
-  })
-  .catch((error) => {
-    console.error("Erro ao criar usuário admin:", error);
-  });
-
 module.exports = User;

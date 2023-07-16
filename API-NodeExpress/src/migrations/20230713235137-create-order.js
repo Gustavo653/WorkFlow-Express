@@ -34,8 +34,8 @@ module.exports = {
           model: 'Priorities',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       categoryId: {
         type: Sequelize.INTEGER,
@@ -44,8 +44,8 @@ module.exports = {
           model: 'Categories',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       statusId: {
         type: Sequelize.INTEGER,
@@ -54,8 +54,8 @@ module.exports = {
           model: 'Statuses',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       requesterId: {
         type: Sequelize.INTEGER,
@@ -64,8 +64,8 @@ module.exports = {
           model: 'Users',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       agentId: {
         type: Sequelize.INTEGER,
@@ -73,8 +73,8 @@ module.exports = {
           model: 'Users',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       supportGroupId: {
         type: Sequelize.INTEGER,
@@ -82,8 +82,8 @@ module.exports = {
           model: 'SupportGroups',
           key: 'id'
         },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
+        onUpdate: 'NO ACTION',
+        onDelete: 'NO ACTION'
       },
       createdAt: {
         allowNull: false,

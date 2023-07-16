@@ -2,8 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const { exec } = require('child_process');
 
-const migrate = require("./database/migrate");
 const usersRouter = require("./routes/users");
 const logsRouter = require("./routes/logs");
 const supportGroupsRouter = require("./routes/supportGroups");
@@ -16,7 +16,7 @@ const timeEntriesRouter = require("./routes/timeEntries");
 const log = require("./models/log");
 const errorHandler = require("./middleware/errorHandler");
 const infoHandler = require("./middleware/infoHandler");
-const multer = require('multer'); 
+const multer = require('multer');
 
 const app = express();
 app.use(cors());
@@ -32,7 +32,22 @@ app.use(multerMid.single('file'));
 const port = process.env.PORT;
 
 async function startServer() {
-  await migrate();
+  await new Promise((resolve, reject) => {
+    const migrate = exec(
+      'npx sequelize-cli db:migrate',
+      { env: process.env.NODE_ENV },
+      (err, stdout, stderr) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      }
+    );
+
+    migrate.stdout.pipe(process.stdout);
+    migrate.stderr.pipe(process.stderr);
+  });
 
   app.listen(port, () => {
     console.log(`Server running at port ${port}`);
