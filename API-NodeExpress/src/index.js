@@ -55,7 +55,7 @@ app.use(multerMid.single('file'));
 const port = process.env.PORT;
 
 async function startServer() {
-  await new Promise((resolve, reject) => {
+  /*await new Promise((resolve, reject) => {
     const migrate = exec(
       'npx sequelize-cli db:migrate',
       { env: process.env.NODE_ENV },
@@ -70,7 +70,7 @@ async function startServer() {
 
     migrate.stdout.pipe(process.stdout);
     migrate.stderr.pipe(process.stderr);
-  });
+  });*/
 
   app.listen(port, () => {
     console.log(`Server running at port ${port}`);
