@@ -2,7 +2,6 @@ FROM node:latest
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
-RUN npm install -g sequelize-cli
 COPY . .
 ENV JWT_SECRET=secret
 ENV JWT_EXPIRATION=2h
