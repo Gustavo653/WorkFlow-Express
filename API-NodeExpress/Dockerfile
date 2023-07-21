@@ -9,7 +9,8 @@ EXPOSE $PORT
 RUN chmod +x startup.sh
 RUN npm i -g sequelize-cli
 RUN npm i -g nodemon
+RUN npm run migrate-db
 
 RUN ls -l
 
-ENTRYPOINT [ "./startup.sh" ]
+CMD [ "node", "src/index.js" ]
