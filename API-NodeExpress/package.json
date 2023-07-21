@@ -7,7 +7,7 @@
     "test": "jest",
     "live": "nodemon src/index.js",
     "start": "node src/index.js",
-    "migrate-db": "npx sequelize-cli db:migrate --env production"
+    "migrate-db": "npx sequelize-cli db:migrate"
   },
   "author": "",
   "license": "ISC",
