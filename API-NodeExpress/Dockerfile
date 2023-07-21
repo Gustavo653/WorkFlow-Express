@@ -10,4 +10,6 @@ RUN chmod +x startup.sh
 RUN npm i -g sequelize-cli
 RUN npm i -g nodemon
 
+RUN ls -l
+
 ENTRYPOINT [ "./startup.sh" ]
