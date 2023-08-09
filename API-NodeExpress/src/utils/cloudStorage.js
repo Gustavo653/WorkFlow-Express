@@ -3,11 +3,11 @@ const { Storage } = require('@google-cloud/storage');
 
 const keyFilename = 'workflow-express-bucket.json';
 const storage = process.env.NODE_ENV == 'production' ? new Storage() : new Storage({ keyFilename });
-const bucketName = 'workflow-express-bucket';
+const bucketName = 'workflow-express';
 const bucket = storage.bucket(bucketName);
 
 exports.uploadImage = (file, fileName) => new Promise((resolve, reject) => {
-    const { originalname, buffer } = file;
+    const { buffer } = file;
 
     const blob = bucket.file(fileName);
     const blobStream = blob.createWriteStream({
